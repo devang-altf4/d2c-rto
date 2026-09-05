@@ -1,14 +1,18 @@
-import { PoseCapture } from './PoseCapture';
+import { Embed } from './Embed';
 
 /**
  * The iframe the widget opens. Same origin as the app, isolated from whatever
- * CSS the merchant's Shopify theme is running. Needs allow="camera" on the
- * parent iframe tag.
+ * CSS the merchant's theme is running. The parent sets allow="camera".
  */
-export default function EmbedPage() {
+export default async function EmbedPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ style?: string }>;
+}) {
+  const { style } = await searchParams;
   return (
-    <main style={{ padding: 18, minHeight: '100dvh', background: 'var(--ground)' }}>
-      <PoseCapture garmentLengthCm={112} />
+    <main style={{ minHeight: '100dvh', background: 'var(--ground)' }}>
+      <Embed styleId={style ?? 'KAI-001'} />
     </main>
   );
 }
