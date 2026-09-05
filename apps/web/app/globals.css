@@ -1,0 +1,49 @@
+:root {
+  --ground: #f3f4f6;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --ink: #12141a;
+  --ink-2: #40464f;
+  --muted: #6b7280;
+  --rule: #dcdfe4;
+  --rule-soft: #eaecf0;
+  --accent: #0f5a8f;
+  --accent-soft: #dceaf5;
+  --warn: #a8571a;
+  --bad: #9c2f48;
+
+  --mono: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #0d0f12;
+    --surface: #15181d;
+    --surface-2: #1b1f25;
+    --ink: #e8eaee;
+    --ink-2: #b4bac3;
+    --muted: #838a95;
+    --rule: #2a2f37;
+    --rule-soft: #22262d;
+    --accent: #6fb0e2;
+    --accent-soft: #16303f;
+    --warn: #d9a153;
+    --bad: #e08a9d;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 980px; margin: 0 auto; padding: 44px 22px 96px; }
+.num { font-variant-numeric: tabular-nums; }
