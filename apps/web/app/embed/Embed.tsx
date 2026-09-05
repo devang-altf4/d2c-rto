@@ -6,6 +6,7 @@ import {
   type BodyMeasurement, type FitRecommendation, type GarmentSpec, type Size,
 } from '@rto/core';
 import { PoseCapture } from './PoseCapture';
+import { TryOn } from './TryOn';
 import brandSizes from '../../../../data/brand-sizes.json';
 
 /**
@@ -47,7 +48,8 @@ export function Embed({ styleId }: { styleId: string }) {
 
   if (!specs) return <Shell><p style={muted}>Loading sizes…</p></Shell>;
 
-  if (path === 'done' && reco) return <Result reco={reco} styleName={styleName} />;
+  if (path === 'done' && reco)
+    return <Result reco={reco} styleName={styleName} styleId={styleId} />;
 
   if (path === 'camera') {
     return (
@@ -84,7 +86,7 @@ export function Embed({ styleId }: { styleId: string }) {
         I know my size in another brand
       </button>
       <p style={{ ...muted, marginTop: 16, fontSize: 12.5 }}>
-        Nothing is uploaded. Measurement happens on your device.
+        Measurement runs entirely on your device — nothing is uploaded.
       </p>
     </Shell>
   );
@@ -125,7 +127,13 @@ function CrossBrand({ onDone }: { onDone: (b: BodyMeasurement) => void }) {
 
 // --------------------------------------------------------------- the payoff
 
-function Result({ reco, styleName }: { reco: FitRecommendation; styleName: string }) {
+function Result({
+  reco, styleName, styleId,
+}: {
+  reco: FitRecommendation;
+  styleName: string;
+  styleId: string;
+}) {
   return (
     <Shell>
       <div style={{ textAlign: 'center', padding: '6px 0 2px' }}>
@@ -162,6 +170,8 @@ function Result({ reco, styleName }: { reco: FitRecommendation; styleName: strin
         Use size {reco.recommendedSize}
       </button>
       <button onClick={() => post({ type: 'close' })} style={link}>Close</button>
+
+      <TryOn styleId={styleId} size={reco.recommendedSize} />
     </Shell>
   );
 }

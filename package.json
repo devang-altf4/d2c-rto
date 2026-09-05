@@ -10,7 +10,8 @@
     "db:studio": "dotenv -e .env -- pnpm --filter @rto/db exec prisma studio",
     "db:seed": "dotenv -e .env -- pnpm --filter @rto/db run seed",
     "data:generate": "tsx scripts/generate.ts",
-    "db:generate": "pnpm --filter @rto/db exec prisma generate"
+    "db:generate": "pnpm --filter @rto/db exec prisma generate",
+    "tryon:warm": "tsx scripts/warm-tryon.ts"
   },
   "devDependencies": {
     "turbo": "^2.1.3",

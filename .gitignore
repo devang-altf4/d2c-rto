@@ -70,3 +70,5 @@ next-env.d.ts
 .next
 apps/web/public/mediapipe/*.task
 apps/web/public/mediapipe/wasm/
+apps/web/.tryon-cache/
+apps/web/public/tryon/
