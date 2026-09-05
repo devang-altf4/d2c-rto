@@ -1,0 +1,239 @@
+// RTO demo — live state only.
+//
+// The 45k-order historical corpus does NOT live here. It is generated to
+// data/*.json by scripts/generate.ts, committed, and read directly by the
+// diagnosis screen and the sizing model. That data never changes, so it does
+// not need a database and cannot be broken by one.
+//
+// What lives here is the handful of orders that move through L1 -> L2 -> L3
+// during the demo, and the event log that the ops timeline renders.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------- catalogue
+
+model Sku {
+  id        String @id // "KAI-KUR-014-M"
+  styleId   String // "KAI-KUR-014"
+  styleName String // "Anaya Cotton Kurta"
+  size      String // XS S M L XL
+  imageUrl  String
+
+  mrpPaise  Int
+  cogsPaise Int
+
+  // Garment-side spec — the defensible asset. These are measurements of the
+  // GARMENT, not the body. Body -> garment conversion happens in @rto/core.
+  chestCm    Float
+  lengthCm   Float
+  shoulderCm Float
+  easeCm     Float // fitted ~4, relaxed ~10
+
+  // Learned from exchange reconciliation. Positive means the style runs small,
+  // so its effective chest is smaller than the manufacturer claims.
+  // Recomputed by scripts/generate.ts; this column is what the widget reads.
+  learnedOffsetCm Float @default(0)
+
+  orders Order[]
+
+  @@index([styleId])
+}
+
+// ----------------------------------------------------------------- customers
+
+model Customer {
+  id      String  @id @default(cuid())
+  name    String
+  phone   String // E.164 — real numbers for the demo
+  tier    Int     @default(2) // 1 | 2 | 3
+  isFirst Boolean @default(true)
+
+  orders Order[]
+}
+
+// -------------------------------------------------------------------- orders
+
+enum PaymentMode {
+  COD
+  PREPAID
+}
+
+enum OrderStatus {
+  PLACED // just created, not yet scored
+  AT_RISK // fit risk above threshold, queued for L2
+  CONFIRMED // customer confirmed via L2 or L3
+  CANCELLED // customer cancelled — a save, not a loss
+  DISPATCHED // cleared to ship
+}
+
+model Order {
+  id      String @id @default(cuid())
+  humanId String @unique // "KA-10428" — this is what appears on screen
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  skuId String
+  sku   Sku    @relation(fields: [skuId], references: [id])
+
+  size        String
+  amountPaise Int
+  paymentMode PaymentMode
+  status      OrderStatus @default(PLACED)
+  placedAt    DateTime    @default(now())
+
+  fitSession FitSession?
+  risk       RiskScore?
+  messages   Message[]
+  calls      Call[]
+  events     Event[]
+
+  @@index([status])
+}
+
+// ------------------------------------------------------------------ L1 · fit
+
+enum FitSource {
+  CAMERA // MediaPipe pose capture
+  CROSS_BRAND // "I'm an M in Zara" — the path that cannot fail
+  SKIPPED // shopper never engaged the widget
+}
+
+model FitSession {
+  id String @id @default(cuid())
+
+  orderId String? @unique
+  order   Order?  @relation(fields: [orderId], references: [id])
+
+  source FitSource
+
+  // Inputs
+  heightCm Float?
+
+  // Derived body measurements (cm)
+  bodyChestCm Float?
+  shoulderCm  Float?
+
+  // Output
+  recommendedSize      String?
+  chosenSize           String?
+  followed             Boolean @default(false) // did she take the recommendation
+  confidence           Float? // 0..1
+  learnedOffsetApplied Float   @default(0) // cm — for the "watch M become L" moment
+
+  createdAt DateTime @default(now())
+}
+
+// ------------------------------------------------------------- L2 targeting
+
+model RiskScore {
+  id String @id @default(cuid())
+
+  orderId String @unique
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  score Float // 0..1
+
+  // Per-component contributions, so the ops UI can render a stacked bar
+  // rather than a bare float. The breakdown IS the decisioning claim.
+  // { styleHistory, noL1, cod, firstOrder, tier }
+  components Json
+
+  computedAt DateTime @default(now())
+}
+
+// ------------------------------------------------------------- L2 · whatsapp
+
+enum Channel {
+  WHATSAPP
+  VOICE
+  SMS
+}
+
+enum MessageDirection {
+  OUTBOUND
+  INBOUND
+}
+
+model Message {
+  id String @id @default(cuid())
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  channel      Channel          @default(WHATSAPP)
+  direction    MessageDirection
+  templateName String?
+  body         String
+
+  providerId String? // wamid from the Graph API
+  status     String  @default("queued") // queued|sent|delivered|read|failed
+  error      String?
+
+  // Button payload on an inbound reply: CONFIRM | CHANGE_SIZE | CANCEL
+  replyPayload String?
+
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+}
+
+// ----------------------------------------------------------------- L3 · voice
+
+enum CallOutcome {
+  CONFIRMED
+  CANCELLED
+  SIZE_CHANGED
+  NO_ANSWER
+  VOICEMAIL
+  FAILED
+}
+
+model Call {
+  id String @id @default(cuid())
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  provider   String  @default("vapi")
+  providerId String?
+  language   String  @default("hi-IN") // Hinglish
+
+  outcome      CallOutcome?
+  durationSec  Int?
+  transcript   String?
+  recordingUrl String?
+
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+}
+
+// ------------------------------------------------------------- the event log
+//
+// The integration seam. Each workstream appends events; the ops timeline reads
+// them. Nobody has to know how anyone else's code works, and a level that is
+// not built yet simply produces no events.
+
+model Event {
+  id String @id @default(cuid())
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  level String // "L1" | "L2" | "L3"
+  type  String // "fit.recommended" | "wa.sent" | "wa.replied" | "call.completed"
+  label String // human-readable, rendered directly in the timeline
+  meta  Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([orderId, createdAt])
+}
