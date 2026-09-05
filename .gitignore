@@ -5,3 +5,6 @@ dist
 .env
 .env.local
 *.log
+data/orders.json
+data/skus.json
+data/exchanges.json

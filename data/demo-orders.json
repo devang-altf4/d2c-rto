@@ -1,0 +1,290 @@
+[
+  {
+    "humanId": "KA-2402",
+    "customerName": "Shreya Kulkarni",
+    "phone": "+919800000000",
+    "tier": 1,
+    "isFirstOrder": true,
+    "skuId": "KAI-118-M",
+    "styleName": "Noor Georgette Anarkali",
+    "size": "M",
+    "amountPaise": 125000,
+    "paymentMode": "COD",
+    "usedL1": false,
+    "risk": {
+      "score": 0.8245200000000001,
+      "components": {
+        "styleHistory": 0.25452,
+        "noL1": 0.25,
+        "cod": 0.15,
+        "firstOrder": 0.15,
+        "tier": 0.020000000000000004
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2401",
+    "customerName": "Priya Nair",
+    "phone": "+919800000000",
+    "tier": 1,
+    "isFirstOrder": true,
+    "skuId": "KAI-057-L",
+    "styleName": "Kiara Cotton Anarkali",
+    "size": "L",
+    "amountPaise": 205000,
+    "paymentMode": "COD",
+    "usedL1": false,
+    "risk": {
+      "score": 0.8189200000000001,
+      "components": {
+        "styleHistory": 0.24892,
+        "noL1": 0.25,
+        "cod": 0.15,
+        "firstOrder": 0.15,
+        "tier": 0.020000000000000004
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2400",
+    "customerName": "Ananya Iyer",
+    "phone": "+919800000000",
+    "tier": 2,
+    "isFirstOrder": true,
+    "skuId": "KAI-110-L",
+    "styleName": "Zoya Silk-Blend Midi Dress",
+    "size": "L",
+    "amountPaise": 175000,
+    "paymentMode": "PREPAID",
+    "usedL1": false,
+    "risk": {
+      "score": 0.7782199999999999,
+      "components": {
+        "styleHistory": 0.31822,
+        "noL1": 0.25,
+        "cod": 0,
+        "firstOrder": 0.15,
+        "tier": 0.06
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2409",
+    "customerName": "Aditi Verma",
+    "phone": "+919800000000",
+    "tier": 2,
+    "isFirstOrder": true,
+    "skuId": "KAI-119-XL",
+    "styleName": "Anaya Linen Kurta Set",
+    "size": "XL",
+    "amountPaise": 185000,
+    "paymentMode": "COD",
+    "usedL1": false,
+    "risk": {
+      "score": 0.6919,
+      "components": {
+        "styleHistory": 0.0819,
+        "noL1": 0.25,
+        "cod": 0.15,
+        "firstOrder": 0.15,
+        "tier": 0.06
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2411",
+    "customerName": "Tanvi Desai",
+    "phone": "+919800000000",
+    "tier": 1,
+    "isFirstOrder": true,
+    "skuId": "KAI-146-XL",
+    "styleName": "Rukmini Linen Kurta",
+    "size": "XL",
+    "amountPaise": 135000,
+    "paymentMode": "COD",
+    "usedL1": false,
+    "risk": {
+      "score": 0.65624,
+      "components": {
+        "styleHistory": 0.08624,
+        "noL1": 0.25,
+        "cod": 0.15,
+        "firstOrder": 0.15,
+        "tier": 0.020000000000000004
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2408",
+    "customerName": "Sneha Joshi",
+    "phone": "+919800000000",
+    "tier": 1,
+    "isFirstOrder": true,
+    "skuId": "KAI-053-XL",
+    "styleName": "Amara Georgette Kurta Set",
+    "size": "XL",
+    "amountPaise": 215000,
+    "paymentMode": "COD",
+    "usedL1": false,
+    "risk": {
+      "score": 0.65568,
+      "components": {
+        "styleHistory": 0.08568,
+        "noL1": 0.25,
+        "cod": 0.15,
+        "firstOrder": 0.15,
+        "tier": 0.020000000000000004
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2407",
+    "customerName": "Kavya Rao",
+    "phone": "+919800000000",
+    "tier": 3,
+    "isFirstOrder": false,
+    "skuId": "KAI-125-XS",
+    "styleName": "Ishita Linen Straight Kurta",
+    "size": "XS",
+    "amountPaise": 165000,
+    "paymentMode": "COD",
+    "usedL1": false,
+    "risk": {
+      "score": 0.5827399999999999,
+      "components": {
+        "styleHistory": 0.08274,
+        "noL1": 0.25,
+        "cod": 0.15,
+        "firstOrder": 0,
+        "tier": 0.1
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2406",
+    "customerName": "Pooja Reddy",
+    "phone": "+919800000000",
+    "tier": 3,
+    "isFirstOrder": false,
+    "skuId": "KAI-018-S",
+    "styleName": "Ira Rayon Kurta Set",
+    "size": "S",
+    "amountPaise": 170000,
+    "paymentMode": "COD",
+    "usedL1": false,
+    "risk": {
+      "score": 0.56706,
+      "components": {
+        "styleHistory": 0.06706,
+        "noL1": 0.25,
+        "cod": 0.15,
+        "firstOrder": 0,
+        "tier": 0.1
+      },
+      "atRisk": true
+    }
+  },
+  {
+    "humanId": "KA-2403",
+    "customerName": "Divya Menon",
+    "phone": "+919800000000",
+    "tier": 1,
+    "isFirstOrder": false,
+    "skuId": "KAI-051-XS",
+    "styleName": "Saanvi Silk-Blend Midi Dress",
+    "size": "XS",
+    "amountPaise": 190000,
+    "paymentMode": "PREPAID",
+    "usedL1": false,
+    "risk": {
+      "score": 0.44948,
+      "components": {
+        "styleHistory": 0.17947999999999997,
+        "noL1": 0.25,
+        "cod": 0,
+        "firstOrder": 0,
+        "tier": 0.020000000000000004
+      },
+      "atRisk": false
+    }
+  },
+  {
+    "humanId": "KA-2405",
+    "customerName": "Neha Bansal",
+    "phone": "+919800000000",
+    "tier": 1,
+    "isFirstOrder": false,
+    "skuId": "KAI-001-L",
+    "styleName": "Anaya Georgette Kurta Set",
+    "size": "L",
+    "amountPaise": 190000,
+    "paymentMode": "PREPAID",
+    "usedL1": false,
+    "risk": {
+      "score": 0.34434000000000003,
+      "components": {
+        "styleHistory": 0.07434,
+        "noL1": 0.25,
+        "cod": 0,
+        "firstOrder": 0,
+        "tier": 0.020000000000000004
+      },
+      "atRisk": false
+    }
+  },
+  {
+    "humanId": "KA-2404",
+    "customerName": "Ritika Shah",
+    "phone": "+919800000000",
+    "tier": 2,
+    "isFirstOrder": true,
+    "skuId": "KAI-014-S",
+    "styleName": "Rehana Linen Midi Dress",
+    "size": "S",
+    "amountPaise": 230000,
+    "paymentMode": "PREPAID",
+    "usedL1": true,
+    "risk": {
+      "score": 0.27999999999999997,
+      "components": {
+        "styleHistory": 0.06999999999999999,
+        "noL1": 0,
+        "cod": 0,
+        "firstOrder": 0.15,
+        "tier": 0.06
+      },
+      "atRisk": false
+    }
+  },
+  {
+    "humanId": "KA-2410",
+    "customerName": "Megha Pillai",
+    "phone": "+919800000000",
+    "tier": 1,
+    "isFirstOrder": false,
+    "skuId": "KAI-155-M",
+    "styleName": "Amara Georgette Kurta Set",
+    "size": "M",
+    "amountPaise": 215000,
+    "paymentMode": "PREPAID",
+    "usedL1": true,
+    "risk": {
+      "score": 0.10525999999999999,
+      "components": {
+        "styleHistory": 0.08525999999999999,
+        "noL1": 0,
+        "cod": 0,
+        "firstOrder": 0,
+        "tier": 0.020000000000000004
+      },
+      "atRisk": false
+    }
+  }
+]
