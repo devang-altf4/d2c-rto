@@ -1,8 +1,68 @@
-node_modules
-.next
-dist
-.turbo
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing & Coverage
+coverage/
+*.lcov
+
+# Next.js & Build outputs
+.next/
+out/
+build/
+dist/
+.turbo/
+*.tsbuildinfo
+
+# Environment variables & Secrets (STRICT - NEVER COMMIT)
 .env
+.env.*
+!.env.example
+!.env.template
+*.env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Private Keys, Certificates & Credentials
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+id_rsa*
+*serviceAccount*.json
+*service-account*.json
+*credentials*.json
+google-credentials*.json
+
+# Logs & Debugging
+logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Database & Runtime Data
+*.sqlite
+*.sqlite-journal
 data/orders.json
+
+# Operating System & Editor Files
+.DS_Store
+Thumbs.db
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Temporary files
+*.tmp
+*.temp
+scratch/
