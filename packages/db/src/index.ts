@@ -7,6 +7,7 @@ const _nodeEnv = (globalThis as unknown as { process?: { env?: Record<string, st
 if (_nodeEnv !== 'production') g.prisma = prisma;
 
 export * from '@prisma/client';
+export { buildConfirmationContext } from './context';
 
 export async function buildConfirmationContext(
   orderId: string,
