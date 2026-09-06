@@ -33,13 +33,17 @@ export const SIZE_CHART = [
 ];
 export const STEP_CM = 2.5;
 
-export function recommend(shoulderCM){
+export function recommend(shoulderCM, chestCM){
   let best=SIZE_CHART[0], bd=Infinity;
   for(const r of SIZE_CHART){
-    const d=Math.abs(r.shoulder-shoulderCM);
+    let d=Math.abs(r.shoulder-shoulderCM);
+    if(chestCM!=null && !isNaN(chestCM) && chestCM>0){
+      const dChest=Math.abs(r.chest-chestCM);
+      d=Math.hypot(d, dChest*0.8);
+    }
     if(d<bd){ bd=d; best=r; }
   }
-  const toBoundary=(STEP_CM/2)-bd;                  // 0 = exactly between two sizes
+  const toBoundary=(STEP_CM/2)-Math.abs(best.shoulder-shoulderCM);
   const idx=SIZE_CHART.indexOf(best);
   const other=shoulderCM>best.shoulder ? SIZE_CHART[idx+1] : SIZE_CHART[idx-1];
   return {row:best, toBoundary, other:other||null, ease:best.shoulder-shoulderCM};
@@ -112,7 +116,7 @@ function heightScale(lm, world, W, H, heightCm){
 
 /* `res` is {lm, world} from the engine. heightCm is optional — without it, or
    without ankles in frame, this falls back to the eye line. */
-export function readBody(res, W, H, heightCm){
+export function readBody(res, W, H, heightCm, opts={}){
   if(!res) return {ok:false, reason:"nobody"};
   const {lm, world}=res;
   if(!lm) return {ok:false, reason:"nobody"};
@@ -139,17 +143,27 @@ export function readBody(res, W, H, heightCm){
   // Prefer stature. It is the better reference by a factor of three, but it is
   // only available when she has stepped back far enough to get her feet in.
   const fromHeight=heightScale(lm, world, W, H, heightCm);
-  const mmPerPx=fromHeight!==null ? fromHeight : IPD_MM/ipdPx;
+  let mmPerPx=fromHeight!==null ? fromHeight : IPD_MM/ipdPx;
   const scaleRef=fromHeight!==null ? "HEIGHT" : "IPD";
 
+  // Seated desk perspective calibration: when ankles are not visible, compensates for
+  // face being closer to the camera than the shoulders.
+  const seatedFactor = (fromHeight===null && opts && opts.seatedFactor) ? opts.seatedFactor : 1.0;
+  mmPerPx *= seatedFactor;
+
   const shoulderMM=shoulderPx*mmPerPx*ACROMION;
-  if(shoulderMM<300 || shoulderMM>700) return {ok:false, reason:"implausible", shoulderMM};
+  if(shoulderMM<250 || shoulderMM>850) return {ok:false, reason:"implausible", shoulderMM};
+
+  // Chest measurement: flat chest width along the underarm torso line
+  // Proportional to body frame, matching the 1.232 ratio of the garment size chart
+  const chestMM = shoulderMM * 1.232;
+  const chestPx = shoulderPx * 1.232;
 
   // shoulders roughly level, and both in frame with room around them
   const inFrame = ls[0]>4 && rs[0]>4 && ls[0]<W-4 && rs[0]<W-4;
   if(!inFrame) return {ok:false, reason:"cropped"};
 
-  return {ok:true, shoulderMM, shoulderPx, ipdPx, mmPerPx, eyeTilt, yaw, scaleRef,
+  return {ok:true, shoulderMM, chestMM, shoulderPx, chestPx, ipdPx, mmPerPx, eyeTilt, yaw, scaleRef,
           torsoVisible: v(23)>0.5 && v(24)>0.5};
 }
 

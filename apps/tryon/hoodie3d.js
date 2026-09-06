@@ -36,7 +36,17 @@ export class Hoodie3D {
     this.ready = false;
     this.failed = null;
     this.size = null;
-    this._scratch = { q: new THREE.Quaternion(), m: new THREE.Matrix4() };
+    /* Exponential smoothing for live video: 0 snaps (exact, and what the
+       geometry tests run with); the page sets ~0.35 so the cloth stops
+       shivering without lagging a real move. */
+    this.smoothing = 0;
+    this._sm = null;
+    this._scratch = { q: new THREE.Quaternion(), q2: new THREE.Quaternion(), m: new THREE.Matrix4() };
+  }
+
+  /** Forget the last frame so the next pose() snaps instead of slewing in. */
+  resetSmoothing() {
+    this._sm = null;
   }
 
   /** Build the renderer against a canvas that sits on top of the video. */
@@ -121,14 +131,17 @@ export class Hoodie3D {
   /** Wipe the canvas. Without this a refused pose leaves the last good frame
       hanging on screen, which reads as the garment sticking to nothing. */
   clear() {
-    if (this.ready) this.renderer.clear();
+    if (this.ready) {
+      if (this._w && this._h) this.renderer.setViewport(0, 0, this._w, this._h);
+      this.renderer.clear();
+    }
+    this.resetSmoothing();
   }
 
   /**
    * Pose and draw one frame.
    *
-   * `lm` are MIRRORED image landmarks (matching what the 2D painter uses so
-   * both overlays agree), `world` the raw worldLandmarks, `vw`/`vh` the video
+   * `lm` are image landmarks, `world` the raw worldLandmarks, `vw`/`vh` the video
    * pixel size, and `fit` the cover-crop transform the overlay canvas uses.
    * `shoulderCm` is the measured body shoulder — it sets how many pixels a
    * centimetre of garment is worth, which is what ties the render to the
@@ -137,8 +150,12 @@ export class Hoodie3D {
   draw(lm, world, vw, vh, fit, shoulderCm) {
     if (!this.pose(lm, world, vw, vh, fit, shoulderCm)) return false;
     const { width, height } = fit;
-    if (this.renderer.domElement.width !== width || this.renderer.domElement.height !== height)
+    if (this._w !== width || this._h !== height) {
+      this._w = width;
+      this._h = height;
       this.renderer.setSize(width, height, false);
+      this.renderer.setViewport(0, 0, width, height);
+    }
     this.camera.left = 0; this.camera.right = width;
     this.camera.top = 0; this.camera.bottom = -height;
     this.camera.updateProjectionMatrix();
@@ -183,7 +200,26 @@ export class Hoodie3D {
 
     const pShL = P(L.SH), pShR = P(R.SH);
     const shoulderMid = pShL.clone().add(pShR).multiplyScalar(0.5);
-    const hipMid = P(HIP_L).clone().add(P(HIP_R)).multiplyScalar(0.5);
+
+    // If hips are out of frame (seated at desk / webcam), estimate hipMid straight down from shoulders
+    let hipMid;
+    const vHL = (lm[HIP_L] && lm[HIP_L].visibility != null) ? lm[HIP_L].visibility : 1;
+    const vHR = (lm[HIP_R] && lm[HIP_R].visibility != null) ? lm[HIP_R].visibility : 1;
+    const rawHL = lm[HIP_L] ? lm[HIP_L].y : -1;
+    const rawHR = lm[HIP_R] ? lm[HIP_R].y : -1;
+    const rawSh = ((lm[L.SH] ? lm[L.SH].y : 0) + (lm[R.SH] ? lm[R.SH].y : 0)) / 2;
+
+    // Degenerate pose: hips explicitly collapsed onto shoulders
+    if (rawHL >= 0 && Math.abs(rawHL - rawSh) < 0.02 && Math.abs(rawHR - rawSh) < 0.02) {
+      return false;
+    }
+
+    if (vHL > 0.35 && vHR > 0.35 && rawHL > rawSh + 0.08 && rawHR > rawSh + 0.08) {
+      hipMid = P(HIP_L).clone().add(P(HIP_R)).multiplyScalar(0.5);
+    } else {
+      const shWidth = pShL.distanceTo(pShR);
+      hipMid = shoulderMid.clone().setY(shoulderMid.y - shWidth * 1.35);
+    }
 
     // ---- torso basis ------------------------------------------------------
     const yAxis = shoulderMid.clone().sub(hipMid);
@@ -205,9 +241,22 @@ export class Hoodie3D {
     // which is the exact lie this whole feature exists to avoid.
     const pxPerCm = shoulderPx / Math.max(20, shoulderCm);
 
-    this.root.position.copy(shoulderMid);
-    this.root.quaternion.copy(q);
-    this.root.scale.setScalar(pxPerCm);
+    // Exponential ease toward this frame's measurement. The root already
+    // holds last frame's smoothed pose, so lerping from it IS the filter;
+    // the first frame after (re)acquire always snaps.
+    const A = Math.min(1, Math.max(0, +this.smoothing || 0));
+    const ease = A > 0 && !!this._sm;
+    if (ease) {
+      this.root.position.lerp(shoulderMid, A);
+      this.root.quaternion.slerp(q, A);
+      const s0 = this.root.scale.x;
+      this.root.scale.setScalar(s0 + (pxPerCm - s0) * A);
+    } else {
+      this.root.position.copy(shoulderMid);
+      this.root.quaternion.copy(q);
+      this.root.scale.setScalar(pxPerCm);
+      this._sm = { init: true };
+    }
 
     // ---- arms -------------------------------------------------------------
     // Directions are taken into the torso frame, because that is the space the
@@ -215,30 +264,45 @@ export class Hoodie3D {
     const inv = q.clone().invert();
     const toLocal = (a, b) => b.clone().sub(a).applyQuaternion(inv).normalize();
 
-    this._poseArm(BONE['upperArm.L'], BONE['foreArm.L'],
-      toLocal(P(L.SH), P(L.EL)), toLocal(P(L.EL), P(L.WR)));
-    this._poseArm(BONE['upperArm.R'], BONE['foreArm.R'],
-      toLocal(P(R.SH), P(R.EL)), toLocal(P(R.EL), P(R.WR)));
+    const vEL = (lm[L.EL] && lm[L.EL].visibility != null) ? lm[L.EL].visibility : 1;
+    const vWL = (lm[L.WR] && lm[L.WR].visibility != null) ? lm[L.WR].visibility : 1;
+    const vER = (lm[R.EL] && lm[R.EL].visibility != null) ? lm[R.EL].visibility : 1;
+    const vWR = (lm[R.WR] && lm[R.WR].visibility != null) ? lm[R.WR].visibility : 1;
+
+    const dirUpperL = vEL > 0.4 ? toLocal(P(L.SH), P(L.EL)) : BIND_DIR;
+    const dirForeL = (vEL > 0.4 && vWL > 0.4) ? toLocal(P(L.EL), P(L.WR)) : BIND_DIR;
+    const dirUpperR = vER > 0.4 ? toLocal(P(R.SH), P(R.EL)) : BIND_DIR;
+    const dirForeR = (vER > 0.4 && vWR > 0.4) ? toLocal(P(R.EL), P(R.WR)) : BIND_DIR;
+
+    this._poseArm(BONE['upperArm.L'], BONE['foreArm.L'], dirUpperL, dirForeL, ease, A);
+    this._poseArm(BONE['upperArm.R'], BONE['foreArm.R'], dirUpperR, dirForeR, ease, A);
 
     // Hips bone follows the torso's own bend, so the hem swings with a lean
     // instead of staying square to the shoulders.
     const spineDir = hipMid.clone().sub(shoulderMid).applyQuaternion(inv).normalize();
-    this.bones[BONE.hips].quaternion.setFromUnitVectors(BIND_DIR, spineDir);
+    const hips = this.bones[BONE.hips];
+    this._scratch.q2.setFromUnitVectors(BIND_DIR, spineDir);
+    if (ease) hips.quaternion.slerp(this._scratch.q2, A);
+    else hips.quaternion.copy(this._scratch.q2);
 
     this.lastPose = { shoulderMid, hipMid, xAxis, yAxis, zAxis, pxPerCm, shoulderPx };
     return true;
   }
 
   /** Rotate one arm's two bones onto a measured elbow and wrist. */
-  _poseArm(upperIdx, foreIdx, upperDir, foreDir) {
+  _poseArm(upperIdx, foreIdx, upperDir, foreDir, ease = false, A = 0) {
     const upper = this.bones[upperIdx], fore = this.bones[foreIdx];
     if (upperDir.lengthSq() > 0.5) {
-      upper.quaternion.setFromUnitVectors(BIND_DIR, upperDir);
+      this._scratch.q.setFromUnitVectors(BIND_DIR, upperDir);
+      if (ease) upper.quaternion.slerp(this._scratch.q, A);
+      else upper.quaternion.copy(this._scratch.q);
       if (foreDir.lengthSq() > 0.5) {
         // The forearm is a child, so its target has to be expressed relative
         // to wherever the upper arm ended up.
         const rel = foreDir.clone().applyQuaternion(upper.quaternion.clone().invert());
-        fore.quaternion.setFromUnitVectors(BIND_DIR, rel.normalize());
+        this._scratch.q.setFromUnitVectors(BIND_DIR, rel.normalize());
+        if (ease) fore.quaternion.slerp(this._scratch.q, A);
+        else fore.quaternion.copy(this._scratch.q);
       }
     }
   }

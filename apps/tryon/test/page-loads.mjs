@@ -7,7 +7,7 @@
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const P = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = mkdtempSync(join(tmpdir(), 'tryon-test-'));
 const html = readFileSync(process.argv[2] || (P + '/index.html'), 'utf8');
@@ -64,16 +64,16 @@ writeFileSync(dir + '/vendorstub.mjs',
   'export const PoseLandmarker={createFromOptions:async()=>({})};');
 
 const body = html.match(/<script type="module">([\s\S]*?)<\/script>/)[1]
-  .replaceAll('./hoodie3d.js', P + '/hoodie3d.js')
-  .replaceAll('./hoodie.js', P + '/hoodie.js')
-  .replaceAll('./tryon.js', dir + '/tryon_t.mjs');
+  .replaceAll('./hoodie3d.js', pathToFileURL(P + '/hoodie3d.js').href)
+  .replaceAll('./hoodie.js', pathToFileURL(P + '/hoodie.js').href)
+  .replaceAll('./tryon.js', pathToFileURL(dir + '/tryon_t.mjs').href);
 writeFileSync(dir + '/tryon_t.mjs',
   readFileSync(P + '/tryon.js', 'utf8')
     .replace('./vendor/vision_bundle.mjs', './vendorstub.mjs'));
 writeFileSync(dir + '/page.mjs', body);
 
 try {
-  await import(dir + '/page.mjs');
+  await import(pathToFileURL(dir + '/page.mjs').href);
   console.log(`\n  module evaluated OK — ${seen.listeners} listeners bound`);
   console.log(seen.missing.size
     ? `  getElementById on ids NOT in the markup: ${[...seen.missing].join(', ')}`
