@@ -164,6 +164,403 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   .stage{min-height:unset; aspect-ratio:3/4; height:100%; max-height:calc(90vh - 100px)}
   .sbody-hud{display:flex; flex-direction:column; gap:12px; overflow-y:auto}
 }
+
+/* --- Shopping Bag & Checkout Drawer --- */
+#bagCount {
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+#bagCount:hover {
+  color: var(--red);
+}
+#bagCount.badge-bump {
+  animation: bagBump 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes bagBump {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.25); color: var(--red); }
+  100% { transform: scale(1); }
+}
+
+.cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 120;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.cart-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 440px;
+  background: var(--paper);
+  z-index: 121;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cart-drawer.open {
+  transform: translateX(0);
+}
+
+.cart-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cart-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.cart-title-wrap h2 {
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0;
+}
+.cart-title-wrap span {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-items-wrap {
+  padding: 20px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+.cart-item-thumb {
+  width: 80px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  background: var(--wash);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cart-item-name {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+.cart-item-specs {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.cart-fit-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ok);
+  background: var(--ok-bg);
+  padding: 2px 7px;
+  border-radius: 99px;
+  width: fit-content;
+  margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+.cart-item-qty {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.cart-item-price {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cart-perks {
+  background: var(--wash);
+  padding: 11px 14px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.cart-perks svg {
+  flex-shrink: 0;
+  color: var(--ink);
+}
+
+.cart-footer {
+  border-top: 1px solid var(--rule);
+  padding: 18px 22px 24px;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cart-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12.5px;
+}
+.cart-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-2);
+}
+.cart-row.total {
+  border-top: 1px solid var(--rule);
+  padding-top: 9px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.cart-row.total .v {
+  font-family: var(--mono);
+}
+
+.cart-checkout-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.cart-checkout-btn:hover:not(:disabled) {
+  background: #000;
+}
+.cart-checkout-btn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+.cart-checkout-btn:disabled {
+  background: var(--rule-2);
+  cursor: not-allowed;
+}
+
+.cart-sec-tag {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.cart-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 14px;
+  color: var(--muted);
+}
+.cart-empty-state p {
+  font-size: 13.5px;
+  max-width: 24ch;
+}
+.cart-empty-state button {
+  padding: 10px 18px;
+  border: 1px solid var(--rule-2);
+  background: var(--paper);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Order Success State View */
+.cart-success-view {
+  padding: 36px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  animation: successFadeIn 0.35s ease;
+}
+@keyframes successFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-check-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--ok-bg);
+  color: var(--ok);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: checkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes checkPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.cart-success-view h3 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+.success-order-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--wash);
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+}
+.success-message {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 32ch;
+  margin: 0;
+}
+
+.success-receipt {
+  width: 100%;
+  background: var(--wash);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+}
+.success-receipt img {
+  width: 48px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--rule);
+}
+.success-receipt-details {
+  flex: 1;
+}
+.success-receipt-title {
+  font-weight: 600;
+  font-size: 13px;
+}
+.success-receipt-meta {
+  font-size: 11.5px;
+  color: var(--ink-2);
+  margin-top: 1px;
+}
+.success-receipt-price {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.success-redirect-bar {
+  width: 100%;
+  background: #EFF8F2;
+  border: 1px solid #C6E8D2;
+  border-radius: 4px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ok);
+  font-weight: 500;
+}
+.redirect-loader {
+  width: 13px;
+  height: 13px;
+  border: 2px solid #A4D9B6;
+  border-top-color: var(--ok);
+  border-radius: 50%;
+  animation: redirectSpin 0.7s linear infinite;
+}
+@keyframes redirectSpin {
+  to { transform: rotate(360deg); }
+}
+
+.back-home-action {
+  width: 100%;
+  padding: 14px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.back-home-action:hover {
+  background: var(--wash);
+}
+}
 </style></head><body>
 
 <div class="demo">Demo store · H&amp;K is a fictional brand built to test Opentra's L1 fit layer</div>
@@ -243,6 +640,86 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 </main>
 
 <footer>H&amp;K is fictional; the product, price and copy exist only to host the fit widget. Pose runs on a vendored MediaPipe model — no network needed.</footer>
+
+<!-- Shopping Bag & Checkout Drawer -->
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping Bag">
+  <div class="cart-header">
+    <div class="cart-title-wrap">
+      <h2>Shopping Bag</h2>
+      <span id="cartSubtitle">0 items</span>
+    </div>
+    <button class="x" id="closeCartBtn" type="button" aria-label="Close Bag">×</button>
+  </div>
+
+  <div class="cart-body" id="cartBody">
+    <div class="cart-items-wrap" id="cartItemsWrap">
+      <div class="cart-empty-state" id="cartEmptyState">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--faint)"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <p>Your shopping bag is currently empty. Pick a size on the product page to add items.</p>
+        <button type="button" id="cartStartShopping">Start Shopping</button>
+      </div>
+
+      <div class="cart-item" id="cartItemRow" hidden>
+        <img id="cartItemThumb" src="" alt="H&amp;K Oversized Hoodie" class="cart-item-thumb">
+        <div class="cart-item-details">
+          <div class="cart-item-name">Oversized Hoodie</div>
+          <div class="cart-item-specs" id="cartItemSpecs">Colour: Off White · Size: L</div>
+          <div class="cart-fit-tag" id="cartFitTag" hidden>✓ Opentra L1 Fit Verified</div>
+          <div class="cart-item-qty">Qty: 1 · Heavyweight cotton · Unisex</div>
+        </div>
+        <div class="cart-item-price">₹1,799</div>
+      </div>
+
+      <div class="cart-perks" id="cartPerks" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        <span>Eligible for <b>Free Express Delivery</b> &amp; 15-day free size exchanges</span>
+      </div>
+    </div>
+
+    <div class="cart-footer" id="cartFooter" hidden>
+      <div class="cart-breakdown">
+        <div class="cart-row"><span>Subtotal</span><span id="cartSubtotalVal" style="font-family:var(--mono)">₹1,799</span></div>
+        <div class="cart-row"><span>Fit Guarantee</span><span style="color:var(--ok);font-weight:600">Free</span></div>
+        <div class="cart-row"><span>Express Delivery</span><span style="color:var(--ok);font-weight:600">Free</span></div>
+        <div class="cart-row total"><span>Total</span><span class="v" id="cartTotalVal">₹1,799</span></div>
+      </div>
+      <button type="button" class="cart-checkout-btn" id="cartCheckoutBtn">
+        <span id="checkoutBtnLabel">Proceed to Checkout · ₹1,799</span>
+      </button>
+      <div class="cart-sec-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>256-Bit Encrypted Secure Checkout</span>
+      </div>
+    </div>
+
+    <!-- Order Success View -->
+    <div class="cart-success-view" id="cartSuccessView" hidden>
+      <div class="success-check-badge">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Product Ordered Successfully!</h3>
+      <div class="success-order-num" id="successOrderNum">Order #HK-82914</div>
+      <p class="success-message">Thank you! Your order has been placed successfully and dispatched for fulfillment.</p>
+
+      <div class="success-receipt">
+        <img id="successReceiptImg" src="" alt="Ordered Item">
+        <div class="success-receipt-details">
+          <div class="success-receipt-title">H&amp;K Oversized Hoodie</div>
+          <div class="success-receipt-meta" id="successReceiptMeta">Colour: Off White · Size: L</div>
+          <div class="success-receipt-price">₹1,799 · Cash on Delivery</div>
+        </div>
+      </div>
+
+      <div class="success-redirect-bar">
+        <div class="redirect-loader"></div>
+        <span id="redirectCountText">Redirecting back to homepage in 3s…</span>
+      </div>
+
+      <button type="button" class="back-home-action" id="backHomeBtn">Back to Store Homepage</button>
+    </div>
+  </div>
+</aside>
 
 <dialog id="dlg"><div class="sheet">
   <div class="shd"><h2>Try it on</h2><button class="x" id="closeBtn" type="button" aria-label="Close">×</button></div>
@@ -503,8 +980,20 @@ function paintOperator(){
     note(s2,"ok","Clean fit signal","Accepted with <b>"+r.toBoundary.toFixed(2)+" cm</b> of clearance. Store <code style=\"font-family:var(--mono)\">"+
       shoulderCM.toFixed(1)+"cm/"+rec+"</code> against this SKU; if it still comes back as a size exchange, the fault is the block, not the body.");
 }
-$("addBtn").addEventListener("click",()=>{ bag++; $("bagCount").textContent="Bag ("+bag+")";
-  const t=$("addBtn"); t.textContent="Added · "+sel; setTimeout(()=>{ t.textContent="Add to bag · "+sel; },1400); });
+$("addBtn").addEventListener("click",()=>{
+  bag++;
+  $("bagCount").textContent="Bag ("+bag+")";
+  $("bagCount").classList.remove("badge-bump");
+  void $("bagCount").offsetWidth;
+  $("bagCount").classList.add("badge-bump");
+
+  const t=$("addBtn");
+  t.textContent="Added · "+sel;
+  setTimeout(()=>{ t.textContent="Add to bag · "+sel; },1400);
+
+  // Open checkout panel immediately for smooth ecommerce checkout flow
+  openCart();
+});
 paintSizes(); paintNote(); paintOperator();
 
 /* ---------- try-on ---------- */
@@ -955,5 +1444,117 @@ $("useBtn").addEventListener("click",()=>{
   closeDlg();
   pick(chosen, overrode);
 });
+
+/* ---------- Cart & Checkout Flow ---------- */
+let cartOpen = false;
+let redirectTimer = null;
+let redirectCountdownInterval = null;
+
+function openCart(){
+  cartOpen = true;
+  $("cartBackdrop").classList.add("open");
+  $("cartDrawer").classList.add("open");
+  renderCart();
+}
+
+function closeCart(){
+  cartOpen = false;
+  $("cartBackdrop").classList.remove("open");
+  $("cartDrawer").classList.remove("open");
+  if(redirectTimer) { clearTimeout(redirectTimer); redirectTimer = null; }
+  if(redirectCountdownInterval) { clearInterval(redirectCountdownInterval); redirectCountdownInterval = null; }
+}
+
+function renderCart(){
+  const hasItems = bag > 0;
+  $("cartEmptyState").hidden = hasItems;
+  $("cartItemRow").hidden = !hasItems;
+  $("cartPerks").hidden = !hasItems;
+  $("cartFooter").hidden = !hasItems;
+  $("cartSuccessView").hidden = true;
+  $("cartItemsWrap").hidden = false;
+
+  $("cartSubtitle").textContent = hasItems ? `${bag} item${bag > 1 ? "s" : ""}` : "0 items";
+
+  if(hasItems){
+    const c = colourway(colour);
+    const chosenSize = sel || "L";
+    $("cartItemThumb").src = "assets/" + c.photo + "_thumb.jpg";
+    $("cartItemThumb").alt = c.name;
+    $("cartItemSpecs").textContent = "Colour: " + c.name + " · Size: " + chosenSize;
+
+    if(measured){
+      $("cartFitTag").hidden = false;
+      $("cartFitTag").textContent = "✓ Opentra L1 Fit Verified · " + chosenSize;
+    } else {
+      $("cartFitTag").hidden = true;
+    }
+
+    const price = 1799 * bag;
+    const priceStr = "₹" + price.toLocaleString("en-IN");
+    $("cartSubtotalVal").textContent = priceStr;
+    $("cartTotalVal").textContent = priceStr;
+    $("checkoutBtnLabel").textContent = "Proceed to Checkout · " + priceStr;
+    $("cartCheckoutBtn").disabled = false;
+  }
+}
+
+$("bagCount").addEventListener("click", openCart);
+$("closeCartBtn").addEventListener("click", closeCart);
+$("cartBackdrop").addEventListener("click", closeCart);
+if($("cartStartShopping")) $("cartStartShopping").addEventListener("click", closeCart);
+
+// Trigger checkout with realistic ecommerce flow
+$("cartCheckoutBtn").addEventListener("click", () => {
+  const btn = $("cartCheckoutBtn");
+  btn.disabled = true;
+  $("checkoutBtnLabel").textContent = "Placing Order…";
+
+  setTimeout(() => {
+    const c = colourway(colour);
+    const chosenSize = sel || "L";
+    const randomOrderId = "HK-" + Math.floor(10000 + Math.random() * 90000);
+
+    $("cartItemsWrap").hidden = true;
+    $("cartFooter").hidden = true;
+    $("cartSuccessView").hidden = false;
+
+    $("successOrderNum").textContent = "Order #" + randomOrderId;
+    $("successReceiptImg").src = "assets/" + c.photo + "_thumb.jpg";
+    $("successReceiptMeta").textContent = "Colour: " + c.name + " · Size: " + chosenSize;
+
+    let secondsLeft = 3;
+    $("redirectCountText").textContent = `Redirecting back to homepage in ${secondsLeft}s…`;
+
+    if(redirectCountdownInterval) clearInterval(redirectCountdownInterval);
+    redirectCountdownInterval = setInterval(() => {
+      secondsLeft--;
+      if(secondsLeft > 0){
+        $("redirectCountText").textContent = `Redirecting back to homepage in ${secondsLeft}s…`;
+      }
+    }, 1000);
+
+    if(redirectTimer) clearTimeout(redirectTimer);
+    redirectTimer = setTimeout(() => {
+      resetToHomepage();
+    }, 3200);
+  }, 750);
+});
+
+function resetToHomepage(){
+  if(redirectTimer) { clearTimeout(redirectTimer); redirectTimer = null; }
+  if(redirectCountdownInterval) { clearInterval(redirectCountdownInterval); redirectCountdownInterval = null; }
+
+  // Reset bag count to 0
+  bag = 0;
+  $("bagCount").textContent = "Bag (0)";
+  closeCart();
+  renderCart();
+
+  // Redirect / reset back to the homepage screenshot view
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+$("backHomeBtn").addEventListener("click", resetToHomepage);
 </script>
 </body></html>
