@@ -11,6 +11,8 @@ import { prisma } from './index';
 export async function buildConfirmationContext(
   orderId: string,
 ): Promise<ConfirmationContext | null> {
+  // Accepts either the cuid or the human-facing id, so scripts and the ops UI
+  // can both pass whatever they are holding.
   const order = await prisma.order.findFirst({
     where: { OR: [{ id: orderId }, { humanId: orderId }] },
     include: { customer: true, sku: true, fitSession: true },

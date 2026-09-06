@@ -1,0 +1,304 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>H&amp;K — Dispatch queue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Same tokens as the storefront. This is the back office of that shop, not a
+   separate product, and it should look like it was built by the same people. */
+:root{
+  --paper:#FFFFFF; --wash:#F4F2EF; --ink:#1B1B1B; --ink-2:#4A4A4A; --muted:#767676; --faint:#A3A3A3;
+  --rule:#E3E1DE; --rule-2:#CFCCC8; --red:#D8232A; --red-ink:#FFFFFF;
+  --ok:#2E6A46; --warn:#8A5A08; --bad:#B02020;
+  --ok-bg:#E6F0E9; --warn-bg:#F7EBD5; --bad-bg:#F7E3E3;
+  --op-bg:#141414; --op-2:#1F1F1F; --op-ink:#F0EEEC; --op-muted:#8F8B87; --op-rule:#2E2E2E;
+  --sans:"Archivo",system-ui,-apple-system,Segoe UI,sans-serif;
+  --serif:"Bodoni Moda",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.55}
+h1,h2,h3{margin:0; font-weight:600}
+p{margin:0}
+button,select{font-family:var(--sans); cursor:pointer}
+:focus-visible{outline:2px solid var(--red); outline-offset:2px}
+.lab{font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+.demo{background:var(--ink); color:var(--paper); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; text-align:center; padding:7px 14px; font-weight:600}
+header{border-bottom:1px solid var(--rule); background:var(--paper); position:sticky; top:0; z-index:5}
+.hin{max-width:1340px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; gap:26px}
+.logo{font-family:var(--serif); font-size:30px; font-weight:600; color:var(--red); letter-spacing:-.01em; line-height:1}
+.hin nav{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); display:flex; gap:20px}
+.hin nav a{color:var(--ink-2); text-decoration:none}
+.hin nav .on{color:var(--ink); border-bottom:2px solid var(--ink); padding-bottom:2px}
+.hin .right{margin-left:auto; font-size:12px; color:var(--muted)}
+
+main{max-width:1340px; margin:0 auto; padding:0 22px 60px}
+
+/* ---- summary strip ---- */
+.strip{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); border:1px solid var(--rule); border-bottom:0; margin-top:22px}
+.strip .c{padding:15px 18px; border-right:1px solid var(--rule)}
+.strip .c:last-child{border-right:0}
+.strip .v{font-size:26px; font-weight:600; letter-spacing:-.02em; font-family:var(--mono); font-variant-numeric:tabular-nums; line-height:1.2; margin-top:5px}
+.strip .n{font-size:11.5px; color:var(--muted); margin-top:2px}
+
+/* ---- filters ---- */
+.bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:14px 0 12px}
+.bar .grow{flex:1}
+.chipbtn{font-size:12px; padding:5px 12px; border:1px solid var(--rule-2); background:var(--paper); color:var(--ink-2); border-radius:0}
+.chipbtn[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.search{font-family:var(--sans); font-size:13px; padding:6px 10px; border:1px solid var(--rule-2); background:var(--paper); color:var(--ink); min-width:190px}
+
+/* ---- the queue ---- */
+table{width:100%; border-collapse:collapse; border:1px solid var(--rule)}
+thead th{
+  text-align:left; font-size:10px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+  color:var(--muted); padding:11px 12px; background:var(--wash); border-bottom:1px solid var(--rule); white-space:nowrap;
+}
+tbody td{padding:11px 12px; border-bottom:1px solid var(--rule); vertical-align:middle}
+tbody tr:hover{background:var(--wash)}
+tbody tr.done{opacity:.42}
+tbody tr.open{background:var(--wash)}
+.who{font-weight:500}
+.sub{font-size:11.5px; color:var(--muted)}
+
+/* Prediction: the bar carries the magnitude, the number is always written out,
+   and the tint only marks the band. Never colour on its own. */
+.pred{display:flex; align-items:center; gap:9px; min-width:150px}
+.pred .track{flex:1; height:6px; background:var(--rule); position:relative}
+.pred .fill{display:block; height:100%}
+.pred .pc{font-family:var(--mono); font-size:13px; font-weight:500; min-width:42px; text-align:right}
+.conf{font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:2px}
+.conf b{font-weight:600; color:var(--ink-2)}
+
+.reason{font-size:12.5px; color:var(--ink-2); max-width:34ch; line-height:1.45}
+.tag{font-family:var(--mono); font-size:10.5px; padding:1px 5px; border:1px solid var(--rule-2); color:var(--muted); margin-left:6px}
+
+select.act{font-size:12.5px; padding:6px 8px; border:1px solid var(--rule-2); background:var(--paper); color:var(--ink); min-width:172px}
+select.act.crit{border-color:var(--bad); color:var(--bad)}
+select.act.warn{border-color:var(--warn); color:var(--warn)}
+.apply{font-size:12px; padding:6px 11px; border:1px solid var(--ink); background:var(--ink); color:var(--paper); margin-left:7px}
+.applied{font-size:11.5px; color:var(--ok); font-weight:500; white-space:nowrap}
+
+/* ---- expandable evidence row ---- */
+tr.eviRow>td{background:var(--op-bg); color:var(--op-ink); padding:0; border-bottom:1px solid var(--rule)}
+.evi{display:grid; grid-template-columns:1.15fr 1fr; gap:0}
+@media(max-width:900px){.evi{grid-template-columns:1fr}}
+.evi .pane{padding:16px 18px; border-right:1px solid var(--op-rule)}
+.evi .pane:last-child{border-right:0}
+.evi h3{font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--op-muted); font-weight:600; margin-bottom:10px}
+.lrow{display:grid; grid-template-columns:26px 1fr; gap:10px; font-size:12.5px; padding:3px 0; color:#C9C4C0}
+.lrow .k{font-family:var(--mono); font-size:11px; color:var(--op-muted)}
+.lrow b{color:var(--op-ink); font-weight:500}
+.lrow.dim{color:var(--op-muted)}
+.wf{display:grid; gap:3px; margin-top:2px}
+.wfr{display:grid; grid-template-columns:24px 1fr 46px; gap:8px; align-items:center}
+.wfr .k{font-family:var(--mono); font-size:10px; color:var(--op-muted)}
+.wft{position:relative; height:13px}
+.wft::before{content:""; position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--op-rule)}
+.wfb{position:absolute; top:2px; height:9px}
+.wfv{font-family:var(--mono); font-size:10.5px; text-align:right; font-variant-numeric:tabular-nums}
+.note{font-size:11px; color:var(--op-muted); margin-top:10px; line-height:1.5}
+.nodes{display:flex; flex-wrap:wrap; gap:5px; margin-top:2px}
+.node{font-size:11.5px; padding:3px 8px; border:1px solid var(--op-rule); color:#C9C4C0}
+.node.self{border-color:var(--op-ink); color:var(--op-ink); font-weight:600}
+.node.bad{border-color:#7A3038; color:#E39AA2}
+
+footer{max-width:1340px; margin:0 auto; padding:22px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--rule)}
+</style></head><body>
+
+<div class="demo">Ops console · H&amp;K is a fictional store built to test Opentra's RTO layer</div>
+<header><div class="hin">
+  <div class="logo">H&amp;K</div>
+  <nav><a href="./index.html">Storefront</a><a href="#" class="on">Dispatch queue</a></nav>
+  <div class="right mono" id="stamp">—</div>
+</div></header>
+
+<main>
+  <div class="strip">
+    <div class="c"><div class="lab">Needs a decision</div><div class="v" id="sQueued">—</div><div class="n">before today's dispatch cut-off</div></div>
+    <div class="c"><div class="lab">Order value held</div><div class="v" id="sValue">—</div><div class="n" id="sScanned">—</div></div>
+    <div class="c"><div class="lab">Predicted loss</div><div class="v" id="sLoss">—</div><div class="n">sum of value × RTO probability</div></div>
+    <div class="c"><div class="lab">Cancel recommended</div><div class="v" id="sCancel">—</div><div class="n">linked to accounts that refuse</div></div>
+  </div>
+
+  <div class="bar">
+    <button class="chipbtn" type="button" data-f="ALL" aria-pressed="true">All</button>
+    <button class="chipbtn" type="button" data-f="CANCEL" aria-pressed="false">Cancel</button>
+    <button class="chipbtn" type="button" data-f="PREPAID" aria-pressed="false">Full payment</button>
+    <button class="chipbtn" type="button" data-f="PARTIAL" aria-pressed="false">Partial payment</button>
+    <span class="grow"></span>
+    <input class="search" id="q" type="search" placeholder="Order, name or SKU" aria-label="Search the queue">
+  </div>
+
+  <table>
+    <thead><tr>
+      <th>Order ID</th><th>Name</th><th>Contact</th><th>SKU</th>
+      <th>RTO prediction</th><th>Reason</th><th>Take action</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="note" style="color:var(--muted); margin-top:12px; font-size:11.5px">
+    Click any row to see what each layer contributed. Identity clusters and the model's
+    coefficients are fitted to 45,000 historical orders; terms marked <b>assumed</b> are
+    priors we have not measured yet.
+  </p>
+</main>
+
+<footer>H&amp;K is fictional. Names, numbers and orders are synthetic. The RTO model, the identity graph and the coefficients are the real ones.</footer>
+
+<script type="module">
+const $ = id => document.getElementById(id);
+const inr = n => "₹" + n.toLocaleString("en-IN");
+
+/* Action labels are the COD playbook, in the order they escalate. */
+const ACTIONS = [
+  ["SHIP",    "Ship as is"],
+  ["PARTIAL", "Ask for partial payment"],
+  ["PREPAID", "Convert to full payment"],
+  ["CANCEL",  "Cancel the order"],
+];
+const TONE = { CANCEL:"crit", PREPAID:"warn", PARTIAL:"warn", SHIP:"" };
+const L1_TEXT = {
+  SKIPPED:"never opened the fit widget",
+  ACCEPTED:"measured, took the recommended size",
+  OVERRODE:"measured, then picked a different size",
+  CROSS_BRAND:"gave her size in another brand",
+};
+const band = p => p >= 70 ? "var(--bad)" : p >= 50 ? "var(--warn)" : "var(--muted)";
+
+let DATA = null, filter = "ALL", search = "", open = null;
+const decided = {};
+
+const res = await fetch("./ops-queue.json", { cache: "no-store" });
+DATA = await res.json();
+
+$("stamp").textContent = new Date(DATA.generatedAt).toLocaleString("en-IN", { dateStyle:"medium", timeStyle:"short" });
+$("sQueued").textContent = DATA.window.queued;
+$("sValue").textContent = inr(DATA.orders.reduce((t,o)=>t+o.rupees,0));
+$("sScanned").textContent = "of " + DATA.window.scanned.toLocaleString("en-IN") + " orders scanned";
+$("sLoss").textContent = inr(Math.round(DATA.orders.reduce((t,o)=>t+o.rupees*o.rto.percent/100,0)));
+$("sCancel").textContent = DATA.orders.filter(o=>o.suggested==="CANCEL").length;
+
+for (const b of document.querySelectorAll(".chipbtn")) {
+  b.addEventListener("click", () => {
+    filter = b.dataset.f;
+    for (const x of document.querySelectorAll(".chipbtn")) x.setAttribute("aria-pressed", String(x === b));
+    render();
+  });
+}
+$("q").addEventListener("input", e => { search = e.target.value.toLowerCase().trim(); render(); });
+
+function visible() {
+  return DATA.orders.filter(o => {
+    if (filter !== "ALL" && (decided[o.orderId] ?? o.suggested) !== filter) return false;
+    if (!search) return true;
+    return (o.orderId + " " + o.name + " " + o.sku).toLowerCase().includes(search);
+  });
+}
+
+/* The evidence drawer. Dark, like the operator panel on the storefront, so it
+   reads as the machine talking rather than as more of the shop. */
+function evidence(o) {
+  const d = o.detail;
+  const c = d.contributions;
+  const max = Math.max(...c.slice(1).map(x => Math.abs(x.deltaPct)), 1);
+
+  const wf = c.map((x, i) => {
+    const first = i === 0;
+    const w = first ? 50 : (Math.abs(x.deltaPct) / max) * 50;
+    const up = x.deltaPct >= 0;
+    const col = first ? "var(--op-muted)" : up ? "#C9646E" : "#5FA97F";
+    return `<div class="wfr">
+      <span class="k">${first ? "base" : x.layer}</span>
+      <span class="wft" title="${x.label.replace(/"/g,"&quot;")}">
+        <span class="wfb" style="left:${first?0:up?50:50-w}%; width:${w}%; background:${col}"></span>
+      </span>
+      <span class="wfv" style="color:${col}">${first ? x.deltaPct.toFixed(0)+"%" : (up?"+":"")+x.deltaPct.toFixed(1)}</span>
+    </div>`;
+  }).join("");
+
+  const sibs = d.l4.siblings.length
+    ? `<div class="nodes"><span class="node self">${o.name}</span>` +
+      d.l4.siblings.map(n => `<span class="node ${d.l4.clusterRtoRate>0.5?"bad":""}">${n}</span>`).join("") + `</div>`
+    : `<p class="note">No other account shares a phone, address or device with this one.</p>`;
+
+  const assumed = c.filter(x => !x.measured).map(x => x.layer);
+
+  return `<tr class="eviRow"><td colspan="7"><div class="evi">
+    <div class="pane">
+      <h3>What each layer knows</h3>
+      <div class="lrow"><span class="k">L1</span><span>${L1_TEXT[d.l1.path] ?? d.l1.path}${
+        d.l1.path === "OVERRODE" ? ` — widget said <b>${d.l1.recommended}</b>, ordered <b>${o.size}</b>` : ""}</span></div>
+      <div class="lrow dim"><span class="k">L2</span><span>no WhatsApp confirmation sent yet</span></div>
+      <div class="lrow dim"><span class="k">L3</span><span>no call placed</span></div>
+      <div class="lrow"><span class="k">L4</span><span>${
+        d.l4.clusterSize > 1
+          ? `linked to <b>${d.l4.clusterSize - 1}</b> other account${d.l4.clusterSize>2?"s":""} — together <b>${Math.round(d.l4.clusterRtoRate*100)}%</b> of their ${d.l4.clusterOrders} orders came back`
+          : "no shared identifiers"}</span></div>
+      <h3 style="margin-top:16px">The doorstep</h3>
+      ${sibs}
+      <p class="note">Linked transitively — no two of these necessarily share the same
+        identifier. Grouping by phone alone recovers about 42% of a cluster this size.</p>
+    </div>
+    <div class="pane">
+      <h3>How the ${o.rto.percent.toFixed(0)}% is built</h3>
+      <div class="wf">${wf}</div>
+      <p class="note">Percentage points, applied in order, and they sum to the prediction.
+        ${assumed.length ? `Terms from unmeasured priors: <b>${[...new Set(assumed)].join(", ")}</b>. ` : ""}
+        Every other coefficient is fitted to 45,000 historical orders.
+        Confidence <b>${o.rto.confidencePct}%</b>.</p>
+    </div>
+  </div></td></tr>`;
+}
+
+function render() {
+  const list = visible();
+  $("rows").innerHTML = list.map(o => {
+    const chosen = decided[o.orderId] ?? o.suggested;
+    const opts = ACTIONS.map(([v, l]) =>
+      `<option value="${v}" ${v === chosen ? "selected" : ""}>${l}</option>`).join("");
+    const row = `<tr data-id="${o.orderId}" class="${o.applied ? "done" : ""}${open === o.orderId ? " open" : ""}">
+      <td class="mono">${o.orderId}</td>
+      <td><div class="who">${o.name}</div><div class="sub mono">${o.pincode}</div></td>
+      <td class="mono">${o.contact}</td>
+      <td><div class="mono">${o.sku}</div><div class="sub">${o.colourway} · ${o.paymentMode}</div></td>
+      <td>
+        <div class="pred">
+          <span class="track"><span class="fill" style="width:${o.rto.percent}%; background:${band(o.rto.percent)}"></span></span>
+          <span class="pc" style="color:${band(o.rto.percent)}">${o.rto.percent.toFixed(0)}%</span>
+        </div>
+        <div class="conf">confidence <b>${o.rto.confidence}</b> · ${o.rto.confidencePct}%</div>
+      </td>
+      <td><div class="reason">${o.reason}<span class="tag">${o.layer}</span></div></td>
+      <td onclick="event.stopPropagation()">
+        <select class="act ${TONE[chosen] ?? ""}" data-id="${o.orderId}" aria-label="Action for ${o.orderId}">${opts}</select>
+        ${o.applied ? `<span class="applied">✓ ${o.applied}</span>` : `<button class="apply" data-apply="${o.orderId}">Apply</button>`}
+      </td>
+    </tr>`;
+    return row + (open === o.orderId ? evidence(o) : "");
+  }).join("");
+
+  for (const tr of $("rows").querySelectorAll("tr[data-id]")) {
+    tr.addEventListener("click", () => { open = open === tr.dataset.id ? null : tr.dataset.id; render(); });
+  }
+  for (const s of $("rows").querySelectorAll("select.act")) {
+    s.addEventListener("change", e => {
+      decided[s.dataset.id] = e.target.value;
+      s.className = "act " + (TONE[e.target.value] ?? "");
+    });
+  }
+  for (const b of $("rows").querySelectorAll("button[data-apply]")) {
+    b.addEventListener("click", e => {
+      e.stopPropagation();
+      const o = DATA.orders.find(x => x.orderId === b.dataset.apply);
+      const v = decided[o.orderId] ?? o.suggested;
+      o.applied = (ACTIONS.find(a => a[0] === v) ?? ["", v])[1];
+      render();
+    });
+  }
+}
+render();
+</script>
+</body></html>

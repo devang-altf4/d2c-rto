@@ -1,5 +1,4 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import type { ConfirmationContext, Size } from '../../core/src/types';
 
 const g = globalThis as unknown as { prisma?: PrismaClient };
 export const prisma = g.prisma ?? new PrismaClient();

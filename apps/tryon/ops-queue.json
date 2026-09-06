@@ -1,0 +1,4707 @@
+{
+  "generatedAt": "2026-09-06T10:01:36.802Z",
+  "store": "H&K",
+  "product": {
+    "name": "Oversized Hoodie",
+    "pricePaise": 179900
+  },
+  "window": {
+    "scanned": 3500,
+    "queued": 55
+  },
+  "orders": [
+    {
+      "orderId": "HK-27125",
+      "name": "Tanvi Reddy",
+      "contact": "+919810000364",
+      "pincode": "400001",
+      "sku": "HK-OH-GRM-S",
+      "colourway": "Grey marl",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 78.6,
+        "confidence": "High",
+        "confidencePct": 96
+      },
+      "reason": "7 accounts share this phone, address or device — 71% of their 21 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 21,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Sanya Rao",
+            "Sanya Reddy",
+            "Nikita Reddy",
+            "Ishita Reddy",
+            "Sneha Reddy",
+            "Aditi Bansal"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 4.2,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.93",
+            "logit": 2.224,
+            "deltaPct": 50.2,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.09
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-28476",
+      "name": "Neha Kapoor",
+      "contact": "+919810000094",
+      "pincode": "380015",
+      "sku": "HK-OH-OWH-XXL",
+      "colourway": "Off white",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 76.1,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 71% of their 31 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 31,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Ananya Bansal",
+            "Nikhil Bansal",
+            "Karan Bansal",
+            "Vikram Shah",
+            "Arjun Shah",
+            "Sanya Shah",
+            "Tanvi Shah",
+            "Sneha Kapoor"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.93",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27152",
+      "name": "Nikita Reddy",
+      "contact": "+919810000367",
+      "pincode": "560076",
+      "sku": "HK-OH-ECR-XXL",
+      "colourway": "Ecru",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 76.1,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "7 accounts share this phone, address or device — 71% of their 21 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 21,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Sanya Rao",
+            "Sanya Reddy",
+            "Ishita Reddy",
+            "Tanvi Reddy",
+            "Sneha Reddy",
+            "Aditi Bansal"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.93",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-24002",
+      "name": "Dev Kapoor",
+      "contact": "+919810000539",
+      "pincode": "380015",
+      "sku": "HK-OH-ECR-S",
+      "colourway": "Ecru",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 76.1,
+        "confidence": "High",
+        "confidencePct": 96
+      },
+      "reason": "8 accounts share this phone, address or device — 81% of their 21 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 21,
+          "clusterRtoRate": 0.81,
+          "siblings": [
+            "Dev Iyer",
+            "Kabir Kapoor",
+            "Rohan Kapoor",
+            "Ishita Kapoor",
+            "Nikita Sharma",
+            "Sneha Sharma",
+            "Ritika Mehta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 3.9,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.09
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-29501",
+      "name": "Arjun Desai",
+      "contact": "+919810000173",
+      "pincode": "302001",
+      "sku": "HK-OH-GRM-L",
+      "colourway": "Grey marl",
+      "size": "L",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 76.1,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 75% of their 28 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "L"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 28,
+          "clusterRtoRate": 0.75,
+          "siblings": [
+            "Priya Gupta",
+            "Karan Gupta",
+            "Vikram Gupta",
+            "Aman Desai",
+            "Kabir Desai",
+            "Rohan Desai",
+            "Sanya Desai",
+            "Nikita Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27184",
+      "name": "Sanya Rao",
+      "contact": "+919810000367",
+      "pincode": "560001",
+      "sku": "HK-OH-CLY-XL",
+      "colourway": "Clay",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 76.1,
+        "confidence": "High",
+        "confidencePct": 96
+      },
+      "reason": "7 accounts share this phone, address or device — 71% of their 21 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 21,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Sanya Reddy",
+            "Nikita Reddy",
+            "Ishita Reddy",
+            "Tanvi Reddy",
+            "Sneha Reddy",
+            "Aditi Bansal"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 3.9,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.93",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.09
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27247",
+      "name": "Nikhil Joshi",
+      "contact": "+919810000378",
+      "pincode": "500034",
+      "sku": "HK-OH-BLK-S",
+      "colourway": "Black",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 76.1,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "8 accounts share this phone, address or device — 74% of their 27 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "S"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 27,
+          "clusterRtoRate": 0.74,
+          "siblings": [
+            "Ritika Verma",
+            "Pooja Joshi",
+            "Neha Joshi",
+            "Karan Joshi",
+            "Karan Rao",
+            "Aman Rao",
+            "Arjun Rao"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.98",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-24010",
+      "name": "Dev Iyer",
+      "contact": "+919810000542",
+      "pincode": "380015",
+      "sku": "HK-OH-CLY-M",
+      "colourway": "Clay",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 75.6,
+        "confidence": "High",
+        "confidencePct": 99
+      },
+      "reason": "8 accounts share this phone, address or device — 81% of their 21 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "CROSS_BRAND",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 21,
+          "clusterRtoRate": 0.81,
+          "siblings": [
+            "Dev Kapoor",
+            "Kabir Kapoor",
+            "Rohan Kapoor",
+            "Ishita Kapoor",
+            "Nikita Sharma",
+            "Sneha Sharma",
+            "Ritika Mehta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit cross brand (P(wrong size) 9%)",
+            "logit": 0.046,
+            "deltaPct": 0.9,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-24272",
+      "name": "Shreya Mehta",
+      "contact": "+919810000190",
+      "pincode": "560076",
+      "sku": "HK-OH-ECR-XXL",
+      "colourway": "Ecru",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 75.2,
+        "confidence": "High",
+        "confidencePct": 96
+      },
+      "reason": "6 accounts share this phone, address or device — 63% of their 16 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 6,
+          "clusterOrders": 16,
+          "clusterRtoRate": 0.63,
+          "siblings": [
+            "Neha Mehta",
+            "Ritika Mehta",
+            "Divya Mehta",
+            "Ritika Gupta",
+            "Divya Gupta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.77",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-25321",
+      "name": "Ishita Joshi",
+      "contact": "+919810000266",
+      "pincode": "110001",
+      "sku": "HK-OH-BLK-S",
+      "colourway": "Black",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 75.2,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "8 accounts share this phone, address or device — 71% of their 24 orders were refused",
+      "layer": "L4",
+      "suggested": "CANCEL",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "S"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 24,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Nikhil Pillai",
+            "Karan Pillai",
+            "Dev Pillai",
+            "Rohan Verma",
+            "Rhea Verma",
+            "Nikita Joshi",
+            "Rhea Joshi"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.92",
+            "logit": 2.224,
+            "deltaPct": 50.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-28345",
+      "name": "Tanvi Gupta",
+      "contact": "+919810000067",
+      "pincode": "400058",
+      "sku": "HK-OH-BLK-XL",
+      "colourway": "Black",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 96
+      },
+      "reason": "6 accounts share this phone, address or device — 81% of their 16 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 6,
+          "clusterOrders": 16,
+          "clusterRtoRate": 0.81,
+          "siblings": [
+            "Ishita Gupta",
+            "Aditi Gupta",
+            "Pooja Gupta",
+            "Neha Gupta",
+            "Ritika Gupta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27371",
+      "name": "Kabir Sharma",
+      "contact": "+919810000402",
+      "pincode": "400001",
+      "sku": "HK-OH-GRM-M",
+      "colourway": "Grey marl",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "7 accounts share this phone, address or device — 80% of their 20 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 20,
+          "clusterRtoRate": 0.8,
+          "siblings": [
+            "Dev Kapoor",
+            "Nikhil Sharma",
+            "Karan Sharma",
+            "Dev Sharma",
+            "Arjun Sharma",
+            "Sanya Sharma"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-28175",
+      "name": "Arjun Nair",
+      "contact": "+919810000435",
+      "pincode": "560076",
+      "sku": "HK-OH-GRM-M",
+      "colourway": "Grey marl",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "8 accounts share this phone, address or device — 71% of their 21 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 21,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Kabir Nair",
+            "Rohan Nair",
+            "Tanvi Nair",
+            "Aditi Iyer",
+            "Kavya Iyer",
+            "Neha Iyer",
+            "Ananya Kapoor"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.93",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27342",
+      "name": "Sanya Sharma",
+      "contact": "+919810000401",
+      "pincode": "226010",
+      "sku": "HK-OH-OWH-L",
+      "colourway": "Off white",
+      "size": "L",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "7 accounts share this phone, address or device — 80% of their 20 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "L"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 20,
+          "clusterRtoRate": 0.8,
+          "siblings": [
+            "Dev Kapoor",
+            "Nikhil Sharma",
+            "Karan Sharma",
+            "Dev Sharma",
+            "Kabir Sharma",
+            "Arjun Sharma"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27306",
+      "name": "Ritika Verma",
+      "contact": "+919810000389",
+      "pincode": "600028",
+      "sku": "HK-OH-OWH-XL",
+      "colourway": "Off white",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "8 accounts share this phone, address or device — 74% of their 27 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 27,
+          "clusterRtoRate": 0.74,
+          "siblings": [
+            "Pooja Joshi",
+            "Neha Joshi",
+            "Nikhil Joshi",
+            "Karan Joshi",
+            "Karan Rao",
+            "Aman Rao",
+            "Arjun Rao"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.98",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-26376",
+      "name": "Vikram Shah",
+      "contact": "+919810000341",
+      "pincode": "560076",
+      "sku": "HK-OH-OWH-L",
+      "colourway": "Off white",
+      "size": "L",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 77% of their 22 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "L"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 22,
+          "clusterRtoRate": 0.77,
+          "siblings": [
+            "Neha Bansal",
+            "Shreya Shah",
+            "Priya Shah",
+            "Ananya Shah",
+            "Nikhil Shah",
+            "Karan Shah",
+            "Kabir Shah",
+            "Vikram Menon"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27419",
+      "name": "Shreya Rao",
+      "contact": "+919810000019",
+      "pincode": "600028",
+      "sku": "HK-OH-GRM-L",
+      "colourway": "Grey marl",
+      "size": "L",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 92
+      },
+      "reason": "4 accounts share this phone, address or device — 75% of their 12 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "L"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 4,
+          "clusterOrders": 12,
+          "clusterRtoRate": 0.75,
+          "siblings": [
+            "Ritika Joshi",
+            "Shreya Joshi",
+            "Ananya Joshi"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.78",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27511",
+      "name": "Ishita Verma",
+      "contact": "+919810000035",
+      "pincode": "560001",
+      "sku": "HK-OH-BLK-XL",
+      "colourway": "Black",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 98
+      },
+      "reason": "8 accounts share this phone, address or device — 61% of their 18 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 18,
+          "clusterRtoRate": 0.61,
+          "siblings": [
+            "Nikita Verma",
+            "Tanvi Verma",
+            "Megha Verma",
+            "Sneha Verma",
+            "Aditi Joshi",
+            "Sneha Joshi",
+            "Kavya Joshi"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.74",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-29234",
+      "name": "Ritika Mehta",
+      "contact": "+919810000516",
+      "pincode": "302001",
+      "sku": "HK-OH-ECR-XXL",
+      "colourway": "Ecru",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "8 accounts share this phone, address or device — 81% of their 21 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 21,
+          "clusterRtoRate": 0.81,
+          "siblings": [
+            "Dev Iyer",
+            "Dev Kapoor",
+            "Kabir Kapoor",
+            "Rohan Kapoor",
+            "Ishita Kapoor",
+            "Nikita Sharma",
+            "Sneha Sharma"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-28563",
+      "name": "Arjun Shah",
+      "contact": "+919810000105",
+      "pincode": "110024",
+      "sku": "HK-OH-COB-S",
+      "colourway": "Cobalt",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 71% of their 31 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "S"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 31,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Ananya Bansal",
+            "Nikhil Bansal",
+            "Karan Bansal",
+            "Vikram Shah",
+            "Sanya Shah",
+            "Tanvi Shah",
+            "Sneha Kapoor",
+            "Neha Kapoor"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.93",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27209",
+      "name": "Pooja Desai",
+      "contact": "+919810000615",
+      "pincode": "302001",
+      "sku": "HK-OH-GRM-M",
+      "colourway": "Grey marl",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 73.3,
+        "confidence": "High",
+        "confidencePct": 99
+      },
+      "reason": "8 accounts share this phone, address or device — 63% of their 19 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 19,
+          "clusterRtoRate": 0.63,
+          "siblings": [
+            "Kabir Mehta",
+            "Arjun Mehta",
+            "Sanya Gupta",
+            "Kavya Gupta",
+            "Pooja Gupta",
+            "Kavya Desai",
+            "Ritika Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.78",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27574",
+      "name": "Karan Pillai",
+      "contact": "+919810000048",
+      "pincode": "500034",
+      "sku": "HK-OH-CLY-M",
+      "colourway": "Clay",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.8,
+        "confidence": "High",
+        "confidencePct": 99
+      },
+      "reason": "7 accounts share this phone, address or device — 70% of their 20 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "CROSS_BRAND",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 20,
+          "clusterRtoRate": 0.7,
+          "siblings": [
+            "Pooja Desai",
+            "Ananya Desai",
+            "Karan Desai",
+            "Aman Pillai",
+            "Rohan Pillai",
+            "Nikita Pillai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit cross brand (P(wrong size) 9%)",
+            "logit": 0.046,
+            "deltaPct": 0.8,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.91",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-28274",
+      "name": "Pooja Menon",
+      "contact": "+919810000454",
+      "pincode": "411004",
+      "sku": "HK-OH-ECR-XXL",
+      "colourway": "Ecru",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.8,
+        "confidence": "High",
+        "confidencePct": 95
+      },
+      "reason": "6 accounts share this phone, address or device — 63% of their 16 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "CROSS_BRAND",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 6,
+          "clusterOrders": 16,
+          "clusterRtoRate": 0.63,
+          "siblings": [
+            "Aditi Menon",
+            "Sneha Menon",
+            "Neha Menon",
+            "Divya Menon",
+            "Priya Menon"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit cross brand (P(wrong size) 9%)",
+            "logit": 0.046,
+            "deltaPct": 0.8,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.77",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27356",
+      "name": "Arjun Reddy",
+      "contact": "+919810000003",
+      "pincode": "400058",
+      "sku": "HK-OH-ECR-XXL",
+      "colourway": "Ecru",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.8,
+        "confidence": "High",
+        "confidencePct": 96
+      },
+      "reason": "7 accounts share this phone, address or device — 71% of their 17 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "CROSS_BRAND",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 17,
+          "clusterRtoRate": 0.71,
+          "siblings": [
+            "Aman Rao",
+            "Vikram Reddy",
+            "Rohan Reddy",
+            "Rhea Reddy",
+            "Tanvi Reddy",
+            "Megha Reddy"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit cross brand (P(wrong size) 9%)",
+            "logit": 0.046,
+            "deltaPct": 0.8,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.92",
+            "logit": 2.224,
+            "deltaPct": 50.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27144",
+      "name": "Vikram Pillai",
+      "contact": "+919810000603",
+      "pincode": "302001",
+      "sku": "HK-OH-OWH-XL",
+      "colourway": "Off white",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.3,
+        "confidence": "High",
+        "confidencePct": 93
+      },
+      "reason": "5 accounts share this phone, address or device — 69% of their 13 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 5,
+          "clusterOrders": 13,
+          "clusterRtoRate": 0.69,
+          "siblings": [
+            "Shreya Desai",
+            "Priya Desai",
+            "Nikhil Desai",
+            "Aman Pillai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.80",
+            "logit": 2.224,
+            "deltaPct": 50.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-26318",
+      "name": "Rhea Menon",
+      "contact": "+919810000333",
+      "pincode": "700019",
+      "sku": "HK-OH-ECR-XXL",
+      "colourway": "Ecru",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.3,
+        "confidence": "High",
+        "confidencePct": 92
+      },
+      "reason": "5 accounts share this phone, address or device — 67% of their 12 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 5,
+          "clusterOrders": 12,
+          "clusterRtoRate": 0.67,
+          "siblings": [
+            "Kabir Menon",
+            "Arjun Menon",
+            "Megha Menon",
+            "Megha Kulkarni"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.76",
+            "logit": 2.224,
+            "deltaPct": 50.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-29372",
+      "name": "Sanya Joshi",
+      "contact": "+919810000140",
+      "pincode": "600028",
+      "sku": "HK-OH-ECR-M",
+      "colourway": "Ecru",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.3,
+        "confidence": "High",
+        "confidencePct": 94
+      },
+      "reason": "6 accounts share this phone, address or device — 79% of their 14 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 6,
+          "clusterOrders": 14,
+          "clusterRtoRate": 0.79,
+          "siblings": [
+            "Vikram Joshi",
+            "Rohan Joshi",
+            "Rohan Rao",
+            "Rhea Rao",
+            "Sneha Rao"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27282",
+      "name": "Pooja Joshi",
+      "contact": "+919810000389",
+      "pincode": "500034",
+      "sku": "HK-OH-OWH-S",
+      "colourway": "Off white",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "8 accounts share this phone, address or device — 74% of their 27 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "S"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 27,
+          "clusterRtoRate": 0.74,
+          "siblings": [
+            "Ritika Verma",
+            "Neha Joshi",
+            "Nikhil Joshi",
+            "Karan Joshi",
+            "Karan Rao",
+            "Aman Rao",
+            "Arjun Rao"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.98",
+            "logit": 2.224,
+            "deltaPct": 50.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-29531",
+      "name": "Kabir Desai",
+      "contact": "+919810000175",
+      "pincode": "160022",
+      "sku": "HK-OH-GRM-M",
+      "colourway": "Grey marl",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 75% of their 28 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 28,
+          "clusterRtoRate": 0.75,
+          "siblings": [
+            "Priya Gupta",
+            "Karan Gupta",
+            "Vikram Gupta",
+            "Aman Desai",
+            "Rohan Desai",
+            "Arjun Desai",
+            "Sanya Desai",
+            "Nikita Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 50.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27239",
+      "name": "Kavya Gupta",
+      "contact": "+919810000620",
+      "pincode": "560001",
+      "sku": "HK-OH-GRM-XXL",
+      "colourway": "Grey marl",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 72.3,
+        "confidence": "High",
+        "confidencePct": 99
+      },
+      "reason": "8 accounts share this phone, address or device — 63% of their 19 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 8,
+          "clusterOrders": 19,
+          "clusterRtoRate": 0.63,
+          "siblings": [
+            "Kabir Mehta",
+            "Arjun Mehta",
+            "Sanya Gupta",
+            "Pooja Gupta",
+            "Kavya Desai",
+            "Pooja Desai",
+            "Ritika Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.78",
+            "logit": 2.224,
+            "deltaPct": 50.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.01
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-24042",
+      "name": "Divya Iyer",
+      "contact": "+919810000548",
+      "pincode": "700019",
+      "sku": "HK-OH-OWH-S",
+      "colourway": "Off white",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 68.6,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 50% of their 26 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "S"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 26,
+          "clusterRtoRate": 0.5,
+          "siblings": [
+            "Nikhil Shah",
+            "Karan Menon",
+            "Vikram Menon",
+            "Arjun Menon",
+            "Sanya Kulkarni",
+            "Tanvi Kulkarni",
+            "Tanvi Nair",
+            "Sneha Nair"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.54",
+            "logit": 1.847,
+            "deltaPct": 43,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-24337",
+      "name": "Kabir Kulkarni",
+      "contact": "+919810000206",
+      "pincode": "400058",
+      "sku": "HK-OH-BLK-L",
+      "colourway": "Black",
+      "size": "L",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 68.6,
+        "confidence": "High",
+        "confidencePct": 91
+      },
+      "reason": "5 accounts share this phone, address or device — 55% of their 11 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "L"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 5,
+          "clusterOrders": 11,
+          "clusterRtoRate": 0.55,
+          "siblings": [
+            "Priya Menon",
+            "Vikram Menon",
+            "Aditi Mehta",
+            "Kavya Mehta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.56",
+            "logit": 1.847,
+            "deltaPct": 43,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-24393",
+      "name": "Priya Menon",
+      "contact": "+919810000210",
+      "pincode": "160022",
+      "sku": "HK-OH-COB-XXL",
+      "colourway": "Cobalt",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 68.6,
+        "confidence": "High",
+        "confidencePct": 91
+      },
+      "reason": "5 accounts share this phone, address or device — 55% of their 11 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 5,
+          "clusterOrders": 11,
+          "clusterRtoRate": 0.55,
+          "siblings": [
+            "Vikram Menon",
+            "Kabir Kulkarni",
+            "Aditi Mehta",
+            "Kavya Mehta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.56",
+            "logit": 1.847,
+            "deltaPct": 43,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-25230",
+      "name": "Nikhil Rao",
+      "contact": "+919810000250",
+      "pincode": "380015",
+      "sku": "HK-OH-OWH-XL",
+      "colourway": "Off white",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 68.5,
+        "confidence": "High",
+        "confidencePct": 87
+      },
+      "reason": "5 accounts share this phone, address or device — 58% of their 12 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "XXL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 5,
+          "clusterOrders": 12,
+          "clusterRtoRate": 0.58,
+          "siblings": [
+            "Tanvi Joshi",
+            "Ritika Rao",
+            "Ananya Rao",
+            "Priya Reddy"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 3.9,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.62",
+            "logit": 1.847,
+            "deltaPct": 43,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.1
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-24166",
+      "name": "Karan Menon",
+      "contact": "+919810000576",
+      "pincode": "110024",
+      "sku": "HK-OH-CLY-S",
+      "colourway": "Clay",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 68.5,
+        "confidence": "High",
+        "confidencePct": 95
+      },
+      "reason": "9 accounts share this phone, address or device — 50% of their 26 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 26,
+          "clusterRtoRate": 0.5,
+          "siblings": [
+            "Nikhil Shah",
+            "Vikram Menon",
+            "Arjun Menon",
+            "Sanya Kulkarni",
+            "Tanvi Kulkarni",
+            "Tanvi Nair",
+            "Sneha Nair",
+            "Divya Iyer"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 3.9,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.54",
+            "logit": 1.847,
+            "deltaPct": 43,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.1
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-24135",
+      "name": "Arjun Menon",
+      "contact": "+919810000570",
+      "pincode": "110024",
+      "sku": "HK-OH-COB-M",
+      "colourway": "Cobalt",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 65.3,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 50% of their 26 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 26,
+          "clusterRtoRate": 0.5,
+          "siblings": [
+            "Nikhil Shah",
+            "Karan Menon",
+            "Vikram Menon",
+            "Sanya Kulkarni",
+            "Tanvi Kulkarni",
+            "Tanvi Nair",
+            "Sneha Nair",
+            "Divya Iyer"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.54",
+            "logit": 1.847,
+            "deltaPct": 42.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-28328",
+      "name": "Megha Shah",
+      "contact": "+919810000462",
+      "pincode": "160022",
+      "sku": "HK-OH-ECR-M",
+      "colourway": "Ecru",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 64.8,
+        "confidence": "High",
+        "confidencePct": 86
+      },
+      "reason": "3 accounts share this phone, address or device — 86% of their 7 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "CROSS_BRAND",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 3,
+          "clusterOrders": 7,
+          "clusterRtoRate": 0.86,
+          "siblings": [
+            "Tanvi Shah",
+            "Aditi Shah"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit cross brand (P(wrong size) 9%)",
+            "logit": 0.046,
+            "deltaPct": 0.8,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.63",
+            "logit": 1.847,
+            "deltaPct": 42.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-26679",
+      "name": "Megha Sharma",
+      "contact": "+919810009339",
+      "pincode": "600028",
+      "sku": "HK-OH-COB-XXL",
+      "colourway": "Cobalt",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 63.3,
+        "confidence": "High",
+        "confidencePct": 80
+      },
+      "reason": "4 accounts share this phone, address or device — 50% of their 6 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 4,
+          "clusterOrders": 6,
+          "clusterRtoRate": 0.5,
+          "siblings": [
+            "Kabir Mehta",
+            "Pooja Desai",
+            "Neha Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 3",
+            "logit": 0.165,
+            "deltaPct": 3.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.3,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 4.5,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.42",
+            "logit": 1.316,
+            "deltaPct": 31.7,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.14
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-26163",
+      "name": "Rohan Iyer",
+      "contact": "+919810000304",
+      "pincode": "500034",
+      "sku": "HK-OH-COB-S",
+      "colourway": "Cobalt",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 60.9,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "7 accounts share this phone, address or device — 45% of their 22 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "S"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 22,
+          "clusterRtoRate": 0.45,
+          "siblings": [
+            "Kabir Iyer",
+            "Sanya Iyer",
+            "Nikita Iyer",
+            "Sneha Desai",
+            "Divya Desai",
+            "Priya Pillai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "first order",
+            "logit": 0.078,
+            "deltaPct": 1.5,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.5,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.45",
+            "logit": 1.316,
+            "deltaPct": 31.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-29797",
+      "name": "Pooja Kapoor",
+      "contact": "+919810008936",
+      "pincode": "400058",
+      "sku": "HK-OH-BLK-XXL",
+      "colourway": "Black",
+      "size": "XXL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 60.8,
+        "confidence": "High",
+        "confidencePct": 78
+      },
+      "reason": "3 accounts share this phone, address or device — 50% of their 4 orders were refused",
+      "layer": "L4",
+      "suggested": "PREPAID",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 3,
+          "clusterOrders": 4,
+          "clusterRtoRate": 0.5,
+          "siblings": [
+            "Karan Bansal",
+            "Ishita Menon"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "first order",
+            "logit": 0.078,
+            "deltaPct": 1.4,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 4.3,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.34",
+            "logit": 1.316,
+            "deltaPct": 31.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.14
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-26895",
+      "name": "Ananya Reddy",
+      "contact": "+919810003878",
+      "pincode": "302001",
+      "sku": "HK-OH-COB-M",
+      "colourway": "Cobalt",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 58.7,
+        "confidence": "High",
+        "confidencePct": 86
+      },
+      "reason": "4 accounts share this phone, address or device — 43% of their 7 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 4,
+          "clusterOrders": 7,
+          "clusterRtoRate": 0.43,
+          "siblings": [
+            "Sneha Joshi",
+            "Ritika Rao",
+            "Kabir Bansal"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 3",
+            "logit": 0.165,
+            "deltaPct": 3.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.3,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.31",
+            "logit": 1.316,
+            "deltaPct": 31.1,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27850",
+      "name": "Aditi Gupta",
+      "contact": "+919810008582",
+      "pincode": "700019",
+      "sku": "HK-OH-CLY-M",
+      "colourway": "Clay",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 56.2,
+        "confidence": "High",
+        "confidencePct": 87
+      },
+      "reason": "3 accounts share this phone, address or device — 57% of their 7 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 3,
+          "clusterOrders": 7,
+          "clusterRtoRate": 0.57,
+          "siblings": [
+            "Dev Mehta",
+            "Kabir Pillai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.3,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.42",
+            "logit": 1.316,
+            "deltaPct": 30.6,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-26161",
+      "name": "Sanya Iyer",
+      "contact": "+919810000302",
+      "pincode": "110024",
+      "sku": "HK-OH-BLK-S",
+      "colourway": "Black",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 56.2,
+        "confidence": "High",
+        "confidencePct": 94
+      },
+      "reason": "7 accounts share this phone, address or device — 45% of their 22 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "OVERRODE",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 22,
+          "clusterRtoRate": 0.45,
+          "siblings": [
+            "Kabir Iyer",
+            "Rohan Iyer",
+            "Nikita Iyer",
+            "Sneha Desai",
+            "Divya Desai",
+            "Priya Pillai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit overrode (P(wrong size) 42%)",
+            "logit": 0.216,
+            "deltaPct": 3.9,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.45",
+            "logit": 1.316,
+            "deltaPct": 30.6,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.14
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-26164",
+      "name": "Rohan Iyer",
+      "contact": "+919810000304",
+      "pincode": "500034",
+      "sku": "HK-OH-CLY-S",
+      "colourway": "Clay",
+      "size": "S",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 55,
+        "confidence": "High",
+        "confidencePct": 99
+      },
+      "reason": "7 accounts share this phone, address or device — 45% of their 22 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "S"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 7,
+          "clusterOrders": 22,
+          "clusterRtoRate": 0.45,
+          "siblings": [
+            "Kabir Iyer",
+            "Sanya Iyer",
+            "Nikita Iyer",
+            "Sneha Desai",
+            "Divya Desai",
+            "Priya Pillai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.45",
+            "logit": 1.316,
+            "deltaPct": 30.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-29344",
+      "name": "Karan Mehta",
+      "contact": "+919810002259",
+      "pincode": "560076",
+      "sku": "HK-OH-CLY-XL",
+      "colourway": "Clay",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 55,
+        "confidence": "High",
+        "confidencePct": 88
+      },
+      "reason": "4 accounts share this phone, address or device — 44% of their 9 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 4,
+          "clusterOrders": 9,
+          "clusterRtoRate": 0.44,
+          "siblings": [
+            "Ishita Kapoor",
+            "Kavya Kapoor",
+            "Kabir Mehta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 2",
+            "logit": 0.014,
+            "deltaPct": 0.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.34",
+            "logit": 1.316,
+            "deltaPct": 30.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27175",
+      "name": "Nikhil Desai",
+      "contact": "+919810000610",
+      "pincode": "380015",
+      "sku": "HK-OH-BLK-M",
+      "colourway": "Black",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "PREPAID",
+      "rto": {
+        "percent": 54.2,
+        "confidence": "High",
+        "confidencePct": 93
+      },
+      "reason": "5 accounts share this phone, address or device — 69% of their 13 orders were refused",
+      "layer": "L4",
+      "suggested": "SHIP",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 5,
+          "clusterOrders": 13,
+          "clusterRtoRate": 0.69,
+          "siblings": [
+            "Shreya Desai",
+            "Priya Desai",
+            "Aman Pillai",
+            "Vikram Pillai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "PREPAID",
+            "logit": -0.572,
+            "deltaPct": -8,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -1.4,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -1.1,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 0.7,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.80",
+            "logit": 2.224,
+            "deltaPct": 42.8,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-29528",
+      "name": "Rohan Desai",
+      "contact": "+919810000175",
+      "pincode": "302001",
+      "sku": "HK-OH-ECR-M",
+      "colourway": "Ecru",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "PREPAID",
+      "rto": {
+        "percent": 53.6,
+        "confidence": "High",
+        "confidencePct": 99
+      },
+      "reason": "9 accounts share this phone, address or device — 75% of their 28 orders were refused",
+      "layer": "L4",
+      "suggested": "SHIP",
+      "detail": {
+        "l1": {
+          "path": "CROSS_BRAND",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 28,
+          "clusterRtoRate": 0.75,
+          "siblings": [
+            "Priya Gupta",
+            "Karan Gupta",
+            "Vikram Gupta",
+            "Aman Desai",
+            "Kabir Desai",
+            "Arjun Desai",
+            "Sanya Desai",
+            "Nikita Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "PREPAID",
+            "logit": -0.572,
+            "deltaPct": -8,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -1.4,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -1.1,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit cross brand (P(wrong size) 9%)",
+            "logit": 0.046,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 1.00",
+            "logit": 2.224,
+            "deltaPct": 42.5,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-27929",
+      "name": "Ritika Desai",
+      "contact": "+919810008211",
+      "pincode": "302001",
+      "sku": "HK-OH-GRM-M",
+      "colourway": "Grey marl",
+      "size": "M",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 52.6,
+        "confidence": "High",
+        "confidencePct": 85
+      },
+      "reason": "2 accounts share this phone, address or device — 60% of their 5 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "M"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 2,
+          "clusterOrders": 5,
+          "clusterRtoRate": 0.6,
+          "siblings": [
+            "Ishita Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.2,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.32",
+            "logit": 1.316,
+            "deltaPct": 29.7,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-26221",
+      "name": "Karan Iyer",
+      "contact": "+919810000307",
+      "pincode": "400058",
+      "sku": "HK-OH-BLK-L",
+      "colourway": "Black",
+      "size": "L",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 51.3,
+        "confidence": "High",
+        "confidencePct": 92
+      },
+      "reason": "3 accounts share this phone, address or device — 54% of their 13 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "L"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 3,
+          "clusterOrders": 13,
+          "clusterRtoRate": 0.54,
+          "siblings": [
+            "Aman Nair",
+            "Aman Iyer"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -2.5,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.4,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.39",
+            "logit": 1.316,
+            "deltaPct": 29.3,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.02
+      },
+      "actualOutcome": "RTO"
+    },
+    {
+      "orderId": "HK-24188",
+      "name": "Karan Menon",
+      "contact": "+919810000576",
+      "pincode": "110024",
+      "sku": "HK-OH-ECR-XL",
+      "colourway": "Ecru",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "PREPAID",
+      "rto": {
+        "percent": 44.8,
+        "confidence": "High",
+        "confidencePct": 100
+      },
+      "reason": "9 accounts share this phone, address or device — 50% of their 26 orders were refused",
+      "layer": "L4",
+      "suggested": "SHIP",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 9,
+          "clusterOrders": 26,
+          "clusterRtoRate": 0.5,
+          "siblings": [
+            "Nikhil Shah",
+            "Vikram Menon",
+            "Arjun Menon",
+            "Sanya Kulkarni",
+            "Tanvi Kulkarni",
+            "Tanvi Nair",
+            "Sneha Nair",
+            "Divya Iyer"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "PREPAID",
+            "logit": -0.572,
+            "deltaPct": -8,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 1",
+            "logit": -0.132,
+            "deltaPct": -1.4,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -1.1,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 0.7,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.54",
+            "logit": 1.847,
+            "deltaPct": 33.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-27545",
+      "name": "Megha Sharma",
+      "contact": "+919810007032",
+      "pincode": "110024",
+      "sku": "HK-OH-GRM-XL",
+      "colourway": "Grey marl",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 44.3,
+        "confidence": "High",
+        "confidencePct": 84
+      },
+      "reason": "4 accounts share this phone, address or device — 25% of their 4 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 4,
+          "clusterOrders": 4,
+          "clusterRtoRate": 0.25,
+          "siblings": [
+            "Nikita Nair",
+            "Nikita Sharma",
+            "Rhea Sharma"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 3",
+            "logit": 0.165,
+            "deltaPct": 3.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "first order",
+            "logit": 0.078,
+            "deltaPct": 1.6,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.5,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.06",
+            "logit": 0.492,
+            "deltaPct": 11.6,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-24580",
+      "name": "Priya Iyer",
+      "contact": "+919810009594",
+      "pincode": "500034",
+      "sku": "HK-OH-CLY-L",
+      "colourway": "Clay",
+      "size": "L",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 43,
+        "confidence": "High",
+        "confidencePct": 82
+      },
+      "reason": "2 accounts share this phone, address or device — 50% of their 4 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "ACCEPTED",
+          "recommended": "L"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 2,
+          "clusterOrders": 4,
+          "clusterRtoRate": 0.5,
+          "siblings": [
+            "Pooja Iyer"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 3",
+            "logit": 0.165,
+            "deltaPct": 3.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "first order",
+            "logit": 0.078,
+            "deltaPct": 1.6,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit accepted (P(wrong size) 4%)",
+            "logit": 0.021,
+            "deltaPct": 0.5,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.24",
+            "logit": 0.492,
+            "deltaPct": 11.4,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.04
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-29027",
+      "name": "Aditi Nair",
+      "contact": "+919810001088",
+      "pincode": "400058",
+      "sku": "HK-OH-GRM-XL",
+      "colourway": "Grey marl",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 39.6,
+        "confidence": "High",
+        "confidencePct": 89
+      },
+      "reason": "3 accounts share this phone, address or device — 22% of their 9 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 3,
+          "clusterOrders": 9,
+          "clusterRtoRate": 0.22,
+          "siblings": [
+            "Nikhil Iyer",
+            "Arjun Gupta"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 3",
+            "logit": 0.165,
+            "deltaPct": 3.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.3,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.4,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.01",
+            "logit": 0.492,
+            "deltaPct": 11,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-28350",
+      "name": "Rhea Gupta",
+      "contact": "+919810000069",
+      "pincode": "500034",
+      "sku": "HK-OH-OWH-XL",
+      "colourway": "Off white",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "COD",
+      "rto": {
+        "percent": 39.6,
+        "confidence": "High",
+        "confidencePct": 89
+      },
+      "reason": "5 accounts share this phone, address or device — 22% of their 9 orders were refused",
+      "layer": "L4",
+      "suggested": "PARTIAL",
+      "detail": {
+        "l1": {
+          "path": "SKIPPED",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 5,
+          "clusterOrders": 9,
+          "clusterRtoRate": 0.22,
+          "siblings": [
+            "Shreya Kapoor",
+            "Aman Sharma",
+            "Kavya Gupta",
+            "Divya Desai"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "COD",
+            "logit": 0.271,
+            "deltaPct": 4.9,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 3",
+            "logit": 0.165,
+            "deltaPct": 3.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -2.3,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit skipped (P(wrong size) 14%)",
+            "logit": 0.071,
+            "deltaPct": 1.4,
+            "measured": true
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.02",
+            "logit": 0.492,
+            "deltaPct": 11,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0
+      },
+      "actualOutcome": "DELIVERED"
+    },
+    {
+      "orderId": "HK-29505",
+      "name": "Vikram Iyer",
+      "contact": "+919810002289",
+      "pincode": "560001",
+      "sku": "HK-OH-COB-XL",
+      "colourway": "Cobalt",
+      "size": "XL",
+      "rupees": 1799,
+      "paymentMode": "PREPAID",
+      "rto": {
+        "percent": 38.5,
+        "confidence": "High",
+        "confidencePct": 84
+      },
+      "reason": "2 accounts share this phone, address or device — 80% of their 5 orders were refused",
+      "layer": "L4",
+      "suggested": "SHIP",
+      "detail": {
+        "l1": {
+          "path": "CROSS_BRAND",
+          "recommended": "XL"
+        },
+        "l2": null,
+        "l3": null,
+        "l4": {
+          "clusterSize": 2,
+          "clusterOrders": 5,
+          "clusterRtoRate": 0.8,
+          "siblings": [
+            "Rhea Rao"
+          ]
+        },
+        "contributions": [
+          {
+            "layer": "BASE",
+            "label": "population rate 21.3%",
+            "logit": -1.308,
+            "deltaPct": 21.3,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "PREPAID",
+            "logit": -0.572,
+            "deltaPct": -8,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "tier 3",
+            "logit": 0.165,
+            "deltaPct": 2,
+            "measured": true
+          },
+          {
+            "layer": "BASE",
+            "label": "repeat buyer",
+            "logit": -0.115,
+            "deltaPct": -1.4,
+            "measured": true
+          },
+          {
+            "layer": "L1",
+            "label": "fit cross brand (P(wrong size) 9%)",
+            "logit": 0.046,
+            "deltaPct": 0.6,
+            "measured": false
+          },
+          {
+            "layer": "L4",
+            "label": "identity cluster 0.45",
+            "logit": 1.316,
+            "deltaPct": 24.1,
+            "measured": true
+          }
+        ],
+        "assumedShare": 0.03
+      },
+      "actualOutcome": "RTO"
+    }
+  ]
+}

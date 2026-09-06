@@ -9,6 +9,14 @@
     "postinstall": "prisma generate",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": { "@prisma/client": "^5.20.0" },
-  "devDependencies": { "prisma": "^5.20.0", "tsx": "^4.19.1", "typescript": "^5.6.3" }
+  "dependencies": {
+    "@rto/core": "workspace:*",
+    "@prisma/client": "^5.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "prisma": "^5.20.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
 }
