@@ -121,7 +121,7 @@ dialog::backdrop{background:rgba(10,10,10,.7)}
 .sbody{padding:16px 18px; overflow-y:auto; display:flex; flex-direction:column; gap:14px}
 .stage{position:relative; width:100%; aspect-ratio:3/4; min-height:460px; flex:0 0 auto; background:#0B0B0B; overflow:hidden; border-radius:8px}
 .stage video,.stage canvas{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
-.stage video{transform:scaleX(-1)}   /* selfie mirror; the canvases mirror in JS so all three agree */
+.stage video,.stage #gl,.stage #ov{transform:scaleX(-1)}   /* selfie mirror: CSS flips both video and overlays consistently */
 .stage #gl{z-index:2}   /* WebGL garment, layered directly over the video */
 .stage #ov{z-index:3}
 .stage .swatchbar,.stage .pill{z-index:4}
@@ -708,7 +708,6 @@ function loop(){
     return;
   }
   $("guide").hidden=true;
-  const mir=res.lm.map(p=>({...p, x:1-p.x}));    // video is mirrored for a selfie view
   const s=Math.max(ov.width/vw, ov.height/vh);
   const ox=(ov.width-vw*s)/2, oy=(ov.height-vh*s)/2;
   if(garmentMode==="3d" && h3.ready){
@@ -716,18 +715,17 @@ function loop(){
     // for a reading. Until then the vector outline stands in, rather than
     // showing a garment at an invented size.
     const shCm = locked ? locked.shoulderMM/10 : body.shoulderMM/10;
-    const mirWorld = res.world ? res.world.map(p=>({...p, x:-p.x})) : null;
     h3.setSize(size3D());
     h3.setColour(colour);
-    const drew = h3.draw(mir, mirWorld, vw, vh,
+    const drew = h3.draw(res.lm, res.world, vw, vh,
                          {s, ox, oy, width:gl.width, height:gl.height}, shCm);
     if(!drew){
       h3.clear();                                 // do not leave the last frame stuck on screen
-      g.save(); g.translate(ox,oy); g.scale(s,s); paintGarment(g, mir, vw, vh); g.restore();
+      g.save(); g.translate(ox,oy); g.scale(s,s); paintGarment(g, res.lm, vw, vh); g.restore();
     }
   } else {
     g.save(); g.translate(ox,oy); g.scale(s,s);
-    paintGarment(g, mir, vw, vh);
+    paintGarment(g, res.lm, vw, vh);
     g.restore();
   }
 

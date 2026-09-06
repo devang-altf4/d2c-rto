@@ -131,15 +131,17 @@ export class Hoodie3D {
   /** Wipe the canvas. Without this a refused pose leaves the last good frame
       hanging on screen, which reads as the garment sticking to nothing. */
   clear() {
-    if (this.ready) this.renderer.clear();
+    if (this.ready) {
+      if (this._w && this._h) this.renderer.setViewport(0, 0, this._w, this._h);
+      this.renderer.clear();
+    }
     this.resetSmoothing();
   }
 
   /**
    * Pose and draw one frame.
    *
-   * `lm` are MIRRORED image landmarks (matching what the 2D painter uses so
-   * both overlays agree), `world` the raw worldLandmarks, `vw`/`vh` the video
+   * `lm` are image landmarks, `world` the raw worldLandmarks, `vw`/`vh` the video
    * pixel size, and `fit` the cover-crop transform the overlay canvas uses.
    * `shoulderCm` is the measured body shoulder — it sets how many pixels a
    * centimetre of garment is worth, which is what ties the render to the
@@ -148,8 +150,12 @@ export class Hoodie3D {
   draw(lm, world, vw, vh, fit, shoulderCm) {
     if (!this.pose(lm, world, vw, vh, fit, shoulderCm)) return false;
     const { width, height } = fit;
-    if (this.renderer.domElement.width !== width || this.renderer.domElement.height !== height)
+    if (this._w !== width || this._h !== height) {
+      this._w = width;
+      this._h = height;
       this.renderer.setSize(width, height, false);
+      this.renderer.setViewport(0, 0, width, height);
+    }
     this.camera.left = 0; this.camera.right = width;
     this.camera.top = 0; this.camera.bottom = -height;
     this.camera.updateProjectionMatrix();
@@ -258,10 +264,18 @@ export class Hoodie3D {
     const inv = q.clone().invert();
     const toLocal = (a, b) => b.clone().sub(a).applyQuaternion(inv).normalize();
 
-    this._poseArm(BONE['upperArm.L'], BONE['foreArm.L'],
-      toLocal(P(L.SH), P(L.EL)), toLocal(P(L.EL), P(L.WR)), ease, A);
-    this._poseArm(BONE['upperArm.R'], BONE['foreArm.R'],
-      toLocal(P(R.SH), P(R.EL)), toLocal(P(R.EL), P(R.WR)), ease, A);
+    const vEL = (lm[L.EL] && lm[L.EL].visibility != null) ? lm[L.EL].visibility : 1;
+    const vWL = (lm[L.WR] && lm[L.WR].visibility != null) ? lm[L.WR].visibility : 1;
+    const vER = (lm[R.EL] && lm[R.EL].visibility != null) ? lm[R.EL].visibility : 1;
+    const vWR = (lm[R.WR] && lm[R.WR].visibility != null) ? lm[R.WR].visibility : 1;
+
+    const dirUpperL = vEL > 0.4 ? toLocal(P(L.SH), P(L.EL)) : BIND_DIR;
+    const dirForeL = (vEL > 0.4 && vWL > 0.4) ? toLocal(P(L.EL), P(L.WR)) : BIND_DIR;
+    const dirUpperR = vER > 0.4 ? toLocal(P(R.SH), P(R.EL)) : BIND_DIR;
+    const dirForeR = (vER > 0.4 && vWR > 0.4) ? toLocal(P(R.EL), P(R.WR)) : BIND_DIR;
+
+    this._poseArm(BONE['upperArm.L'], BONE['foreArm.L'], dirUpperL, dirForeL, ease, A);
+    this._poseArm(BONE['upperArm.R'], BONE['foreArm.R'], dirUpperR, dirForeR, ease, A);
 
     // Hips bone follows the torso's own bend, so the hem swings with a lean
     // instead of staying square to the shoulders.
