@@ -9,36 +9,6 @@ if (_nodeEnv !== 'production') g.prisma = prisma;
 export * from '@prisma/client';
 export { buildConfirmationContext } from './context';
 
-export async function buildConfirmationContext(
-  orderId: string,
-): Promise<ConfirmationContext | null> {
-  const order = await prisma.order.findFirst({
-    where: { OR: [{ id: orderId }, { humanId: orderId }] },
-    include: { customer: true, sku: true, fitSession: true },
-  });
-  if (!order) return null;
-
-  const customerName = order.customer.name.split(' ')[0];
-
-  const ctx: ConfirmationContext = {
-    orderId: order.id,
-    humanId: order.humanId,
-    customerName,
-    phone: order.customer.phone,
-    styleName: order.sku.styleName,
-    size: order.size as Size,
-    amountPaise: order.amountPaise,
-    paymentMode: order.paymentMode,
-  };
-
-  const rec = order.fitSession?.recommendedSize;
-  if (rec && rec !== order.size) {
-    ctx.recommendedSize = rec as Size;
-  }
-
-  return ctx;
-}
-
 /** Append to the event log. Every workstream calls this; the ops timeline reads it. */
 export async function logEvent(input: {
   orderId: string;

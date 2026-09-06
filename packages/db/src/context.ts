@@ -1,4 +1,4 @@
-import type { ConfirmationContext, Size } from '@rto/core';
+import type { ConfirmationContext, Size } from '../../core/src/types';
 import { prisma } from './index';
 
 /**
@@ -11,8 +11,8 @@ import { prisma } from './index';
 export async function buildConfirmationContext(
   orderId: string,
 ): Promise<ConfirmationContext | null> {
-  const order = await prisma.order.findUnique({
-    where: { id: orderId },
+  const order = await prisma.order.findFirst({
+    where: { OR: [{ id: orderId }, { humanId: orderId }] },
     include: { customer: true, sku: true, fitSession: true },
   });
   if (!order) return null;
