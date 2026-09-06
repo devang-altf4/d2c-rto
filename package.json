@@ -23,7 +23,8 @@
     "tryon:https": "python3 apps/tryon/serve.py --https",
     "tryon:test": "node apps/tryon/test/run.mjs",
     "tryon:glb": "node apps/tryon/tools/export-glb.mjs",
-    "wa:send": "dotenv -e .env -- tsx scripts/whatsapp-send.ts"
+    "wa:send": "dotenv -e .env -- tsx scripts/whatsapp-send.ts",
+    "call": "dotenv -e .env -- tsx scripts/test_call.ts"
   },
   "devDependencies": {
     "dotenv-cli": "^7.4.2",
