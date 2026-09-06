@@ -1,0 +1,703 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>H&amp;K Oversized Hoodie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --wash:#F4F2EF; --ink:#1B1B1B; --ink-2:#4A4A4A; --muted:#767676; --faint:#A3A3A3;
+  --rule:#E3E1DE; --rule-2:#CFCCC8; --red:#D8232A; --red-ink:#FFFFFF;
+  --ok:#2E6A46; --warn:#8A5A08; --bad:#B02020;
+  --ok-bg:#E6F0E9; --warn-bg:#F7EBD5; --bad-bg:#F7E3E3;
+  --op-bg:#141414; --op-2:#1F1F1F; --op-ink:#F0EEEC; --op-muted:#8F8B87; --op-rule:#2E2E2E;
+  --sans:"Archivo",system-ui,-apple-system,Segoe UI,sans-serif;
+  --serif:"Bodoni Moda",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+/* Deliberately single-theme: this is a white-store identity, and a dark
+   product page hides a black garment on a black ground. Every colour below is
+   painted explicitly so the page holds on any host background. */
+*{box-sizing:border-box}
+[hidden]{display:none!important}   /* author display rules otherwise beat the UA [hidden] rule */
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.55}
+h1,h2,h3{margin:0; font-weight:600; text-wrap:balance}
+p{margin:0}
+button{font-family:var(--sans); cursor:pointer}
+:focus-visible{outline:2px solid var(--red); outline-offset:2px}
+.lab{font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:600}
+
+.demo{background:var(--ink); color:var(--paper); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; text-align:center; padding:7px 14px; font-weight:600}
+header{border-bottom:1px solid var(--rule); position:sticky; top:0; background:var(--paper); z-index:5}
+.hin{max-width:1240px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; gap:26px}
+.logo{font-family:var(--serif); font-size:30px; font-weight:600; color:var(--red); letter-spacing:-.01em; line-height:1}
+nav ul{display:flex; gap:20px; list-style:none; margin:0; padding:0; font-size:12px; letter-spacing:.06em; text-transform:uppercase; font-weight:500}
+nav li{color:var(--ink-2)} nav li.on{color:var(--ink); border-bottom:2px solid var(--ink); padding-bottom:2px}
+@media(max-width:860px){nav{display:none}}
+.hin .right{margin-left:auto; display:flex; gap:16px; font-size:12px; color:var(--ink-2); letter-spacing:.06em; text-transform:uppercase}
+
+main{max-width:1240px; margin:0 auto; padding:0 22px 40px}
+.crumb{font-size:11px; color:var(--muted); padding:14px 0}
+.pdp{display:grid; grid-template-columns:1.25fr 1fr; gap:44px; align-items:start}
+@media(max-width:900px){.pdp{grid-template-columns:1fr; gap:26px}}
+.gallery{display:grid; grid-template-columns:74px 1fr; gap:10px}
+@media(max-width:520px){.gallery{grid-template-columns:1fr}}
+.thumbs{display:flex; flex-direction:column; gap:8px}
+@media(max-width:520px){.thumbs{flex-direction:row; order:2}}
+.thumbs button{border:1px solid var(--rule); background:var(--wash); padding:0; aspect-ratio:3/4; width:100%}
+.thumbs button[aria-pressed="true"]{border-color:var(--ink)}
+.thumbs img{display:block; width:100%; height:100%; object-fit:cover}
+.hero{background:var(--wash); aspect-ratio:3/4; position:relative}
+.hero img{display:block; width:100%; height:100%; object-fit:cover}
+.hero canvas{display:block; width:100%; height:100%}
+.hero .tag{position:absolute; left:14px; top:14px; font-size:10px; letter-spacing:.14em; text-transform:uppercase; background:var(--paper); padding:5px 9px; font-weight:600}
+
+.buy{display:flex; flex-direction:column; gap:18px; padding-top:6px}
+.buy h1{font-size:20px; font-weight:500; letter-spacing:.01em}
+.price{font-size:20px; font-weight:600; letter-spacing:.01em}
+.price .was{font-size:14px; font-weight:400; color:var(--muted); text-decoration:line-through; margin-left:9px}
+.blk{display:flex; flex-direction:column; gap:9px}
+.swatches{display:flex; gap:8px; flex-wrap:wrap}
+.sw{width:34px; height:34px; border-radius:50%; border:1px solid var(--rule-2); padding:0; position:relative}
+.sw[aria-pressed="true"]::after{content:""; position:absolute; inset:-4px; border:1px solid var(--ink); border-radius:50%}
+.sizes{display:grid; grid-template-columns:repeat(6,1fr); gap:6px}
+.sz{padding:13px 2px; border:1px solid var(--rule-2); background:var(--paper); color:var(--ink); font-size:13px; font-weight:500; position:relative}
+.sz:hover{border-color:var(--ink)}
+.sz[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.sz.rec::before{content:"fit"; position:absolute; top:-7px; left:50%; transform:translateX(-50%); font-size:8px; letter-spacing:.1em; text-transform:uppercase; background:var(--red); color:var(--red-ink); padding:1px 5px; font-weight:600}
+.sz.oos{color:var(--faint); background:var(--wash); text-decoration:line-through; cursor:not-allowed}
+.rowbtn{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.link{background:none; border:0; padding:0; color:var(--red); font-size:12.5px; font-weight:600; text-decoration:underline; text-underline-offset:3px}
+.add{width:100%; padding:16px; background:var(--ink); color:var(--paper); border:0; font-size:14px; font-weight:600; letter-spacing:.04em}
+.add:disabled{background:var(--rule-2); color:var(--paper); cursor:not-allowed}
+.note{display:flex; gap:9px; align-items:flex-start; padding:11px 12px; font-size:13px; background:var(--wash); border-left:2px solid var(--rule-2)}
+.note.ok{border-color:var(--ok); background:var(--ok-bg)}
+.note.warn{border-color:var(--warn); background:var(--warn-bg)}
+.note.bad{border-color:var(--bad); background:var(--bad-bg)}
+.note b{font-weight:600}
+.chip{font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; flex:none; margin-top:2px; color:var(--muted)}
+.note.ok .chip{color:var(--ok)} .note.warn .chip{color:var(--warn)} .note.bad .chip{color:var(--bad)}
+details.acc{border-top:1px solid var(--rule)}
+details.acc summary{padding:14px 0; font-size:12.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; cursor:pointer; list-style:none; display:flex; justify-content:space-between}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"+"; color:var(--muted)}
+details.acc[open] summary::after{content:"−"}
+details.acc div{padding-bottom:16px; color:var(--ink-2); font-size:13px}
+table.chart{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:6px}
+table.chart th,table.chart td{text-align:left; padding:6px 8px; border-bottom:1px solid var(--rule)}
+table.chart th{font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600}
+table.chart td{font-family:var(--mono); font-variant-numeric:tabular-nums}
+table.chart tr.on td{background:var(--wash); font-weight:500}
+
+.more{margin-top:56px}
+.more h2{font-size:13px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:14px}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+@media(max-width:760px){.grid4{grid-template-columns:repeat(2,1fr)}}
+.card .im{background:var(--wash); aspect-ratio:3/4}
+.card img{display:block; width:100%; height:100%; object-fit:cover}
+.card .n{font-size:12.5px; margin-top:8px} .card .p{font-size:12.5px; font-weight:600}
+
+.op{margin-top:56px; background:var(--op-bg); color:var(--op-ink)}
+.ohead{padding:18px 20px; border-bottom:1px solid var(--op-rule)}
+.ohead h2{font-size:15px} .ohead p{font-size:12.5px; color:var(--op-muted); max-width:60ch; margin-top:4px}
+.ohead .lab{color:var(--op-muted)}
+.cells{display:grid; grid-template-columns:repeat(4,1fr)}
+@media(max-width:700px){.cells{grid-template-columns:repeat(2,1fr)}}
+.cell{padding:14px 20px; border-right:1px solid var(--op-rule); border-bottom:1px solid var(--op-rule)}
+.cell:nth-child(4n){border-right:0}
+.cell .v{font-family:var(--mono); font-size:19px; margin-top:3px; font-variant-numeric:tabular-nums}
+.sig{padding:14px 20px; display:flex; gap:10px; align-items:flex-start; font-size:13px; border-bottom:1px solid var(--op-rule)}
+.sig:last-child{border-bottom:0}
+.sig p{color:#C9C4C0} .sig b{font-family:var(--mono); font-weight:500; color:var(--op-ink)}
+.sig .chip{color:var(--op-muted)}
+.sig.ok .chip{color:#7FC49A} .sig.warn .chip{color:#D9AE5F} .sig.bad .chip{color:#E88A8A}
+footer{max-width:1240px; margin:0 auto; padding:26px 22px 60px; font-size:12px; color:var(--faint)}
+footer a{color:var(--muted)}
+
+dialog{border:0; padding:0; background:transparent; max-width:min(560px,96vw); width:100%}
+dialog::backdrop{background:rgba(10,10,10,.7)}
+.sheet{background:var(--paper); max-height:92vh; display:flex; flex-direction:column}
+.shd{padding:15px 18px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center}
+.shd h2{font-size:15px; letter-spacing:.04em; text-transform:uppercase}
+.x{background:none; border:0; font-size:24px; line-height:1; color:var(--muted); padding:0 4px}
+.sbody{padding:16px 18px; overflow-y:auto; display:flex; flex-direction:column; gap:14px}
+.stage{position:relative; width:100%; aspect-ratio:3/4; background:#0B0B0B; overflow:hidden}
+.stage video,.stage canvas{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.stage video{transform:scaleX(-1)}
+.stage #still{object-fit:contain; background:#0B0B0B}
+.photorow{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.ghost{padding:11px 14px; border:1px solid var(--rule-2); background:var(--paper); color:var(--ink); font-size:13px; font-weight:600}
+.ghost:hover{border-color:var(--ink)}
+label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.stage canvas{pointer-events:none}
+.pill{position:absolute; left:50%; bottom:14px; transform:translateX(-50%); display:flex; align-items:center; gap:8px;
+  background:rgba(10,10,10,.76); color:#fff; font-size:11.5px; padding:9px 14px; border-radius:99px;
+  white-space:nowrap; max-width:92%; overflow:hidden; text-overflow:ellipsis; font-weight:500}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:#E8B84B;flex:none}
+.pill[data-s="locked"] .dot,.pill[data-s="measuring"] .dot{background:#5BD07E}
+.pill[data-s="error"] .dot{background:#E8564B}
+.swatchbar{position:absolute; left:50%; top:14px; transform:translateX(-50%); display:flex; gap:7px; background:rgba(10,10,10,.55); padding:7px 9px; border-radius:99px}
+.swatchbar button{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5); padding:0}
+.swatchbar button[aria-pressed="true"]{border-color:#fff; box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.modes{display:flex; align-items:center; gap:7px}
+.modes .lab{margin-right:auto}
+.modes button{padding:7px 13px; border:1px solid var(--rule-2); background:var(--paper); color:var(--muted); font-size:12.5px; font-weight:600}
+.modes button[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.mrow{display:grid; grid-template-columns:1fr 1fr 1fr; border:1px solid var(--rule)}
+.mrow .c{padding:11px 12px} .mrow .c+.c{border-left:1px solid var(--rule)}
+.mrow .v{font-family:var(--mono); font-size:20px; font-variant-numeric:tabular-nums; margin-top:2px}
+.mrow .v small{font-size:12px; color:var(--muted)}
+.htrow{display:flex; align-items:center; gap:10px}
+.htrow input[type=range]{flex:1; accent-color:var(--ink); min-width:0}
+.htrow output{font-family:var(--mono); font-size:14px; font-variant-numeric:tabular-nums; min-width:58px; text-align:right}
+.hthint{font-size:11.5px; color:var(--muted); margin:-2px 0 0; line-height:1.45}
+</style></head><body>
+
+<div class="demo">Demo store · H&amp;K is a fictional brand built to test Opentra's L1 fit layer</div>
+<header><div class="hin">
+  <div class="logo">H&amp;K</div>
+  <nav><ul><li>Women</li><li class="on">Men</li><li>Divided</li><li>Kids</li><li>Home</li><li>Sale</li></ul></nav>
+  <div class="right"><span>Search</span><span>Account</span><span id="bagCount">Bag (0)</span></div>
+</div></header>
+
+<main>
+  <p class="crumb">Men / Hoodies &amp; Sweatshirts / Oversized Hoodie</p>
+  <div class="pdp">
+    <div class="gallery">
+      <div class="thumbs" id="thumbs"></div>
+      <div class="hero"><span class="tag" id="heroTag">Off white</span><img id="heroImg" alt="Model wearing the H&amp;K Oversized Hoodie"><canvas id="heroCv" width="900" height="1200" hidden></canvas></div>
+    </div>
+
+    <div class="buy">
+      <div>
+        <h1>Oversized Hoodie</h1>
+        <p class="lab" style="margin-top:5px">Heavyweight cotton · unisex</p>
+      </div>
+      <div class="price">₹1,799 <span class="was">₹2,499</span></div>
+
+      <div class="blk">
+        <span class="lab" id="colourLab">Colour · Black</span>
+        <div class="swatches" id="swatches"></div>
+      </div>
+
+      <div class="blk">
+        <div class="rowbtn">
+          <span class="lab">Size</span>
+          <button class="link" id="tryBtn" type="button">Try it on &amp; find your size</button>
+        </div>
+        <div class="sizes" id="sizeGrid"></div>
+      </div>
+
+      <div class="note" id="fitNote"><span class="chip">No fit data</span><p>Pick a size, or let the camera measure your shoulders and choose for you.</p></div>
+      <button class="add" id="addBtn" type="button" disabled>Select a size</button>
+
+      <div>
+        <details class="acc" open><summary>Description</summary><div>
+          Oversized hoodie in heavyweight brushed cotton. Drawstring hood, kangaroo pocket, ribbed cuffs and hem. Dropped shoulder. 380 gsm.
+        </div></details>
+        <details class="acc"><summary>Size guide</summary><div>
+          Garment measurements, flat, in centimetres.
+          <table class="chart"><thead><tr><th>Size</th><th>Shoulder</th><th>Chest</th><th>Length</th></tr></thead>
+          <tbody id="chartBody"></tbody></table>
+        </div></details>
+        <details class="acc"><summary>Delivery &amp; returns</summary><div>
+          Delivery in 3–6 days. Cash on delivery available up to ₹5,000. Free size exchange within 15 days.
+        </div></details>
+      </div>
+    </div>
+  </div>
+
+  <section class="more">
+    <h2>You may also like</h2>
+    <div class="grid4" id="more"></div>
+  </section>
+
+  <section class="op">
+    <div class="ohead">
+      <span class="lab">Opentra · L1 accuracy</span>
+      <h2 style="margin-top:4px">What the fit layer sent back</h2>
+      <p>The shopper never sees this. Measured live from the camera on this page — no photo stored, nothing uploaded. Scale comes from interpupillary distance, the same reference-object trick the footwear gauge runs on an A4 sheet.</p>
+    </div>
+    <div class="cells">
+      <div class="cell"><span class="lab">Shoulder width</span><div class="v" id="opSh">—</div></div>
+      <div class="cell"><span class="lab">Scale reference</span><div class="v" id="opScale">—</div></div>
+      <div class="cell"><span class="lab">Recommended</span><div class="v" id="opRec">—</div></div>
+      <div class="cell"><span class="lab">Selected</span><div class="v" id="opSel">—</div></div>
+    </div>
+    <div class="sig" id="sig1"><span class="chip">Idle</span><p>No measurement yet.</p></div>
+    <div class="sig" id="sig2" hidden><span class="chip">—</span><p></p></div>
+  </section>
+</main>
+
+<footer>H&amp;K is fictional; the product, price and copy exist only to host the fit widget. Pose runs on a vendored MediaPipe model — no network needed.</footer>
+
+<dialog id="dlg"><div class="sheet">
+  <div class="shd"><h2>Try it on</h2><button class="x" id="closeBtn" type="button" aria-label="Close">×</button></div>
+  <div class="sbody">
+    <div class="stage" id="stage">
+      <video id="vid" playsinline muted></video>
+      <canvas id="ov"></canvas>
+      <canvas id="still" hidden></canvas>
+      <div class="swatchbar" id="swBar"></div>
+      <div class="pill" id="pill" data-s="load"><span class="dot"></span><span id="pillTxt">Loading the pose model…</span></div>
+    </div>
+    <div class="modes">
+      <span class="lab">Garment</span>
+      <button type="button" id="modePhoto" aria-pressed="true">Photo</button>
+      <button type="button" id="modeDraw" aria-pressed="false">Outline</button>
+    </div>
+    <div class="htrow">
+      <label class="lab" for="htIn">Your height</label>
+      <input type="range" id="htIn" min="140" max="200" step="1" value="170">
+      <output id="htOut">170 cm</output>
+    </div>
+    <p class="hthint" id="htHint">Optional, but it triples the accuracy: with your feet in frame your height becomes the scale reference. Without it we scale from the distance between your eyes, which is a population average.</p>
+    <div class="mrow" id="mrow" hidden>
+      <div class="c"><span class="lab">Shoulder</span><div class="v" id="mSh">—</div></div>
+      <div class="c"><span class="lab">Garment</span><div class="v" id="mGar">—</div></div>
+      <div class="c"><span class="lab">Your size</span><div class="v" id="mSize">—</div></div>
+    </div>
+    <div class="note" id="mNote" hidden><span class="chip">—</span><p></p></div>
+    <button class="add" id="useBtn" type="button" disabled>Use this size</button>
+    <div class="photorow">
+      <label class="file"><input type="file" id="photoIn" accept="image/*"><button class="ghost" type="button" id="photoBtn">No camera? Use a photo</button></label>
+      <button class="ghost" type="button" id="sampleBtn" hidden>Use sample photo</button>
+      <button class="ghost" type="button" id="backBtn" hidden>Back to camera</button>
+      <button class="ghost" type="button" id="renderBtn" hidden>Render it on me</button>
+    </div>
+    <p style="font-size:11.5px; color:var(--muted)">Stand back so both shoulders are in frame and face the camera. Measurement runs entirely on this machine. <b>Render it on me</b> is the one exception &mdash; that sends the photo to our server.</p>
+  </div>
+</div></dialog>
+
+<script type="module">
+import {COLOURWAYS, colourway, drawFlat, drawOnBody,
+        drawPhotoOnBody, loadGarment, garmentReady} from "./hoodie.js";
+import {PoseEngine, readBody, Stabiliser, recommend, SIZE_CHART, STEP_CM, IPD_MM} from "./tryon.js";
+
+const $=id=>document.getElementById(id);
+const OOS=new Set(["XS"]);
+
+/* Height is the preferred scale reference; readBody falls back to the eye line
+   when this is unset or her feet are out of frame. Declared after `$`, which is
+   a const — reading it above that line is a temporal-dead-zone ReferenceError,
+   and in a module script that kills every line below it, including the product
+   photography. */
+let heightCm=Number($("htIn").value);
+$("htIn").addEventListener("input",e=>{
+  heightCm=Number(e.target.value);
+  $("htOut").textContent=heightCm+" cm";
+});
+let colour="offwhite", sel=null, rec=null, measured=null, overrode=false, bag=0;
+
+/* ---------- product shots ---------- */
+const WASH="#F4F2EF";   // fallback ground if a photo fails to load
+function paintHero(){
+  const c=colourway(colour);
+  $("heroImg").src="assets/"+c.photo+".jpg";
+  $("heroImg").hidden=false; $("heroCv").hidden=true;
+  $("heroTag").textContent=c.name;
+  $("colourLab").textContent="Colour · "+c.name;
+}
+$("heroImg").addEventListener("error",()=>{        // photo missing: draw the garment
+  $("heroImg").hidden=true; $("heroCv").hidden=false;
+  drawFlat($("heroCv"), colour, {background:WASH});
+});
+COLOURWAYS.forEach(c=>{
+  const b=document.createElement("button");
+  b.type="button"; b.title=c.name; b.setAttribute("aria-label",c.name);
+  b.setAttribute("aria-pressed", String(c.id===colour));
+  const im=document.createElement("img");
+  im.src="assets/"+c.photo+"_thumb.jpg"; im.alt=c.name; im.loading="lazy";
+  b.appendChild(im);
+  b.addEventListener("click",()=>setColour(c.id));
+  $("thumbs").appendChild(b);
+
+  const sw=document.createElement("button");
+  sw.className="sw"; sw.type="button"; sw.style.background=c.base; sw.title=c.name;
+  sw.setAttribute("aria-label",c.name); sw.setAttribute("aria-pressed", String(c.id===colour));
+  sw.addEventListener("click",()=>setColour(c.id));
+  $("swatches").appendChild(sw);
+});
+function setColour(id){
+  colour=id;
+  [...$("thumbs").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(COLOURWAYS[i].id===id)));
+  [...$("swatches").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(COLOURWAYS[i].id===id)));
+  [...$("swBar").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(COLOURWAYS[i].id===id)));
+  paintHero();
+}
+paintHero();
+
+/* "you may also like" — real shots from the same shoot set */
+const NAMES=["Relaxed Hoodie","Zip-Through Hoodie","Boxy Hoodie","Cropped Hoodie"];
+COLOURWAYS.slice(2,6).forEach((c,i)=>{
+  const d=document.createElement("div"); d.className="card";
+  d.innerHTML='<div class="im"><img src="assets/'+c.photo+'.jpg" alt="'+NAMES[i]+'" loading="lazy"></div>'+
+              '<div class="n">'+NAMES[i]+'</div><div class="p">₹'+(1299+i*200).toLocaleString("en-IN")+'</div>';
+  $("more").appendChild(d);
+});
+
+/* ---------- size chart + grid ---------- */
+SIZE_CHART.forEach(r=>{
+  const tr=document.createElement("tr"); tr.dataset.size=r.size;
+  tr.innerHTML="<td>"+r.size+"</td><td>"+r.shoulder.toFixed(1)+"</td><td>"+r.chest+"</td><td>"+r.length+"</td>";
+  $("chartBody").appendChild(tr);
+
+  const b=document.createElement("button");
+  b.className="sz"+(OOS.has(r.size)?" oos":""); b.type="button"; b.textContent=r.size;
+  b.dataset.size=r.size; b.setAttribute("aria-pressed","false");
+  if(OOS.has(r.size)){ b.disabled=true; b.title="Out of stock"; }
+  b.addEventListener("click",()=>pick(r.size,true));
+  $("sizeGrid").appendChild(b);
+});
+function paintSizes(){
+  [...$("sizeGrid").children].forEach(b=>{
+    b.setAttribute("aria-pressed", String(sel===b.dataset.size));
+    b.classList.toggle("rec", rec!==null && b.dataset.size===rec);
+  });
+  [...$("chartBody").children].forEach(tr=>tr.classList.toggle("on", tr.dataset.size===(rec||sel)));
+}
+function pick(size, byUser){
+  if(OOS.has(size)) return;
+  sel=size;
+  if(byUser && rec!==null) overrode = size!==rec;
+  paintSizes();
+  $("addBtn").disabled=false; $("addBtn").textContent="Add to bag · "+size;
+  paintNote(); paintOperator();
+}
+function note(el,cls,chip,msg){
+  el.hidden=false; el.className=(el.id==="sig1"||el.id==="sig2"?"sig ":"note ")+cls;
+  el.querySelector(".chip").textContent=chip;
+  el.querySelector("p").innerHTML=msg;
+}
+const idx=s=>SIZE_CHART.findIndex(r=>r.size===s);
+
+function paintNote(){
+  const el=$("fitNote");
+  if(!measured){
+    if(!sel) note(el,"","No fit data","Pick a size, or let the camera measure your shoulders and choose for you.");
+    else note(el,"","Unmeasured","<b>"+sel+"</b> chosen by hand. We have no measurement for this session, so we cannot tell you whether it fits.");
+    return;
+  }
+  const {shoulderCM,r}=measured;
+  if(overrode){
+    const steps=Math.abs(idx(sel)-idx(rec));
+    note(el,"bad","Size overridden","Your shoulders measure <b>"+shoulderCM.toFixed(1)+" cm</b>, which is <b>"+rec+
+      "</b>. You have selected <b>"+sel+"</b> — "+steps+" size"+(steps>1?"s":"")+" out, <b>"+(steps*STEP_CM).toFixed(1)+
+      " cm</b> of shoulder seam. That gap is the strongest single predictor that this one comes back.");
+    return;
+  }
+  if(r.toBoundary<0.35 && r.other)
+    note(el,"warn","Between sizes","You sit <b>"+r.toBoundary.toFixed(2)+" cm</b> from <b>"+r.other.size+
+      "</b> — genuinely between two sizes. We have sent you <b>"+rec+"</b> for the oversized cut, but this is the case where the free exchange matters more than the number.");
+  else
+    note(el,"ok","Measured fit","<b>"+shoulderCM.toFixed(1)+" cm</b> shoulders against a <b>"+r.row.shoulder.toFixed(1)+
+      " cm</b> seam gives <b>"+r.ease.toFixed(1)+" cm</b> of ease — the drop this cut is designed for. <b>"+
+      r.toBoundary.toFixed(2)+" cm</b> of clearance to the next size.");
+}
+function paintOperator(){
+  if(measured){
+    $("opSh").textContent=measured.shoulderCM.toFixed(1)+" cm";
+    $("opScale").textContent=(measured.scaleRef==="HEIGHT" ? "height" : "eye line")
+      +" · "+measured.mmPerPx.toFixed(3)+" mm/px";
+    $("opRec").textContent=rec;
+  }
+  $("opSel").textContent=sel||"—";
+  const s1=$("sig1"), s2=$("sig2");
+  if(!measured && !sel){ note(s1,"","Idle","No measurement yet."); s2.hidden=true; return; }
+  if(!measured){ note(s1,"warn","Unmeasured order","Size chosen by hand with no measurement. This is the baseline — the order ships with no fit signal attached, which is every apparel order today."); s2.hidden=true; return; }
+  const {shoulderCM,r,spread,frames}=measured;
+  const provenance = frames>1
+    ? "Median of <b>"+frames+"</b> frames, p10\u2013p90 spread <b>"+spread.toFixed(1)+" mm</b>."
+    : "Single still frame \u2014 <b>no repeat</b> to check it against, so there is no spread to report.";
+  note(s1, frames>1?"ok":"warn", frames>1?"Measurement captured":"Single-frame measurement",
+    provenance+" Shoulder <b>"+shoulderCM.toFixed(1)+" cm</b> against a <b>"+STEP_CM.toFixed(1)+
+    " cm</b> size step, so a half-step is <b>"+(STEP_CM/2).toFixed(2)+" cm</b>. Recommended <b>"+rec+"</b>.");
+  if(overrode)
+    note(s2,"bad","Override · flag before dispatch","Measured <b>"+rec+"</b>, bought <b>"+sel+
+      "</b>. Route to L2 for a confirmation message, and keep this pair out of the fit model's training set.");
+  else if(r.toBoundary<0.35)
+    note(s2,"warn","Borderline · bracketing risk","<b>"+r.toBoundary.toFixed(2)+
+      " cm</b> from the boundary — inside the scale error of "
+      + (measured.scaleRef==="HEIGHT"
+          ? "even a height reference (~1&ndash;2%)"
+          : "an eye-line reference (~5.6%; a height reference would cut that to ~1&ndash;2%)")
+      + ". Accuracy cannot resolve this one; it is a returns-policy question.");
+  else
+    note(s2,"ok","Clean fit signal","Accepted with <b>"+r.toBoundary.toFixed(2)+" cm</b> of clearance. Store <code style=\"font-family:var(--mono)\">"+
+      shoulderCM.toFixed(1)+"cm/"+rec+"</code> against this SKU; if it still comes back as a size exchange, the fault is the block, not the body.");
+}
+$("addBtn").addEventListener("click",()=>{ bag++; $("bagCount").textContent="Bag ("+bag+")";
+  const t=$("addBtn"); t.textContent="Added · "+sel; setTimeout(()=>{ t.textContent="Add to bag · "+sel; },1400); });
+paintSizes(); paintNote(); paintOperator();
+
+/* ---------- try-on ---------- */
+const dlg=$("dlg"), vid=$("vid"), ov=$("ov");
+let engine=null, stream=null, raf=0, stab=new Stabiliser(24), locked=null, lastRef=null;
+const setPill=(s,t)=>{ $("pill").dataset.s=s; $("pillTxt").textContent=t; };
+
+COLOURWAYS.forEach(c=>{
+  const b=document.createElement("button"); b.type="button"; b.style.background=c.base;
+  b.title=c.name; b.setAttribute("aria-label",c.name);
+  b.setAttribute("aria-pressed",String(c.id===colour));
+  b.addEventListener("click",()=>setColour(c.id));
+  $("swBar").appendChild(b);
+});
+
+let photoMode=false;
+let garmentMode="photo";                 // "photo" = keyed studio plate, "draw" = vector
+function setMode(m){
+  garmentMode=m;
+  $("modePhoto").setAttribute("aria-pressed",String(m==="photo"));
+  $("modeDraw").setAttribute("aria-pressed",String(m==="draw"));
+}
+$("modePhoto").addEventListener("click",()=>setMode("photo"));
+$("modeDraw").addEventListener("click",()=>setMode("draw"));
+function paintGarment(g, lm, W, H){
+  if(garmentMode==="photo" && garmentReady()) return drawPhotoOnBody(g, lm, W, H, colour, {ease:1.16});
+  return drawOnBody(g, lm, W, H, colour, {ease:1.16});
+}
+
+async function ensureEngine(){
+  loadGarment().then(()=>{ if(!garmentReady()){ setMode("draw"); $("modePhoto").disabled=true; } });
+  if(engine) return true;
+  setPill("load","Loading the pose model…");
+  try{ engine=new PoseEngine(); const d=await engine.load(); setPill("load","Model ready ("+d+")"); return true; }
+  catch(e){ setPill("error","Could not load the pose model: "+e.message); return false; }
+}
+function resetPanel(){
+  stab.reset(); locked=null; measuredDraft=null; photoMode=false;
+  $("renderBtn").hidden=true; stillSource=compositeURL=renderedURL=null;
+  $("mrow").hidden=true; $("mNote").hidden=true; $("useBtn").disabled=true;
+  $("still").hidden=true; $("vid").hidden=false; $("ov").hidden=false; $("backBtn").hidden=true;
+}
+$("tryBtn").addEventListener("click",async()=>{
+  dlg.showModal(); resetPanel();
+  if(!await ensureEngine()) return;
+  const secure=window.isSecureContext||["localhost","127.0.0.1"].includes(location.hostname);
+  if(!secure){ noCamera("Camera needs a secure origin — restart with npm run tryon:https"); return; }
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user", width:{ideal:1280}, height:{ideal:960}}, audio:false});
+  }catch(e){
+    noCamera(e.name==="NotFoundError" ? "No camera on this machine — use a photo, or open this page on your phone"
+           : e.name==="NotAllowedError" ? "Camera permission denied — allow it and reopen"
+           : "Camera unavailable ("+e.name+")");
+    return;
+  }
+  await engine.mode("VIDEO");
+  vid.srcObject=stream; vid.setAttribute("playsinline",""); await vid.play().catch(()=>{});
+  setPill("search","Step back so both shoulders are in frame");
+  loop();
+});
+function noCamera(msg){
+  setPill("error",msg);
+  $("photoBtn").textContent="Use a photo instead";
+  $("photoBtn").scrollIntoView({block:"nearest"});
+}
+function closeDlg(){
+  cancelAnimationFrame(raf); raf=0;
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+  dlg.close();
+}
+$("closeBtn").addEventListener("click",closeDlg);
+dlg.addEventListener("click",e=>{ if(e.target===dlg) closeDlg(); });
+
+const REASON={
+  nobody:"No person detected in that frame",
+  shoulders:"Both shoulders need to be visible",
+  face:"Face needs to be visible",
+  far:"Come closer — the face is too small to scale from",
+  turned:"Face the camera straight on",
+  cropped:"Shoulders are cut off at the edge",
+  implausible:"Whole upper body needs to be in frame"
+};
+
+/* ---- still-photo path, for machines with no camera ---- */
+$("photoBtn").addEventListener("click",()=>$("photoIn").click());
+$("backBtn").addEventListener("click",()=>{ resetPanel(); $("tryBtn").click(); });
+fetch("assets/sample.jpg",{method:"HEAD"}).then(r=>{ if(r.ok) $("sampleBtn").hidden=false; }).catch(()=>{});
+$("sampleBtn").addEventListener("click",async()=>{
+  const img=new Image(); img.src="assets/sample.jpg";
+  await img.decode().catch(()=>{});
+  runStill(img, img.naturalWidth, img.naturalHeight);
+});
+$("photoIn").addEventListener("change",async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const bmp=await createImageBitmap(f);
+  runStill(bmp, bmp.width, bmp.height);
+});
+async function runStill(src, iw, ih){
+  if(!await ensureEngine()) return;
+  cancelAnimationFrame(raf); raf=0;
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+  photoMode=true;
+  $("vid").hidden=true; $("ov").hidden=true; $("still").hidden=false; $("backBtn").hidden=false;
+  setPill("measuring","Reading the photo…");
+  const s=Math.min(1,1280/Math.max(iw,ih));
+  const W=Math.round(iw*s), H=Math.round(ih*s);
+  const cv=$("still"); cv.width=W; cv.height=H;
+  const g=cv.getContext("2d",{willReadFrequently:true});
+  g.drawImage(src,0,0,W,H);
+  await engine.mode("IMAGE");
+  const res=engine.detectImage(cv);
+  const body=readBody(res,W,H,heightCm);
+
+  // The render never depended on landmarks — those are only needed to MEASURE
+  // her. So set the renderer up first and fire it whatever the pose says; a
+  // cropped photo can still be dressed, it just cannot be sized.
+  stillSource = srcDataURL(src, iw, ih);            // clean photo, for the renderer
+  renderedURL = null;
+  $("renderBtn").hidden = false;
+
+  if(!body.ok){
+    compositeURL = cv.toDataURL("image/png");       // the bare photo, nothing drawn on it
+    setPill("measuring", (REASON[body.reason]||"Could not read a body from that photo")
+      + " — dressing you anyway");
+    $("mrow").hidden=true; $("useBtn").disabled=true;
+    note($("mNote"),"warn","Not measurable",
+      "Both shoulders and your face need to be in frame for a size. Stand further back, "
+      + "or use the camera. The preview below still works.");
+    doRender();
+    return;
+  }
+
+  paintGarment(g, res.lm, W, H);                    // a photo is not a mirror
+  compositeURL = cv.toDataURL("image/png");         // the fast version, to toggle back to
+  setPill("locked","Measured from one frame");
+  locked={shoulderMM:body.shoulderMM, mmPerPx:body.mmPerPx, scaleRef:body.scaleRef, spread:NaN, frames:1};
+  showMeasurement();
+  doRender();          // not awaited: the composite is already on screen
+}
+
+/* ---- photoreal render ------------------------------------------------
+ * Cosmetic only. The size on the left came from the pose maths and does not
+ * move; if this fails the shopper loses a picture, not a recommendation.
+ * Generation is 15-30s cold and instant once the server has cached it, so
+ * warm it in rehearsal with the exact photo you will upload. */
+let stillSource=null, compositeURL=null, renderedURL=null;
+
+function srcDataURL(src, iw, ih){
+  const c=document.createElement("canvas");
+  const s=Math.min(1,1024/Math.max(iw,ih));
+  c.width=Math.round(iw*s); c.height=Math.round(ih*s);
+  c.getContext("2d").drawImage(src,0,0,c.width,c.height);
+  return c.toDataURL("image/png");
+}
+
+function paintURL(url){
+  const cv=$("still"), g=cv.getContext("2d");
+  const im=new Image();
+  im.onload=()=>{ cv.width=im.width; cv.height=im.height; g.drawImage(im,0,0); };
+  im.src=url;
+}
+
+/* Fires automatically once a photo has been measured. The canvas composite is
+ * already painted by then, so there is never a blank stage — the photoreal
+ * version simply replaces it when it arrives, or does not, and nobody notices. */
+async function doRender(){
+  const b=$("renderBtn");
+  if(!stillSource || renderedURL) return;
+
+  b.disabled=true; b.textContent="Rendering…";
+  setPill("measuring","Putting the hoodie on you — about twenty seconds");
+  try{
+    const r=await fetch("/api/tryon",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({photo:stillSource, colour, size:(rec&&rec.row&&rec.row.size)||null})
+    });
+    const j=await r.json();
+    if(!r.ok) throw new Error(j.error||"render failed");
+    renderedURL=j.image;
+    paintURL(renderedURL);
+    b.dataset.showing="render"; b.textContent="Show the overlay";
+    setPill("locked", j.cached ? "Rendered (cached)" : "Rendered");
+  }catch(e){
+    // Stay visible and say why. Hiding the control on failure makes the whole
+    // feature look like it was never built.
+    b.textContent="Retry render";
+    setPill("locked","Measured — render unavailable");
+    note($("mNote"),"warn","Render unavailable",
+      "Could not generate the preview — "+e.message+". Your size is unaffected.");
+  }finally{ b.disabled=false; }
+}
+
+/* Once rendered, the button only toggles: photoreal vs the fast composite.
+ * Showing both is a better beat than either alone. */
+$("renderBtn").addEventListener("click", ()=>{
+  const b=$("renderBtn");
+  if(!renderedURL) return doRender();
+  const showingRender = b.dataset.showing==="render";
+  paintURL(showingRender ? compositeURL : renderedURL);
+  b.dataset.showing = showingRender ? "composite" : "render";
+  b.textContent = showingRender ? "Show the render" : "Show the overlay";
+});
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  const vw=vid.videoWidth, vh=vid.videoHeight;
+  if(!vw) return;
+  const dpr=Math.min(2,devicePixelRatio||1), box=ov.getBoundingClientRect();
+  if(ov.width!==Math.round(box.width*dpr)){ ov.width=Math.round(box.width*dpr); ov.height=Math.round(box.height*dpr); }
+  const g=ov.getContext("2d");
+  g.clearRect(0,0,ov.width,ov.height);
+
+  const res=engine.detect(vid, performance.now());
+  const body=readBody(res, vw, vh, heightCm);
+  if(!body.ok){
+    if(!locked){ stab.reset(); setPill("search", REASON[body.reason]||"Line yourself up"); }
+    return;
+  }
+  const mir=res.lm.map(p=>({...p, x:1-p.x}));    // video is mirrored for a selfie view
+  const s=Math.max(ov.width/vw, ov.height/vh);
+  const ox=(ov.width-vw*s)/2, oy=(ov.height-vh*s)/2;
+  g.save(); g.translate(ox,oy); g.scale(s,s);
+  paintGarment(g, mir, vw, vh);
+  g.restore();
+
+  if(locked) return;
+  // A switch of scale reference mid-scan (she stepped back and her feet came
+  // into frame) makes the buffer inconsistent, so start it again rather than
+  // medianing two different rulers together.
+  if(lastRef && lastRef!==body.scaleRef) stab.reset();
+  lastRef=body.scaleRef;
+  stab.push(body.shoulderMM);
+  if(!stab.settled){
+    setPill("measuring","Hold still — measuring ("+Math.round(stab.count/24*100)+"%)"
+      + (body.scaleRef==="IPD" ? " · step back for your feet" : ""));
+    return;
+  }
+  locked={shoulderMM:stab.value(), mmPerPx:body.mmPerPx, scaleRef:body.scaleRef,
+          spread:stab.spread, frames:stab.count};
+  setPill("locked","Measured");
+  showMeasurement();
+}
+function showMeasurement(){
+  const shoulderCM=locked.shoulderMM/10;
+  const r=recommend(shoulderCM);
+  $("mrow").hidden=false;
+  $("mSh").innerHTML=shoulderCM.toFixed(1)+' <small>cm</small>';
+  $("mGar").innerHTML=r.row.shoulder.toFixed(1)+' <small>cm</small>';
+  $("mSize").textContent=OOS.has(r.row.size)?r.row.size+" · sold out":r.row.size;
+  measuredDraft={shoulderCM, r, mmPerPx:locked.mmPerPx, scaleRef:locked.scaleRef,
+                 spread:locked.spread, frames:locked.frames};
+  if(OOS.has(r.row.size))
+    note($("mNote"),"warn","Sold out","You measure <b>"+r.row.size+"</b>, which we do not have. Nothing here will fit the way it should.");
+  else if(photoMode)
+    note($("mNote"),"warn","Single frame","Read from one photo, so there is no repeat to check it against — a live scan medians 24 frames. Treat this as indicative. <b>"+r.ease.toFixed(1)+" cm</b> of ease at the shoulder.");
+  else if(r.toBoundary<0.35 && r.other)
+    note($("mNote"),"warn","Between sizes","<b>"+r.toBoundary.toFixed(2)+" cm</b> from <b>"+r.other.size+
+      "</b>. We would send <b>"+r.row.size+"</b> for this oversized cut.");
+  else if(locked.scaleRef==="IPD")
+    note($("mNote"),"warn","Scaled from your eyes","<b>"+r.ease.toFixed(1)+" cm</b> of ease at the shoulder. "
+      + "We scaled this from the gap between your eyes, a 63&nbsp;mm population average that carries about "
+      + "<b>5%</b> error — around a size step. Step back until your feet are in frame and it rescales from your height.");
+  else
+    note($("mNote"),"ok","Clean reading","<b>"+r.ease.toFixed(1)+" cm</b> of ease at the shoulder — what this cut is drafted for. Scaled from your height.");
+  $("useBtn").disabled=OOS.has(r.row.size);
+  $("useBtn").textContent="Use "+r.row.size;
+}
+let measuredDraft=null;
+$("useBtn").addEventListener("click",()=>{
+  if(!measuredDraft) return;
+  measured=measuredDraft; rec=measured.r.row.size; overrode=false;
+  closeDlg(); pick(rec,false);
+});
+</script>
+</body></html>

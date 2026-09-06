@@ -11,7 +11,9 @@
     "db:seed": "dotenv -e .env -- pnpm --filter @rto/db run seed",
     "data:generate": "tsx scripts/generate.ts",
     "db:generate": "pnpm --filter @rto/db exec prisma generate",
-    "tryon:warm": "tsx scripts/warm-tryon.ts"
+    "tryon:warm": "tsx scripts/warm-tryon.ts",
+    "tryon": "python3 apps/tryon/serve.py",
+    "tryon:https": "python3 apps/tryon/serve.py --https"
   },
   "devDependencies": {
     "turbo": "^2.1.3",

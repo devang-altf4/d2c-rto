@@ -5,6 +5,7 @@ import {
   GATE_MESSAGE, LM, MIN_FRAMES, aggregate, gate, hemPosition, measureFrame,
   type AggregateResult, type FrameMeasurement, type GateFailure, type Landmark,
 } from '@rto/core';
+import { COLOURWAYS, drawGarment, loadPlate, plateReady } from './garment';
 
 /**
  * L1 capture. Runs entirely in the browser — the frames never leave the device,
@@ -18,6 +19,11 @@ import {
  * her far enough back that her whole body is in frame (which the height
  * reference depends on) and reduces the perspective distortion you get up
  * close. One overlay, two problems.
+ *
+ * The garment is drawn from the first frame a pose is found, before the gate
+ * passes, because seeing it on herself is what makes her stay long enough to be
+ * measured. It is a preview and does not feed the measurement — that comes from
+ * worldLandmarks and her height, and is unchanged by anything drawn here.
  */
 
 type Phase = 'height' | 'camera' | 'result';
@@ -27,7 +33,7 @@ export function PoseCapture({
   onResult,
 }: {
   garmentLengthCm?: number;
-  onResult?: (r: AggregateResult & { heightCm: number }) => void;
+  onResult?: (r: AggregateResult & { heightCm: number; frame?: string }) => void;
 }) {
   const [phase, setPhase] = useState<Phase>('height');
   const [heightCm, setHeightCm] = useState(162);
@@ -35,6 +41,10 @@ export function PoseCapture({
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<AggregateResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [colour, setColour] = useState(COLOURWAYS[0].id);
+  // read inside the animation loop, which closes over the first render's state
+  const colourRef = useRef(colour);
+  colourRef.current = colour;
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -59,6 +69,9 @@ export function PoseCapture({
     try {
       // Loaded here, not on page render. The model is several megabytes and no
       // product page should pay for it before she taps.
+      // the plate is small next to the model; start it early, do not await it
+      void loadPlate();
+
       const vision = await import('@mediapipe/tasks-vision');
       const fileset = await vision.FilesetResolver.forVisionTasks('/mediapipe/wasm');
       landmarkerRef.current = await vision.PoseLandmarker.createFromOptions(fileset, {
@@ -103,20 +116,30 @@ export function PoseCapture({
 
     const fail = gate(image, world);
     setStatus(fail);
-    drawGuide(ctx, c.width, c.height, fail);
+
+    // Garment first, so the guide and the hem line read on top of it.
+    const dressed =
+      plateReady() && image.length
+        ? drawGarment(ctx, image, c.width, c.height, colourRef.current)
+        : null;
+
+    if (!dressed) drawGuide(ctx, c.width, c.height, fail);
 
     if (!fail) {
       samples.current.push(measureFrame(world, heightCm));
       setProgress(Math.min(1, samples.current.length / MIN_FRAMES));
-      drawSkeleton(ctx, image, c.width, c.height);
+      if (!dressed) drawSkeleton(ctx, image, c.width, c.height);
 
       if (samples.current.length >= MIN_FRAMES) {
         const agg = aggregate(samples.current);
         if (agg) {
           drawHem(ctx, image, world, agg, garmentLengthCm, c.width, c.height);
+          // Grab the frame BEFORE stopping the stream. This is the photo the
+          // render step uses, so she is never asked to upload one of herself —
+          // and it is the same pose the measurement came from.
           setResult(agg);
           setPhase('result');
-          onResult?.({ ...agg, heightCm });
+          onResult?.({ ...agg, heightCm, frame: grabFrame(v) });
           stop();
           return;
         }
@@ -131,6 +154,23 @@ export function PoseCapture({
     }
 
     raf.current = requestAnimationFrame(loop);
+  }
+
+  /** Current video frame as a JPEG data URL, sized for the render endpoint. */
+  function grabFrame(v: HTMLVideoElement): string | undefined {
+    try {
+      const long = Math.max(v.videoWidth, v.videoHeight);
+      const k = Math.min(1, 1024 / long);
+      const off = document.createElement('canvas');
+      off.width = Math.round(v.videoWidth * k);
+      off.height = Math.round(v.videoHeight * k);
+      const g = off.getContext('2d');
+      if (!g) return undefined;
+      g.drawImage(v, 0, 0, off.width, off.height);
+      return off.toDataURL('image/jpeg', 0.86);
+    } catch {
+      return undefined;   // tainted canvas or no context; the upload path still works
+    }
   }
 
   // ------------------------------------------------------------------ draw
@@ -240,6 +280,10 @@ export function PoseCapture({
         <dl style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '10px 16px', margin: '16px 0' }}>
           <dt style={dt}>Chest</dt>
           <dd style={dd}>{result.bodyChestCm.toFixed(0)} ± {result.bandCm.toFixed(0)} cm</dd>
+          <dt style={dt}>Chest breadth</dt>
+          <dd style={dd}>{result.chestBreadthCm.toFixed(1)} cm</dd>
+          <dt style={dt}>Chest depth</dt>
+          <dd style={{ ...dd, opacity: 0.7 }}>{result.chestDepthCm.toFixed(1)} cm est.</dd>
           <dt style={dt}>Shoulders</dt>
           <dd style={dd}>{result.shoulderCm.toFixed(1)} cm</dd>
           <dt style={dt}>Torso</dt>
@@ -248,9 +292,11 @@ export function PoseCapture({
           <dd style={dd}>{Math.round(result.confidence * 100)}%</dd>
         </dl>
         <p style={note}>
-          Estimated from {result.frames} frames. Chest is inferred from shoulder width, so it
-          carries a band — the garment side of the model decides between the two sizes it leaves
-          open.
+          Estimated from {result.frames} frames. Breadth is measured; <strong>depth is not</strong> —
+          a camera in front of you cannot see front-to-back, so that figure comes from a
+          population model of your build. That assumption is most of the ±{result.bandCm.toFixed(0)}cm,
+          and holding still for longer will not shrink it. The garment side of the model decides
+          between the sizes the band leaves open.
         </p>
       </div>
     );
@@ -272,12 +318,39 @@ export function PoseCapture({
         />
         <div
           style={{
+            position: 'absolute', left: 0, right: 0, top: 0, display: 'flex',
+            justifyContent: 'center', gap: 8, padding: '12px 10px',
+            background: 'linear-gradient(rgba(0,0,0,.55), transparent)',
+          }}
+        >
+          {COLOURWAYS.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              aria-label={c.name}
+              aria-pressed={colour === c.id}
+              onClick={() => setColour(c.id)}
+              style={{
+                width: 28, height: 28, borderRadius: '50%', padding: 0, cursor: 'pointer',
+                background: c.swatch,
+                border: colour === c.id ? '2px solid #fff' : '1.5px solid rgba(255,255,255,.45)',
+                boxShadow: colour === c.id ? '0 0 0 2px rgba(255,255,255,.35)' : 'none',
+              }}
+            />
+          ))}
+        </div>
+
+        <div
+          style={{
             position: 'absolute', left: 0, right: 0, bottom: 0, padding: '14px 16px 18px',
             background: 'linear-gradient(transparent, rgba(0,0,0,.78))', color: '#fff',
           }}
         >
-          <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 8 }}>
+          <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>
             {error ?? (status ? GATE_MESSAGE[status] : 'Hold still')}
+          </div>
+          <div style={{ fontSize: 11.5, opacity: 0.72, marginBottom: 8 }}>
+            Garment shown is a preview — tap a colour to change it
           </div>
           <div style={{ height: 4, background: 'rgba(255,255,255,.22)', borderRadius: 2 }}>
             <div

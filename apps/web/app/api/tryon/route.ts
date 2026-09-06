@@ -23,6 +23,8 @@ export const maxDuration = 60; // generation runs 15-30s; the platform default w
 
 const CACHE = join(process.cwd(), '.tryon-cache');
 const OPENAI = 'https://api.openai.com/v1/images/edits';
+// Overridable, so a model rename never needs a code edit at 3am.
+const MODEL = process.env.OPENAI_IMAGE_MODEL ?? 'gpt-image-2';
 
 const key = (personB64: string, styleId: string) =>
   createHash('sha256').update(styleId).update(personB64).digest('hex').slice(0, 32);
@@ -79,7 +81,7 @@ export async function POST(req: Request) {
 
   try {
     const form = new FormData();
-    form.append('model', 'gpt-image-1');
+    form.append('model', MODEL);
     form.append('prompt', promptFor(style.styleName));
     form.append('size', '1024x1536');
     form.append('n', '1');

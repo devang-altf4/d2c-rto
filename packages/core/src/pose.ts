@@ -45,15 +45,73 @@ export const LM = {
 export const NOSE_TO_ANKLE_FRACTION = 0.89;
 
 /**
- * Biacromial breadth to chest circumference. Adult women average roughly
- * 35.5cm across the shoulders and 90cm around the chest. MediaPipe's shoulder
- * landmarks sit slightly inside the acromion, which pushes the ratio up a
- * little from the textbook 2.54.
+ * Chest girth is inferred, not measured, and it is the weakest link in the
+ * pipeline — so it is worth being explicit about how.
  *
- * This is an ESTIMATE, not a measurement. Say so. The accuracy that decides
- * the recommendation comes from the garment side, not from here.
+ * A frontal camera sees BREADTH. Circumference needs breadth AND depth, and
+ * depth is hidden directly behind the breadth we can see. The old model dodged
+ * that with a single multiplier (chest = shoulder * 2.45), which quietly
+ * asserts that everyone has the same cross-section: a barrel-chested and a
+ * flat-chested shopper with the same shoulders got the same answer, and the
+ * same size.
+ *
+ * Instead, model the chest as an ellipse. Breadth comes from the shoulders.
+ * Depth comes from a population prior, scaled by how heavy the frame is for
+ * its height — a 150cm shopper with 40cm shoulders is built differently from
+ * a 185cm one with the same shoulders, and one multiplier cannot tell them
+ * apart.
+ *
+ * It is still an estimate. The honest part is that aggregate() now propagates
+ * this prior's uncertainty into the band, instead of reporting frame-to-frame
+ * jitter alone — which was the smallest error in the stack, and reporting only
+ * it is how you end up claiming +/-1.5cm on a number you guessed.
  */
-export const CHEST_FROM_BIACROMIAL = 2.45;
+
+/** Biacromial breadth -> chest breadth at the nipple line, which sits inside the shoulder points. */
+export const CHEST_BREADTH_FROM_BIACROMIAL = 0.82;
+
+/** Chest depth as a fraction of chest breadth, at an average build. */
+export const CHEST_DEPTH_TO_BREADTH = 0.72;
+
+/**
+ * Biacromial breadth over stature, population mean. The build reference.
+ *
+ * Deliberately NOT using the hip landmarks here. MediaPipe's LEFT_HIP/RIGHT_HIP
+ * are joint centres, not the iliac crests, and there is no published ratio from
+ * one to the other — anything built on them would be a number with no way to
+ * check it. Shoulder-to-stature is documented and testable, so the build index
+ * rests on that alone.
+ */
+export const BIACROMIAL_TO_STATURE = 0.222;
+
+/**
+ * A tape follows a convex path over ribs and scapulae, so it always reads
+ * longer than the ellipse through the same two axes. About 13% at torso
+ * proportions; without it the ellipse under-reads chest by a full size.
+ */
+export const TORSO_CONVEXITY = 1.13;
+
+/** Ramanujan's second approximation to the perimeter of an ellipse. */
+function ellipsePerimeter(a: number, b: number): number {
+  return Math.PI * (3 * (a + b) - Math.sqrt((3 * a + b) * (a + 3 * b)));
+}
+
+/** Breadth and depth in cm -> girth in cm. */
+function girth(breadthCm: number, depthCm: number): number {
+  return ellipsePerimeter(breadthCm / 2, depthCm / 2) * TORSO_CONVEXITY;
+}
+
+/**
+ * How heavy this frame is for its height, as a multiplier around 1.
+ *
+ * Square-rooted and clamped so it nudges depth rather than driving it. The
+ * index is itself measured with noise, and letting it move depth linearly put
+ * the chest estimate a full size out at the extremes of the height range.
+ */
+export function frameIndex(shoulderCm: number, heightCm: number): number {
+  const raw = shoulderCm / heightCm / BIACROMIAL_TO_STATURE;
+  return Math.min(1.12, Math.max(0.9, Math.sqrt(raw)));
+}
 
 export type GateFailure =
   | 'NO_POSE'
@@ -108,7 +166,13 @@ export interface FrameMeasurement {
   shoulderCm: number;
   hipCm: number;
   torsoCm: number;
+  /** Frontal chest breadth — the part the camera actually sees. */
+  chestBreadthCm: number;
+  /** Front-to-back chest depth — inferred from the build prior, never measured. */
+  chestDepthCm: number;
   bodyChestCm: number;
+  /** Build multiplier around 1; >1 is a heavy frame for its height. */
+  build: number;
   /** cm per world unit for this frame — used to place the garment overlay. */
   scale: number;
 }
@@ -138,11 +202,20 @@ export function measureFrame(world: Landmark[], heightCm: number): FrameMeasurem
   const hipCm = dist3(world[LM.LEFT_HIP], world[LM.RIGHT_HIP]) * cmPerUnit;
   const torsoCm = Math.abs(shoulderMid.y - hipMid.y) * cmPerUnit;
 
+  // Breadth is measured; depth is the prior, tilted by build. Both axes then
+  // go through the same ellipse, so chest and hip stay on one model.
+  const build = frameIndex(shoulderCm, heightCm);
+  const chestBreadthCm = shoulderCm * CHEST_BREADTH_FROM_BIACROMIAL;
+  const chestDepthCm = chestBreadthCm * CHEST_DEPTH_TO_BREADTH * build;
+
   return {
     shoulderCm,
     hipCm,
     torsoCm,
-    bodyChestCm: shoulderCm * CHEST_FROM_BIACROMIAL,
+    chestBreadthCm,
+    chestDepthCm,
+    bodyChestCm: girth(chestBreadthCm, chestDepthCm),
+    build,
     scale: cmPerUnit,
   };
 }
@@ -157,14 +230,37 @@ export interface AggregateResult {
   shoulderCm: number;
   hipCm: number;
   torsoCm: number;
+  chestBreadthCm: number;
+  chestDepthCm: number;
   bodyChestCm: number;
+  build: number;
   scale: number;
-  /** 0..1, derived from how much the samples disagreed. */
+  /** 0..1, derived from the total band — not from frame agreement alone. */
   confidence: number;
-  /** ± cm on the chest estimate, for honest UI. */
+  /** ± cm on the chest estimate: jitter and the depth prior, combined. */
   bandCm: number;
+  /** The part of bandCm that more frames cannot reduce. */
+  systematicCm: number;
   frames: number;
 }
+
+/**
+ * Relative 1-sigma on the depth prior. Chest depth at a given breadth varies
+ * by about this much across adults of the same build, and — this is the point
+ * — it does not shrink with more frames. Holding still for longer makes the
+ * camera agree with itself, not with a tape measure.
+ */
+export const DEPTH_PRIOR_CV = 0.10;
+
+/**
+ * How a relative depth error carries into girth. The ellipse perimeter is
+ * roughly twice as sensitive to breadth as to depth at torso aspect ratios,
+ * so 10% off on depth is about 4% off on chest.
+ */
+const GIRTH_SENSITIVITY_TO_DEPTH = 0.4;
+
+/** Self-reported height is good to a couple of cm, and scale is linear in it. */
+export const HEIGHT_CV = 0.012;
 
 export const MIN_FRAMES = 24; // roughly two seconds at 12fps
 
@@ -184,20 +280,32 @@ export function aggregate(frames: FrameMeasurement[]): AggregateResult | null {
 
   // Robust spread: median absolute deviation, scaled to a standard-deviation
   // equivalent so the band means something.
-  const mad = median(chest.map((c) => Math.abs(c - medChest))) * 1.4826;
-  const bandCm = Math.max(1.5, Math.min(6, mad * 2));
+  const jitterCm = median(chest.map((c) => Math.abs(c - medChest))) * 1.4826;
 
-  // 1.5cm spread is as good as this method gets; 6cm is unusable.
-  const confidence = Math.max(0.35, Math.min(0.88, 1 - (bandCm - 1.5) / 6));
+  // The error that does not average out. The old code reported jitter alone,
+  // which is the smallest term here — it could claim ±1.5cm on a chest that
+  // was inferred from a population prior. Adding the two in quadrature puts
+  // the floor where it actually belongs, around ±4cm.
+  const systematicCm =
+    medChest * Math.hypot(DEPTH_PRIOR_CV * GIRTH_SENSITIVITY_TO_DEPTH, HEIGHT_CV);
+  const bandCm = Math.min(9, Math.hypot(jitterCm, systematicCm));
+
+  // Confidence now tracks the band it is actually reporting. The ceiling is
+  // lower than it used to be because the systematic term never goes away.
+  const confidence = Math.max(0.3, Math.min(0.8, 1 - (bandCm / medChest) * 6));
 
   return {
     shoulderCm: median(frames.map((f) => f.shoulderCm)),
     hipCm: median(frames.map((f) => f.hipCm)),
     torsoCm: median(frames.map((f) => f.torsoCm)),
+    chestBreadthCm: median(frames.map((f) => f.chestBreadthCm)),
+    chestDepthCm: median(frames.map((f) => f.chestDepthCm)),
     bodyChestCm: medChest,
+    build: median(frames.map((f) => f.build)),
     scale: median(frames.map((f) => f.scale)),
     confidence,
     bandCm,
+    systematicCm,
     frames: frames.length,
   };
 }

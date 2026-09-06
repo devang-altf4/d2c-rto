@@ -26,6 +26,9 @@ export function Embed({ styleId }: { styleId: string }) {
   const [lengthCm, setLengthCm] = useState(112);
   const [path, setPath] = useState<Path>('choose');
   const [reco, setReco] = useState<FitRecommendation | null>(null);
+  // The frame she was measured in, kept so the render step never has to ask
+  // her to go and find a photo of herself. Undefined on the cross-brand path.
+  const [frame, setFrame] = useState<string | undefined>();
 
   useEffect(() => {
     fetch(`/api/style/${styleId}`)
@@ -49,22 +52,26 @@ export function Embed({ styleId }: { styleId: string }) {
   if (!specs) return <Shell><p style={muted}>Loading sizes…</p></Shell>;
 
   if (path === 'done' && reco)
-    return <Result reco={reco} styleName={styleName} styleId={styleId} />;
+    return (
+      <Result reco={reco} styleName={styleName} styleId={styleId} capturedFrame={frame} />
+    );
 
   if (path === 'camera') {
     return (
       <Shell>
         <PoseCapture
           garmentLengthCm={lengthCm}
-          onResult={(r) =>
+          onResult={(r) => {
+            setFrame(r.frame);
             finish({
               source: 'CAMERA',
               heightCm: r.heightCm,
               bodyChestCm: r.bodyChestCm,
               shoulderCm: r.shoulderCm,
+              bandCm: r.bandCm,
               confidence: r.confidence,
-            })
-          }
+            });
+          }}
         />
         <button onClick={() => setPath('crossbrand')} style={link}>
           Camera not working? Use your size in another brand
@@ -128,11 +135,12 @@ function CrossBrand({ onDone }: { onDone: (b: BodyMeasurement) => void }) {
 // --------------------------------------------------------------- the payoff
 
 function Result({
-  reco, styleName, styleId,
+  reco, styleName, styleId, capturedFrame,
 }: {
   reco: FitRecommendation;
   styleName: string;
   styleId: string;
+  capturedFrame?: string;
 }) {
   return (
     <Shell>
@@ -164,6 +172,7 @@ function Result({
       <p style={{ ...muted, marginTop: 14 }}>{reco.reason}</p>
       <p style={{ ...muted, fontSize: 12.5, marginTop: 8 }}>
         Chest {reco.bodyChestCm.toFixed(0)}cm · confidence {Math.round(reco.confidence * 100)}%
+        {reco.alternativeSize ? ` · ${reco.alternativeSize} is within the margin` : ''}
       </p>
 
       <button onClick={() => post({ type: 'apply', size: reco.recommendedSize })} style={primary}>
@@ -171,7 +180,7 @@ function Result({
       </button>
       <button onClick={() => post({ type: 'close' })} style={link}>Close</button>
 
-      <TryOn styleId={styleId} size={reco.recommendedSize} />
+      <TryOn styleId={styleId} size={reco.recommendedSize} capturedFrame={capturedFrame} />
     </Shell>
   );
 }

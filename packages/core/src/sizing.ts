@@ -3,37 +3,6 @@ import type {
 } from './types';
 import { SIZES } from './types';
 
-/**
- * Frontal biacromial (shoulder point to shoulder point) to chest circumference.
- * An estimate, not a measurement — say so in the demo. The accuracy that
- * matters comes from the garment side, not the camera.
- */
-export const SHOULDER_TO_CHEST = 2.1;
-
-/** MediaPipe world landmarks -> body measurements. */
-export function measureFromPose(
-  lm: { x: number; y: number; z: number }[],
-  heightCm: number,
-): BodyMeasurement {
-  const d = (a: number, b: number) =>
-    Math.hypot(lm[a].x - lm[b].x, lm[a].y - lm[b].y, lm[a].z - lm[b].z);
-
-  // Landmark height: mid-ankle to nose, then corrected for the crown.
-  const ankleY = (lm[27].y + lm[28].y) / 2;
-  const landmarkHeight = Math.abs(ankleY - lm[0].y) * 1.08;
-  const scale = heightCm / landmarkHeight;
-
-  const shoulderCm = d(11, 12) * scale;
-
-  return {
-    source: 'CAMERA',
-    heightCm,
-    shoulderCm,
-    bodyChestCm: shoulderCm * SHOULDER_TO_CHEST,
-    confidence: 0.72,
-  };
-}
-
 /** The path that cannot fail. Same output type, so everything downstream is shared. */
 export function measureFromCrossBrand(
   chestCmForThatBrandSize: number,
@@ -78,16 +47,35 @@ export function recommend(
   const chosen = applyOffset ? pick(true) : naive;
   const corrected = chosen.size !== naive.size;
 
+  // The measurement carries a band, so the honest question is not "which size"
+  // but "does the band still fit inside this size". Walk the band's edges
+  // through the same picker: if either lands elsewhere, say so rather than
+  // committing to one letter the measurement cannot actually distinguish.
+  let alternativeSize: Size | undefined;
+  if (body.bandCm && body.bandCm > 0) {
+    const at = (chestCm: number) => {
+      const req = chestCm + ease;
+      return (ordered.find((s) => (applyOffset ? effectiveChest(s) : s.chestCm) >= req)
+        ?? ordered[ordered.length - 1]).size;
+    };
+    const lo = at(body.bodyChestCm - body.bandCm);
+    const hi = at(body.bodyChestCm + body.bandCm);
+    alternativeSize = [lo, hi].find((s) => s !== chosen.size);
+  }
+
   return {
     recommendedSize: chosen.size,
     naiveSize: naive.size,
     correctionApplied: corrected,
     learnedOffsetCm: chosen.learnedOffsetCm,
     bodyChestCm: Math.round(body.bodyChestCm * 10) / 10,
+    alternativeSize,
     confidence: body.confidence * (corrected ? 1 : 0.95),
     reason: corrected
       ? `This style runs about ${chosen.learnedOffsetCm.toFixed(1)}cm small — ${chosen.size}, not ${naive.size}.`
-      : `${chosen.size} fits your ${Math.round(body.bodyChestCm)}cm chest with room to move.`,
+      : alternativeSize
+        ? `${chosen.size} for your ${Math.round(body.bodyChestCm)}cm chest, though ${alternativeSize} is within the margin.`
+        : `${chosen.size} fits your ${Math.round(body.bodyChestCm)}cm chest with room to move.`,
   };
 }
 

@@ -24,6 +24,8 @@ export interface BodyMeasurement {
   heightCm?: number;
   bodyChestCm: number;
   shoulderCm?: number;
+  /** ± cm on bodyChestCm. Absent on paths that cannot estimate one. */
+  bandCm?: number;
   /** 0..1 — camera is lower and honest about it. */
   confidence: number;
 }
@@ -46,6 +48,8 @@ export interface FitRecommendation {
   bodyChestCm: number;
   /** What the manufacturer's chart alone would have said. */
   naiveSize: Size;
+  /** Set when the measurement band also reaches this size. Undefined = unambiguous. */
+  alternativeSize?: Size;
   /** True when reconciliation moved the answer — the demo moment. */
   correctionApplied: boolean;
   learnedOffsetCm: number;

@@ -1,0 +1,102 @@
+/* Kaira storefront.
+ *
+ * Scoped under .store so it cannot leak into the diagnosis screens, which keep
+ * the app palette in globals.css. Committed to a light look on purpose: an
+ * ethnic-wear catalogue is photographed on warm paper, and a dark product grid
+ * fights every garment in it. */
+
+.store {
+  --paper:#FBF9F6; --card:#FFFFFF; --wash:#F2EEE7;
+  --sink:#17130F; --sink-2:#463D34; --dim:#7A6E62; --faint:#A79A8C;
+  --line:#E4DDD2; --line-2:#D3C9BA;
+  --brand:#7A2E3B; --brand-ink:#FFF8F5; --brand-wash:#F3E6E6;
+  --good:#2F6B45; --good-bg:#E4EFE7;
+  --flag:#8A5A10; --flag-bg:#F6EBD6;
+  --stop:#9C2F35; --stop-bg:#F5E1E1;
+  --display:var(--store-display), Georgia, "Times New Roman", serif;
+
+  background:var(--paper); color:var(--sink);
+  font-size:14.5px; line-height:1.6;
+  min-height:100vh;
+}
+.store *{box-sizing:border-box}
+.store [hidden]{display:none!important}
+.store a{color:inherit; text-decoration:none}
+.store h1,.store h2,.store h3{margin:0; font-weight:400; text-wrap:balance}
+.store p{margin:0}
+.store button{font:inherit; cursor:pointer}
+.store :focus-visible{outline:2px solid var(--brand); outline-offset:2px}
+.store-lab{font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--dim); font-weight:600}
+.store-num{font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+.store-strip{background:var(--sink); color:var(--paper); text-align:center;
+  font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; padding:7px 14px; font-weight:600}
+.store-head{border-bottom:1px solid var(--line); background:var(--card); position:sticky; top:0; z-index:20}
+.store-head .in{max-width:1240px; margin:0 auto; padding:15px 22px; display:flex; align-items:center; gap:28px}
+.store-mark{font-family:var(--display); font-size:27px; letter-spacing:.08em; color:var(--brand); line-height:1}
+.store-nav{display:flex; gap:20px; font-size:12.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--sink-2)}
+.store-nav .on{border-bottom:1.5px solid var(--sink); padding-bottom:2px}
+@media(max-width:820px){.store-nav{display:none}}
+.store-util{margin-left:auto; display:flex; gap:16px; font-size:12px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--sink-2)}
+.store-main{max-width:1240px; margin:0 auto; padding:0 22px 56px}
+.store-crumb{font-size:12px; color:var(--dim); padding:16px 0}
+
+/* index grid */
+.store-hero{padding:14px 0 26px; border-bottom:1px solid var(--line); margin-bottom:26px}
+.store-hero h1{font-family:var(--display); font-size:34px; letter-spacing:.01em; line-height:1.15}
+.store-hero p{color:var(--dim); font-size:14px; margin-top:8px; max-width:62ch}
+.store-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:22px 18px}
+@media(max-width:1000px){.store-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.store-grid{grid-template-columns:repeat(2,1fr)}}
+.tile .shot{background:var(--wash); aspect-ratio:3/4; overflow:hidden; position:relative}
+.tile img{display:block; width:100%; height:100%; object-fit:cover}
+.tile .nm{font-size:13.5px; margin-top:9px; line-height:1.35}
+.tile .pr{font-size:13.5px; font-weight:600; margin-top:2px}
+.tile .tag{position:absolute; left:9px; top:9px; background:var(--brand); color:var(--brand-ink);
+  font-size:9px; letter-spacing:.1em; text-transform:uppercase; padding:3px 7px; font-weight:600}
+
+/* product page */
+.pdp{display:grid; grid-template-columns:1.15fr 1fr; gap:46px; align-items:start}
+@media(max-width:920px){.pdp{grid-template-columns:1fr; gap:26px}}
+.gal{display:grid; grid-template-columns:72px 1fr; gap:10px}
+@media(max-width:560px){.gal{grid-template-columns:1fr}}
+.gal-thumbs{display:flex; flex-direction:column; gap:8px}
+@media(max-width:560px){.gal-thumbs{flex-direction:row; order:2}}
+.gal-thumbs button{border:1px solid var(--line); background:var(--wash); padding:0; aspect-ratio:3/4; width:100%}
+.gal-thumbs button[aria-pressed="true"]{border-color:var(--sink)}
+.gal-thumbs img{display:block; width:100%; height:100%; object-fit:cover}
+.gal-main{background:var(--wash); aspect-ratio:3/4; overflow:hidden}
+.gal-main img{display:block; width:100%; height:100%; object-fit:cover}
+
+.buy{display:flex; flex-direction:column; gap:17px; padding-top:4px}
+.buy h1{font-family:var(--display); font-size:26px; line-height:1.2}
+.buy .price{font-size:20px; font-weight:600}
+.buy .tax{font-size:12.5px; color:var(--dim)}
+.sizes{display:grid; grid-template-columns:repeat(5,1fr); gap:6px}
+.sz{padding:13px 2px; border:1px solid var(--line-2); background:var(--card); color:var(--sink);
+  font-size:13.5px; font-weight:500; position:relative}
+.sz:hover{border-color:var(--sink)}
+.sz[aria-pressed="true"]{background:var(--sink); color:var(--paper); border-color:var(--sink)}
+.sz[data-rec="1"]::before{content:"fit"; position:absolute; top:-7px; left:50%; transform:translateX(-50%);
+  font-size:8px; letter-spacing:.1em; text-transform:uppercase; background:var(--brand);
+  color:var(--brand-ink); padding:1px 5px; font-weight:700}
+.rowhead{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+.addbag{width:100%; padding:15px 18px; background:var(--sink); color:var(--paper); border:0;
+  font-size:14.5px; font-weight:600; letter-spacing:.03em}
+.addbag:disabled{background:var(--line-2); cursor:not-allowed}
+.acc{border-top:1px solid var(--line)}
+.acc summary{padding:13px 0; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; list-style:none; display:flex; justify-content:space-between; font-weight:600}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+"; color:var(--dim); font-weight:400}
+.acc[open] summary::after{content:"\2212"}
+.acc .body{padding-bottom:15px; color:var(--sink-2); font-size:13.5px}
+.chart{width:100%; border-collapse:collapse; font-size:13px; margin-top:4px}
+.chart th,.chart td{text-align:left; padding:6px 8px; border-bottom:1px solid var(--line)}
+.chart th{font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); font-weight:600}
+.chart td{font-family:var(--mono); font-variant-numeric:tabular-nums}
+.chart tr.on td{background:var(--wash); font-weight:600}
+.store-foot{border-top:1px solid var(--line); margin-top:14px}
+.store-foot .in{max-width:1240px; margin:0 auto; padding:22px 22px 60px; font-size:12px; color:var(--faint)}
+.store-foot a{color:var(--dim); text-decoration:underline; text-underline-offset:2px}
