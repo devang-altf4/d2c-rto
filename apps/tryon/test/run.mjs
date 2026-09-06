@@ -14,6 +14,7 @@ const suites = [
   ['glb-valid      ', 'hoodie.glb parses as a rigged glTF'],
   ['pose-maths     ', 'the garment lands on the body at its spec size'],
   ['scale-reference', 'height beats the eye line for scale'],
+  ['ops-page      ', 'the dispatch queue renders every row'],
 ].map(([f, why]) => [f.trim(), f, why]);
 
 let failed = 0;

@@ -31,7 +31,19 @@ const MONTHS = 12;
 
 const COD_SHARE = 0.62;
 const TIER23_SHARE = 0.60;
-const FIRST_ORDER_SHARE = 0.55;
+
+// Repeat-buying. `isFirstOrder` is no longer a coin flip — it is DERIVED from
+// each customer's own order history, so the share falls out of the buying
+// distribution instead of being asserted alongside it.
+const REPEAT_P = 0.42; // P(this customer buys again), geometric; mean ~1.7 orders
+const MAX_ORDERS_PER_CUSTOMER = 14;
+
+// Planted refusal rings — the ground truth for the graph layer.
+const N_RINGS = 40;
+const RING_MIN = 3, RING_MAX = 9;
+// Legit families sharing one roof. These are the CONFOUNDER: a rule that says
+// "shared address = fraud" has to be wrong about all of them.
+const HOUSEHOLD_SHARE = 0.07;
 
 const FREIGHT_TWO_WAY_PAISE = 19_000; // ₹190
 const OUT = join(process.cwd(), 'data');
@@ -122,6 +134,8 @@ const NDR_BY_CAUSE: Record<Cause, string[]> = {
 
 interface Order {
   id: string;
+  /** The link that makes a graph possible. Absent from the old corpus. */
+  customerId: string;
   styleId: string;
   size: Size;
   bodyChestCm: number;
@@ -144,6 +158,121 @@ interface Exchange {
   reason: 'SIZE_TOO_SMALL' | 'SIZE_TOO_LARGE' | 'COLOR' | 'DEFECTIVE' | 'UNWANTED';
 }
 
+// --------------------------------------------------------------- customers
+//
+// WHY THIS EXISTS: every feature in scoreFitRisk is a property of ONE order in
+// isolation. Nothing in the model can see that two orders came from the same
+// person, or that two people share a doorstep. This section creates the
+// entities and the shared identifiers that make those questions askable.
+//
+// HOW THE RINGS ARE BUILT, AND WHY IT MATTERS: a ring's members are chained,
+// and each consecutive pair shares exactly ONE identifier, chosen at random
+// from phone / address / device. So no single GROUP BY recovers a ring —
+// grouping by phone finds a pair, grouping by device finds a different pair,
+// and the ring only appears once you take the transitive closure. That is the
+// honest test of whether a graph is doing work a relational query could not.
+
+interface Customer {
+  customerId: string;
+  phone: string;
+  addressHash: string;
+  deviceId: string;
+  pincode: string;
+  tier: 1 | 2 | 3;
+  orderCount: number;
+  /** GROUND TRUTH. Ring membership, or null. Never an input to any score. */
+  ringId: string | null;
+  /** GROUND TRUTH. A legitimate shared-address household — the false positive. */
+  householdId: string | null;
+}
+
+const PINCODES = ['110001', '110024', '400001', '400058', '560001', '560076', '600028',
+  '700019', '500034', '411004', '302001', '380015', '226010', '160022'];
+
+const phoneOf = (n: number) => `+9198${String(10_000_000 + n).slice(0, 8)}`;
+const addrOf = (n: number) => `ADDR-${String(n).padStart(6, '0')}`;
+const devOf = (n: number) => `DEV-${String(n).padStart(6, '0')}`;
+
+const customers: Customer[] = [];
+{
+  let placed = 0, n = 0;
+  while (placed < N_ORDERS) {
+    let count = 1;
+    while (chance(REPEAT_P) && count < MAX_ORDERS_PER_CUSTOMER) count++;
+    count = Math.min(count, N_ORDERS - placed);
+    customers.push({
+      customerId: `C-${String(n).padStart(6, '0')}`,
+      phone: phoneOf(n),
+      addressHash: addrOf(n),
+      deviceId: devOf(n),
+      pincode: pick(PINCODES),
+      tier: chance(TIER23_SHARE) ? (chance(0.55) ? 2 : 3) : 1,
+      orderCount: count,
+      ringId: null,
+      householdId: null,
+    });
+    placed += count;
+    n++;
+  }
+}
+
+/* Households: a few customers genuinely share an address and a pincode. They
+   behave completely normally. If the graph layer cannot tell these from a
+   ring, it is not worth running. */
+{
+  const pool = customers.filter((c) => chance(HOUSEHOLD_SHARE));
+  let i = 0, h = 0;
+  while (i < pool.length) {
+    // 2-5 people. Deliberately overlapping the ring size range: if component
+    // SIZE alone separated households from rings, the detector would not need
+    // to look at behaviour, and the whole exercise would be a straw man.
+    const size = 2 + Math.floor(rnd() * 4);
+    const members = pool.slice(i, i + size);
+    i += size;
+    if (members.length < 2) break;
+    const id = `HH-${String(h++).padStart(4, '0')}`;
+    const head = members[0];
+    for (const m of members) {
+      m.householdId = id;
+      m.addressHash = head.addressHash;
+      m.pincode = head.pincode;
+      // A family shares a tablet as readily as a fraud ring does.
+      if (m !== head && chance(0.35)) m.deviceId = head.deviceId;
+    }
+  }
+}
+
+/* Rings: chained identifier sharing, so only transitive closure finds them.
+   Members are drawn from REPEAT buyers on purpose — the existing risk model
+   scores a repeat customer LOW (firstOrder contributes 0), so these accounts
+   look safe on every feature the model currently has. That is the point. */
+const ringIds: string[] = [];
+{
+  const eligible = customers.filter((c) => c.orderCount >= 2 && !c.householdId);
+  let cursor = 0;
+  for (let r = 0; r < N_RINGS && cursor + RING_MAX < eligible.length; r++) {
+    const size = RING_MIN + Math.floor(rnd() * (RING_MAX - RING_MIN + 1));
+    const members = eligible.slice(cursor, cursor + size);
+    cursor += size;
+    if (members.length < RING_MIN) break;
+
+    const ringId = `RING-${String(r).padStart(3, '0')}`;
+    ringIds.push(ringId);
+    for (const m of members) {
+      m.ringId = ringId;
+      m.tier = chance(0.7) ? 1 : 2;      // look like good customers
+    }
+    // Chain them. Each link shares exactly one identifier with the previous.
+    for (let i = 1; i < members.length; i++) {
+      const prev = members[i - 1], cur = members[i];
+      const link = pick(['phone', 'address', 'device'] as const);
+      if (link === 'phone') cur.phone = prev.phone;
+      else if (link === 'address') { cur.addressHash = prev.addressHash; cur.pincode = prev.pincode; }
+      else cur.deviceId = prev.deviceId;
+    }
+  }
+}
+
 const orders: Order[] = [];
 const exchanges: Exchange[] = [];
 const now = Date.UTC(2026, 8, 5);
@@ -159,17 +288,29 @@ function chartSize(style: Style, bodyChest: number): Size {
   return SIZES.find((s) => style.chestBase[s] >= need) ?? 'XL';
 }
 
-for (let i = 0; i < N_ORDERS; i++) {
+let orderSeq = 0;
+for (const cust of customers) {
+  // Her own orders in time order, so "first order" means what it says.
+  const stamps = Array.from({ length: cust.orderCount },
+    () => now - Math.floor(rnd() * MONTHS * 30 * 864e5)).sort((a, b) => a - b);
+  // One body per person, not one per order. This is the other thing an order
+  // table cannot say: the same woman has the same measurements every time.
+  const custChest = round1(Math.min(112, Math.max(76, gauss(90, 7.5))));
+
+  for (let k = 0; k < cust.orderCount; k++) {
   const style = pick(styles);
-  const bodyChest = round1(Math.min(112, Math.max(76, gauss(90, 7.5))));
+  const bodyChest = round1(Math.min(112, Math.max(76, custChest + gauss(0, 0.8))));
 
   // Most shoppers follow the chart; a few guess.
   const ordered = chance(0.86) ? chartSize(style, bodyChest) : pick(SIZES);
   const fitMismatch = ordered !== bestSize(style, bodyChest);
 
-  const paymentMode = chance(COD_SHARE) ? 'COD' : 'PREPAID';
-  const tier: 1 | 2 | 3 = chance(TIER23_SHARE) ? (chance(0.55) ? 2 : 3) : 1;
-  const isFirstOrder = chance(FIRST_ORDER_SHARE);
+  const inRing = cust.ringId !== null;
+  // A ring account is here to take delivery of goods it will not pay for, so
+  // it picks COD almost every time.
+  const paymentMode = chance(inRing ? 0.95 : COD_SHARE) ? 'COD' : 'PREPAID';
+  const tier = cust.tier;
+  const isFirstOrder = k === 0;
 
   // Baseline RTO pressure, then the fit penalty on top.
   let p = 0.07;
@@ -179,29 +320,36 @@ for (let i = 0; i < N_ORDERS; i++) {
   if (isFirstOrder) p += 0.04;
   // She cannot try it on before paying, so fit doubt becomes a doorstep refusal.
   if (fitMismatch) p += paymentMode === 'COD' ? 0.16 : 0.05;
+  // Ring behaviour swamps everything else, and has nothing to do with fit.
+  if (inRing) p += 0.42;
 
-  const isRto = chance(Math.min(0.62, p));
+  const isRto = chance(Math.min(inRing ? 0.88 : 0.62, p));
 
   let trueCause: Cause | undefined;
   let ndrCode: string | undefined;
 
   if (isRto) {
-    trueCause = fitMismatch && chance(0.62)
-      ? 'SIZE'
-      : (pick(['INTENT', 'INTENT', 'ADDRESS', 'PAYMENT', 'DAMAGE']) as Cause);
+    // A ring refusal is never a size problem. Attributing it to fit is the
+    // mistake the graph layer exists to stop the fit model from making.
+    trueCause = inRing
+      ? 'INTENT'
+      : fitMismatch && chance(0.62)
+        ? 'SIZE'
+        : (pick(['INTENT', 'INTENT', 'ADDRESS', 'PAYMENT', 'DAMAGE']) as Cause);
     ndrCode = pick(NDR_BY_CAUSE[trueCause]);
   }
 
-  const id = `KA-${(10_000 + i).toString()}`;
+  const id = `KA-${(10_000 + orderSeq++).toString()}`;
   orders.push({
     id,
+    customerId: cust.customerId,
     styleId: style.styleId,
     size: ordered,
     bodyChestCm: bodyChest,
     paymentMode,
     tier,
     isFirstOrder,
-    placedAt: new Date(now - Math.floor(rnd() * MONTHS * 30 * 864e5)).toISOString(),
+    placedAt: new Date(stamps[k]).toISOString(),
     amountPaise: style.mrpPaise,
     outcome: isRto ? 'RTO' : 'DELIVERED',
     ndrCode,
@@ -228,6 +376,7 @@ for (let i = 0; i < N_ORDERS; i++) {
         reason: pick(['COLOR', 'DEFECTIVE', 'UNWANTED']) as Exchange['reason'],
       });
     }
+  }
   }
 }
 
@@ -309,6 +458,90 @@ const trueSizeRupees = Math.round(
   trueSizeRto.reduce((t, o) => t + styleById.get(o.styleId)!.cogsPaise + FREIGHT_TWO_WAY_PAISE, 0) / 100,
 );
 
+// ------------------------------------------------------------------- rings
+//
+// Ground truth for the graph layer, computed the same way the fit recall is:
+// the generator knows which accounts are a ring, the detector will not.
+
+const byCustomer = new Map<string, typeof orders>();
+for (const o of orders) {
+  const list = byCustomer.get(o.customerId) ?? [];
+  list.push(o);
+  byCustomer.set(o.customerId, list);
+}
+
+const ringStats = ringIds.map((ringId) => {
+  const members = customers.filter((c) => c.ringId === ringId);
+  const ringOrders = members.flatMap((m) => byCustomer.get(m.customerId) ?? []);
+  const rto = ringOrders.filter((o) => o.outcome === 'RTO');
+  return {
+    ringId,
+    members: members.length,
+    orders: ringOrders.length,
+    rtoCount: rto.length,
+    rtoRate: ringOrders.length ? round1((rto.length / ringOrders.length) * 1000) / 1000 : 0,
+    rupees: Math.round(
+      rto.reduce((s, o) => s + styleById.get(o.styleId)!.cogsPaise + FREIGHT_TWO_WAY_PAISE, 0) / 100),
+  };
+});
+
+const ringOrderIds = new Set(
+  customers.filter((c) => c.ringId).flatMap((c) => (byCustomer.get(c.customerId) ?? []).map((o) => o.id)));
+const ringRto = orders.filter((o) => ringOrderIds.has(o.id) && o.outcome === 'RTO');
+const cleanOrders = orders.filter((o) => !ringOrderIds.has(o.id));
+const baselineRate = cleanOrders.filter((o) => o.outcome === 'RTO').length / cleanOrders.length;
+
+const rings = {
+  count: ringStats.length,
+  members: customers.filter((c) => c.ringId).length,
+  households: customers.filter((c) => c.householdId).length,
+  orders: ringOrderIds.size,
+  rtoCount: ringRto.length,
+  rtoRate: Math.round((ringRto.length / Math.max(1, ringOrderIds.size)) * 1000) / 1000,
+  baselineRtoRate: Math.round(baselineRate * 1000) / 1000,
+  rupees: Math.round(
+    ringRto.reduce((s, o) => s + styleById.get(o.styleId)!.cogsPaise + FREIGHT_TWO_WAY_PAISE, 0) / 100),
+  /**
+   * Can the CURRENT model tell a ring order from an ordinary COD order?
+   *
+   * The claim is not "it scores them low" — it is that it cannot SEPARATE
+   * them, because every feature it has (cod, tier, firstOrder, styleHistory)
+   * reads identically for both. Compared against non-ring COD orders so the
+   * payment mode is held constant and the comparison is fair.
+   */
+  separation: (() => {
+    const rate = new Map(diagStyles.map((s) => [s.styleId, s.sizeExchangeRate]));
+    const score = (o: (typeof orders)[number]) => scoreFitRisk({
+      styleSizeFailureRate: Math.min(1, (rate.get(o.styleId) ?? 0) * 4),
+      usedL1: false,                       // L1 did not exist over this corpus
+      paymentMode: o.paymentMode,
+      isFirstOrder: o.isFirstOrder,
+      tier: o.tier,
+    }).score;
+    const med = (xs: number[]) => {
+      const s = [...xs].sort((a, b) => a - b);
+      return s.length ? Math.round(s[s.length >> 1] * 1000) / 1000 : 0;
+    };
+    const ring = orders.filter((o) => ringOrderIds.has(o.id)).map(score);
+    const codClean = orders
+      .filter((o) => !ringOrderIds.has(o.id) && o.paymentMode === 'COD').map(score);
+    // Fraction of (ring, clean) pairs the model orders correctly. 0.5 = coin flip.
+    const sorted = [...codClean].sort((a, b) => a - b);
+    const below = (v: number) => {
+      let lo = 0, hi = sorted.length;
+      while (lo < hi) { const m = (lo + hi) >> 1; if (sorted[m] < v) lo = m + 1; else hi = m; }
+      return lo;
+    };
+    const auc = ring.reduce((s, v) => s + below(v) / sorted.length, 0) / Math.max(1, ring.length);
+    return {
+      medianRingOrder: med(ring),
+      medianCleanCodOrder: med(codClean),
+      auc: Math.round(auc * 1000) / 1000,
+    };
+  })(),
+  detail: ringStats.sort((a, b) => b.rupees - a.rupees),
+};
+
 const diagnosis = {
   totalOrders: orders.length,
   totalRto,
@@ -317,6 +550,7 @@ const diagnosis = {
   adjustedSizeRupees,
   assumedExchangePropensity: ASSUMED_EXCHANGE_PROPENSITY,
   recall,
+  rings,
   courierBreakdown: [...courierCounts.entries()]
     .map(([code, v]) => ({ code, count: v.count, rupees: Math.round(v.paise / 100) }))
     .sort((a, b) => b.count - a.count),
@@ -410,6 +644,7 @@ write('orders.json', orders);
 write('exchanges.json', exchanges);
 write('diagnosis.json', diagnosis);
 write('brand-sizes.json', brandSizes);
+write('customers.json', customers);
 write('demo-orders.json', demoOrders);
 
 // -------------------------------------------------------------------- report
@@ -438,4 +673,19 @@ console.log(`
 ${diagnosis.courierBreakdown.slice(0, 5).map((c) => `    ${c.code.padEnd(20)} ${String(c.count).padStart(6)}`).join('\n')}
 
   nothing in that list can say "ran small".
+
+  identity graph
+    customers       ${customers.length.toLocaleString('en-IN')}  (${(orders.length / customers.length).toFixed(2)} orders each)
+    first-order     ${((customers.length / orders.length) * 100).toFixed(0)}%  <- derived now, not asserted
+    households      ${rings.households}  legitimate shared addresses (the confounder)
+
+  planted rings     ${rings.count}  spanning ${rings.members} accounts, ${rings.orders} orders
+    their RTO rate  ${(rings.rtoRate * 100).toFixed(0)}%  vs ${(rings.baselineRtoRate * 100).toFixed(0)}% baseline
+    cost            ${lakh(rings.rupees)}
+    fit risk median ${rings.separation.medianRingOrder.toFixed(2)} for a ring order
+                    ${rings.separation.medianCleanCodOrder.toFixed(2)} for an honest COD order
+    separation AUC  ${rings.separation.auc.toFixed(3)}  (0.5 = coin flip)  <- the gap the graph closes
+
+  every ring is CHAINED: each pair shares one identifier, so no single
+  GROUP BY recovers one. Transitive closure does. That is the whole argument.
 `);
