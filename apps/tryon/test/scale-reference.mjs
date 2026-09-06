@@ -9,7 +9,7 @@ writeFileSync(dir + '/vendorstub.mjs', 'export const FilesetResolver={};export c
 writeFileSync(dir + '/tryon_t.mjs',
   readFileSync(P + '/tryon.js', 'utf8')
     .replace('./vendor/vision_bundle.mjs', './vendorstub.mjs'));
-const { readBody, NOSE_TO_ANKLE_FRACTION, IPD_MM } = await import(pathToFileURL(dir + '/tryon_t.mjs').href);
+const { readBody, NOSE_TO_ANKLE_FRACTION, IPD_MM, recommend } = await import(pathToFileURL(dir + '/tryon_t.mjs').href);
 
 const W = 720, H = 1280;
 const ACROMION = 1.10;                 // the correction tryon.js applies
@@ -66,3 +66,24 @@ for (const ipd of [63, 58, 68]) {              // mean, then -1.4 SD and +1.4 SD
 console.log('\n  no height given, feet in frame ->',
   readBody(subject({ trueIpdMm: 63, ankles: true }), W, H, undefined).scaleRef);
 console.log('  null pose ->', JSON.stringify(readBody(null, W, H, 172)), '\n');
+
+// Verify chest measurement is returned and proportional
+const testSub = subject({ trueIpdMm: 63, ankles: true });
+const bodyWithChest = readBody(testSub, W, H, HEIGHT_CM);
+if(!bodyWithChest.chestMM || Math.abs(bodyWithChest.chestMM - bodyWithChest.shoulderMM * 1.232) > 0.01){
+  throw new Error(`chestMM measurement failed: ${bodyWithChest.chestMM}`);
+}
+
+// Verify seated calibration factor scales torso-only framing
+const seatedRaw = readBody(subject({ trueIpdMm: 63, ankles: false }), W, H, HEIGHT_CM);
+const seatedCal = readBody(subject({ trueIpdMm: 63, ankles: false }), W, H, HEIGHT_CM, { seatedFactor: 1.28 });
+if(Math.abs((seatedCal.shoulderMM / seatedRaw.shoulderMM) - 1.28) > 0.01){
+  throw new Error(`seatedFactor did not scale: raw=${seatedRaw.shoulderMM}, cal=${seatedCal.shoulderMM}`);
+}
+
+// Verify dual shoulder + chest recommendation for Size L
+const recL = recommend(48.5, 60.0);
+if(recL.row.size !== 'L'){
+  throw new Error(`Expected Size L for 48.5cm shoulder / 60cm chest, got ${recL.row.size}`);
+}
+console.log('  dual sizing test passed: 48.5cm sh + 60.0cm ch ->', recL.row.size);
