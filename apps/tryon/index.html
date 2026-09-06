@@ -156,6 +156,15 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 .htrow input[type=range]{flex:1; accent-color:var(--ink); min-width:0}
 .htrow output{font-family:var(--mono); font-size:14px; font-variant-numeric:tabular-nums; min-width:58px; text-align:right}
 .hthint{font-size:11.5px; color:var(--muted); margin:-2px 0 0; line-height:1.45}
+
+@media(min-width:768px){
+  dialog{max-width:min(1040px,95vw)}
+  .sheet{max-height:90vh}
+  .sbody{display:grid; grid-template-columns:1.08fr 0.92fr; gap:22px; padding:18px 22px; overflow-y:auto; align-items:start}
+  .sbody-stage{display:flex; flex-direction:column; position:sticky; top:0}
+  .stage{min-height:unset; aspect-ratio:3/4; height:100%; max-height:calc(90vh - 100px)}
+  .sbody-hud{display:flex; flex-direction:column; gap:12px; overflow-y:auto}
+}
 </style></head><body>
 
 <div class="demo">Demo store · H&amp;K is a fictional brand built to test Opentra's L1 fit layer</div>
@@ -239,41 +248,52 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 <dialog id="dlg"><div class="sheet">
   <div class="shd"><h2>Try it on</h2><button class="x" id="closeBtn" type="button" aria-label="Close">×</button></div>
   <div class="sbody">
-    <div class="stage" id="stage">
-      <video id="vid" playsinline muted></video>
-      <canvas id="gl"></canvas>
-      <canvas id="ov"></canvas>
-      <canvas id="still" hidden></canvas>
-      <div id="guide" hidden><span>Stand back until shoulders &amp; torso are inside the guide</span></div>
-      <div class="swatchbar" id="swBar"></div>
-      <div class="pill" id="pill" data-s="load"><span class="dot"></span><span id="pillTxt">Loading the pose model…</span></div>
+    <div class="sbody-stage">
+      <div class="stage" id="stage">
+        <video id="vid" playsinline muted></video>
+        <canvas id="gl"></canvas>
+        <canvas id="ov"></canvas>
+        <canvas id="still" hidden></canvas>
+        <div id="guide" hidden><span>Stand back until shoulders &amp; torso are inside the guide</span></div>
+        <div class="swatchbar" id="swBar"></div>
+        <div class="pill" id="pill" data-s="load"><span class="dot"></span><span id="pillTxt">Loading the pose model…</span></div>
+      </div>
     </div>
-    <div class="modes">
-      <span class="lab">Garment</span>
-      <button type="button" id="modePhoto" aria-pressed="false">Photo</button>
-      <button type="button" id="modeDraw" aria-pressed="false">Outline</button>
-      <button type="button" id="mode3d" aria-pressed="true">3D</button>
+    <div class="sbody-hud">
+      <div class="modes">
+        <span class="lab">Garment</span>
+        <button type="button" id="modePhoto" aria-pressed="false">Photo</button>
+        <button type="button" id="modeDraw" aria-pressed="false">Outline</button>
+        <button type="button" id="mode3d" aria-pressed="true">3D</button>
+      </div>
+      <div class="blk" style="margin-top:2px">
+        <div class="rowbtn">
+          <span class="lab">Select Size to Try On</span>
+          <span id="trySizeHint" style="font-size:11px; color:var(--muted)">Click any size to test 3D fit</span>
+        </div>
+        <div class="sizes" id="modalSizeGrid"></div>
+      </div>
+      <div class="mrow" id="mrow" hidden>
+        <div class="c"><span class="lab">Shoulder</span><div class="v" id="mSh">—</div></div>
+        <div class="c"><span class="lab">Garment</span><div class="v" id="mGar">—</div></div>
+        <div class="c"><span class="lab">Fit</span><div class="v" id="mSize">—</div></div>
+      </div>
+      <div class="note" id="mNote" hidden><span class="chip">—</span><p></p></div>
+      <button class="add" id="useBtn" type="button" disabled>Use this size</button>
+      <div class="htrow">
+        <label class="lab" for="htIn">Your height</label>
+        <input type="range" id="htIn" min="140" max="200" step="1" value="170">
+        <output id="htOut">170 cm</output>
+      </div>
+      <p class="hthint" id="htHint">Optional, but it triples the accuracy: with your feet in frame your height becomes the scale reference. Without it we scale from the distance between your eyes, which is a population average.</p>
+      <div class="photorow">
+        <label class="file"><input type="file" id="photoIn" accept="image/*"><button class="ghost" type="button" id="photoBtn">No camera? Use a photo</button></label>
+        <button class="ghost" type="button" id="sampleBtn" hidden>Use sample photo</button>
+        <button class="ghost" type="button" id="backBtn" hidden>Back to camera</button>
+        <button class="ghost" type="button" id="renderBtn" hidden>Render it on me</button>
+      </div>
+      <p style="font-size:11.5px; color:var(--muted)">Stand back so both shoulders are in frame and face the camera. Measurement runs entirely on this machine.</p>
     </div>
-    <div class="htrow">
-      <label class="lab" for="htIn">Your height</label>
-      <input type="range" id="htIn" min="140" max="200" step="1" value="170">
-      <output id="htOut">170 cm</output>
-    </div>
-    <p class="hthint" id="htHint">Optional, but it triples the accuracy: with your feet in frame your height becomes the scale reference. Without it we scale from the distance between your eyes, which is a population average.</p>
-    <div class="mrow" id="mrow" hidden>
-      <div class="c"><span class="lab">Shoulder</span><div class="v" id="mSh">—</div></div>
-      <div class="c"><span class="lab">Garment</span><div class="v" id="mGar">—</div></div>
-      <div class="c"><span class="lab">Your size</span><div class="v" id="mSize">—</div></div>
-    </div>
-    <div class="note" id="mNote" hidden><span class="chip">—</span><p></p></div>
-    <button class="add" id="useBtn" type="button" disabled>Use this size</button>
-    <div class="photorow">
-      <label class="file"><input type="file" id="photoIn" accept="image/*"><button class="ghost" type="button" id="photoBtn">No camera? Use a photo</button></label>
-      <button class="ghost" type="button" id="sampleBtn" hidden>Use sample photo</button>
-      <button class="ghost" type="button" id="backBtn" hidden>Back to camera</button>
-      <button class="ghost" type="button" id="renderBtn" hidden>Render it on me</button>
-    </div>
-    <p style="font-size:11.5px; color:var(--muted)">Stand back so both shoulders are in frame and face the camera. Measurement runs entirely on this machine. <b>Render it on me</b> is the one exception &mdash; that sends the photo to our server.</p>
   </div>
 </div></dialog>
 
@@ -358,21 +378,45 @@ SIZE_CHART.forEach(r=>{
   if(OOS.has(r.size)){ b.disabled=true; b.title="Out of stock"; }
   b.addEventListener("click",()=>pick(r.size,true));
   $("sizeGrid").appendChild(b);
+
+  const mb=document.createElement("button");
+  mb.className="sz"+(OOS.has(r.size)?" oos":""); mb.type="button"; mb.textContent=r.size;
+  mb.dataset.size=r.size; mb.setAttribute("aria-pressed","false");
+  mb.addEventListener("click",()=>pick(r.size,true));
+  $("modalSizeGrid").appendChild(mb);
 });
 function paintSizes(){
+  const activeSize = sel || (rec && rec.row ? rec.row.size : (typeof rec === "string" ? rec : null));
+  const recSize = rec && rec.row ? rec.row.size : (typeof rec === "string" ? rec : null);
   [...$("sizeGrid").children].forEach(b=>{
-    b.setAttribute("aria-pressed", String(sel===b.dataset.size));
-    b.classList.toggle("rec", rec!==null && b.dataset.size===rec);
+    b.setAttribute("aria-pressed", String(activeSize===b.dataset.size));
+    b.classList.toggle("rec", recSize!==null && b.dataset.size===recSize);
   });
-  [...$("chartBody").children].forEach(tr=>tr.classList.toggle("on", tr.dataset.size===(rec||sel)));
+  if($("modalSizeGrid")){
+    [...$("modalSizeGrid").children].forEach(b=>{
+      b.setAttribute("aria-pressed", String(activeSize===b.dataset.size));
+      b.classList.toggle("rec", recSize!==null && b.dataset.size===recSize);
+    });
+  }
+  [...$("chartBody").children].forEach(tr=>tr.classList.toggle("on", tr.dataset.size===activeSize));
 }
 function pick(size, byUser){
-  if(OOS.has(size)) return;
   sel=size;
-  if(byUser && rec!==null) overrode = size!==rec;
+  const recSize = rec && rec.row ? rec.row.size : rec;
+  if(byUser && recSize!==null) overrode = size!==recSize;
   paintSizes();
-  $("addBtn").disabled=false; $("addBtn").textContent="Add to bag · "+size;
+  const isOOS = OOS.has(size);
+  $("addBtn").disabled=isOOS;
+  $("addBtn").textContent=isOOS ? size+" · sold out" : "Add to bag · "+size;
+  if($("useBtn")){
+    $("useBtn").disabled=isOOS;
+    $("useBtn").textContent=isOOS ? "Size "+size+" is sold out" : "Use Size "+size;
+  }
+  if(h3.ready){
+    h3.setSize(size3D());
+  }
   paintNote(); paintOperator();
+  updateModalHud();
 }
 function note(el,cls,chip,msg){
   el.hidden=false; el.className=(el.id==="sig1"||el.id==="sig2"?"sig ":"note ")+cls;
@@ -490,15 +534,14 @@ function ensure3D(){
   return h3Loading;
 }
 
-/* Which SKU to render. The live recommendation wins once measured (rec holds
-   the recommend() row or its size); a hand-picked size is honoured before any
-   measurement so trying L on after being told M is still the comparison this
-   mode exists to make. M is the fallback until either exists. */
+/* Which SKU to render. A hand-picked size wins so trying L on after being
+   told M updates the 3D garment immediately. The live recommendation is used
+   before any hand-selection; M is the default. */
 function size3D(){
+  if(sel){ const f=SIZE_CHART.find(r=>r.size===sel); if(f) return f; }
   if(rec && rec.row) return rec.row;
   if(typeof rec==="string"){ const f=SIZE_CHART.find(r=>r.size===rec); if(f) return f; }
   if(measuredDraft && measuredDraft.r && measuredDraft.r.row) return measuredDraft.r.row;
-  if(sel){ const f=SIZE_CHART.find(r=>r.size===sel); if(f) return f; }
   return SIZE_CHART.find(r=>r.size==="M") || SIZE_CHART[2];
 }
 function paintGarment(g, lm, W, H){
@@ -519,6 +562,7 @@ function resetPanel(){
   $("mrow").hidden=true; $("mNote").hidden=true; $("useBtn").disabled=true;
   $("still").hidden=true; $("vid").hidden=false; $("ov").hidden=false; $("gl").hidden=false; $("guide").hidden=true; $("backBtn").hidden=true;
   if(h3.ready) h3.clear();   // no stale drape under the new scan (also resets smoothing)
+  paintSizes();
 }
 $("tryBtn").addEventListener("click",async()=>{
   dlg.showModal(); resetPanel();
@@ -749,38 +793,53 @@ function loop(){
   setPill("locked","Measured");
   showMeasurement();
 }
+function updateModalHud(){
+  if(!measuredDraft && !locked) return;
+  const shCm = (locked ? locked.shoulderMM : (measuredDraft ? measuredDraft.shoulderCM * 10 : 0)) / 10;
+  const currentSKU = size3D();
+  if(!currentSKU || !shCm) return;
+  $("mrow").hidden = false;
+  $("mSh").innerHTML = shCm.toFixed(1) + ' <small>cm</small>';
+  $("mGar").innerHTML = currentSKU.shoulder.toFixed(1) + ' <small>cm</small>';
+  const ease = currentSKU.shoulder - shCm;
+  const isOOS = OOS.has(currentSKU.size);
+  $("mSize").textContent = isOOS ? currentSKU.size + " · sold out" : currentSKU.size;
+
+  if(isOOS){
+    note($("mNote"), "warn", "Sold out", "Size <b>"+currentSKU.size+"</b> is out of stock. You can preview its 3D fit, or choose another size above.");
+  } else if(shCm < 35){
+    note($("mNote"), "warn", "Close to camera", "You measure <b>"+shCm.toFixed(1)+" cm</b> sitting close to the webcam. Showing 3D drape for <b>"+currentSKU.size+"</b> ("+currentSKU.shoulder.toFixed(1)+" cm). Step back ~1.5m for a full scan, or select another size above.");
+  } else if(sel && rec && sel !== (rec.row ? rec.row.size : rec)) {
+    note($("mNote"), "warn", "Manual size", "Previewing <b>"+currentSKU.size+"</b> ("+currentSKU.shoulder.toFixed(1)+" cm). Recommended fit is <b>"+(rec.row ? rec.row.size : rec)+"</b>. <b>"+ease.toFixed(1)+" cm</b> of ease at the shoulder.");
+  } else {
+    note($("mNote"), "ok", "Measured fit", "<b>"+shCm.toFixed(1)+" cm</b> shoulders against <b>"+currentSKU.shoulder.toFixed(1)+" cm</b> seam gives <b>"+ease.toFixed(1)+" cm</b> of ease (" + (ease > 4.5 ? "relaxed oversized drop" : ease > 1.5 ? "tailored drape" : "closer fit") + ").");
+  }
+}
 function showMeasurement(){
   const shoulderCM=locked.shoulderMM/10;
   const r=recommend(shoulderCM);
-  $("mrow").hidden=false;
-  $("mSh").innerHTML=shoulderCM.toFixed(1)+' <small>cm</small>';
-  $("mGar").innerHTML=r.row.shoulder.toFixed(1)+' <small>cm</small>';
-  $("mSize").textContent=OOS.has(r.row.size)?r.row.size+" · sold out":r.row.size;
   measuredDraft={shoulderCM, r, mmPerPx:locked.mmPerPx, scaleRef:locked.scaleRef,
                  spread:locked.spread, frames:locked.frames};
-  if(OOS.has(r.row.size))
-    note($("mNote"),"warn","Sold out","You measure <b>"+r.row.size+"</b>, which we do not have. Nothing here will fit the way it should.");
-  else if(photoMode)
-    note($("mNote"),"warn","Single frame","Read from one photo, so there is no repeat to check it against — a live scan medians 24 frames. Treat this as indicative. <b>"+r.ease.toFixed(1)+" cm</b> of ease at the shoulder.");
-  else if(r.toBoundary<0.35 && r.other)
-    note($("mNote"),"warn","Between sizes","<b>"+r.toBoundary.toFixed(2)+" cm</b> from <b>"+r.other.size+
-      "</b>. We would send <b>"+r.row.size+"</b> for this oversized cut.");
-  else if(locked.scaleRef==="IPD")
-    note($("mNote"),"warn","Scaled from your eyes","<b>"+r.ease.toFixed(1)+" cm</b> of ease at the shoulder. "
-      + "We scaled this from the gap between your eyes, a 63&nbsp;mm population average that carries about "
-      + "<b>5%</b> error — around a size step. Step back until your feet are in frame and it rescales from your height.");
-  else
-    note($("mNote"),"ok","Clean reading","<b>"+r.ease.toFixed(1)+" cm</b> of ease at the shoulder — what this cut is drafted for. Scaled from your height.");
-  rec=r.row.size; paintSizes();            // highlight the recommendation on lock, not after Use
-  if(h3.ready) h3.setSize(r.row);          // the drape switches to what was measured
-  $("useBtn").disabled=OOS.has(r.row.size);
-  $("useBtn").textContent="Use Size "+r.row.size;
+  rec=r.row.size;
+  if(!sel) sel=r.row.size;
+  paintSizes();
+  if(h3.ready) h3.setSize(size3D());
+  updateModalHud();
+  const currentSKU = size3D();
+  const isOOS = OOS.has(currentSKU.size);
+  $("useBtn").disabled=isOOS;
+  $("useBtn").textContent=isOOS ? "Size "+currentSKU.size+" is sold out" : "Use Size "+currentSKU.size;
 }
 let measuredDraft=null;
 $("useBtn").addEventListener("click",()=>{
   if(!measuredDraft) return;
-  measured=measuredDraft; rec=measured.r.row.size; overrode=false;
-  closeDlg(); pick(rec,false);
+  measured=measuredDraft;
+  const recSize = (measured.r && measured.r.row && measured.r.row.size) || rec;
+  const chosen = sel || recSize;
+  rec = recSize;
+  overrode = chosen !== rec;
+  closeDlg();
+  pick(chosen, overrode);
 });
 </script>
 </body></html>
