@@ -119,7 +119,7 @@ dialog::backdrop{background:rgba(10,10,10,.7)}
 .shd h2{font-size:15px; letter-spacing:.04em; text-transform:uppercase}
 .x{background:none; border:0; font-size:24px; line-height:1; color:var(--muted); padding:0 4px}
 .sbody{padding:16px 18px; overflow-y:auto; display:flex; flex-direction:column; gap:14px}
-.stage{position:relative; width:100%; aspect-ratio:3/4; background:#0B0B0B; overflow:hidden}
+.stage{position:relative; width:100%; aspect-ratio:3/4; min-height:460px; flex:0 0 auto; background:#0B0B0B; overflow:hidden; border-radius:8px}
 .stage video,.stage canvas{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
 .stage video{transform:scaleX(-1)}   /* selfie mirror; the canvases mirror in JS so all three agree */
 .stage #gl{z-index:2}   /* WebGL garment, layered directly over the video */

@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const P = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = mkdtempSync(join(tmpdir(), 'tryon-test-'));
@@ -9,7 +9,7 @@ writeFileSync(dir + '/vendorstub.mjs', 'export const FilesetResolver={};export c
 writeFileSync(dir + '/tryon_t.mjs',
   readFileSync(P + '/tryon.js', 'utf8')
     .replace('./vendor/vision_bundle.mjs', './vendorstub.mjs'));
-const { readBody, NOSE_TO_ANKLE_FRACTION, IPD_MM } = await import(dir + '/tryon_t.mjs');
+const { readBody, NOSE_TO_ANKLE_FRACTION, IPD_MM } = await import(pathToFileURL(dir + '/tryon_t.mjs').href);
 
 const W = 720, H = 1280;
 const ACROMION = 1.10;                 // the correction tryon.js applies

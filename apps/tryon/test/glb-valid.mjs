@@ -2,7 +2,7 @@
    glTF consumer accepts it — not that my writer agrees with itself. */
 import { readFileSync } from 'node:fs';
 import { dirname, resolve, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const P = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // GLTFLoader needs a few browser globals even for an ArrayBuffer parse.
@@ -11,8 +11,8 @@ globalThis.TextDecoder = TextDecoder;
 globalThis.createImageBitmap = undefined;
 globalThis.document = { createElementNS: () => ({ style: {} }), createElement: () => ({ style: {} }) };
 
-const THREE = await import(P + '/vendor/three/three.module.js');
-const { GLTFLoader } = await import(P + '/vendor/three/GLTFLoader.js');
+const THREE = await import(pathToFileURL(P + '/vendor/three/three.module.js').href);
+const { GLTFLoader } = await import(pathToFileURL(P + '/vendor/three/GLTFLoader.js').href);
 
 const buf = readFileSync(P + '/assets/hoodie.glb');
 const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);

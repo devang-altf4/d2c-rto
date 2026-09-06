@@ -194,7 +194,26 @@ export class Hoodie3D {
 
     const pShL = P(L.SH), pShR = P(R.SH);
     const shoulderMid = pShL.clone().add(pShR).multiplyScalar(0.5);
-    const hipMid = P(HIP_L).clone().add(P(HIP_R)).multiplyScalar(0.5);
+
+    // If hips are out of frame (seated at desk / webcam), estimate hipMid straight down from shoulders
+    let hipMid;
+    const vHL = (lm[HIP_L] && lm[HIP_L].visibility != null) ? lm[HIP_L].visibility : 1;
+    const vHR = (lm[HIP_R] && lm[HIP_R].visibility != null) ? lm[HIP_R].visibility : 1;
+    const rawHL = lm[HIP_L] ? lm[HIP_L].y : -1;
+    const rawHR = lm[HIP_R] ? lm[HIP_R].y : -1;
+    const rawSh = ((lm[L.SH] ? lm[L.SH].y : 0) + (lm[R.SH] ? lm[R.SH].y : 0)) / 2;
+
+    // Degenerate pose: hips explicitly collapsed onto shoulders
+    if (rawHL >= 0 && Math.abs(rawHL - rawSh) < 0.02 && Math.abs(rawHR - rawSh) < 0.02) {
+      return false;
+    }
+
+    if (vHL > 0.35 && vHR > 0.35 && rawHL > rawSh + 0.08 && rawHR > rawSh + 0.08) {
+      hipMid = P(HIP_L).clone().add(P(HIP_R)).multiplyScalar(0.5);
+    } else {
+      const shWidth = pShL.distanceTo(pShR);
+      hipMid = shoulderMid.clone().setY(shoulderMid.y - shWidth * 1.35);
+    }
 
     // ---- torso basis ------------------------------------------------------
     const yAxis = shoulderMid.clone().sub(hipMid);

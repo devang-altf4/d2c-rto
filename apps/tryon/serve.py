@@ -7,8 +7,15 @@
 getUserMedia only runs in a secure context. localhost counts as secure, so plain
 http is fine on this machine; a phone hitting the LAN address needs --https.
 """
-import argparse, base64, hashlib, http.server, json, os, socket, ssl, subprocess, sys
+import argparse, base64, hashlib, http.server, json, mimetypes, os, socket, ssl, subprocess, sys
 from pathlib import Path
+
+mimetypes.add_type("application/javascript", ".mjs")
+mimetypes.add_type("application/javascript", ".js")
+mimetypes.add_type("application/wasm", ".wasm")
+mimetypes.add_type("application/octet-stream", ".task")
+mimetypes.add_type("model/gltf-binary", ".glb")
+mimetypes.add_type("model/gltf+json", ".gltf")
 
 HERE = Path(__file__).resolve().parent
 CERT, KEY = HERE / ".cert.pem", HERE / ".key.pem"
@@ -73,6 +80,16 @@ def ensure_cert(ip: str) -> None:
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    extensions_map = {
+        **http.server.SimpleHTTPRequestHandler.extensions_map,
+        ".mjs": "application/javascript",
+        ".js": "application/javascript",
+        ".wasm": "application/wasm",
+        ".task": "application/octet-stream",
+        ".glb": "model/gltf-binary",
+        ".gltf": "model/gltf+json",
+    }
+
     def __init__(self, *a, **kw):
         super().__init__(*a, directory=str(HERE), **kw)
 

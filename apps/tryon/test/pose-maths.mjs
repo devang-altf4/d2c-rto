@@ -7,17 +7,17 @@
  */
 import { readFileSync } from 'node:fs';
 import { dirname, resolve, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const P = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 Object.defineProperty(globalThis, 'self', { value: globalThis, configurable: true });
 globalThis.document = { createElementNS: () => ({ style: {} }), createElement: () => ({ style: {} }) };
 
-const THREE = await import(P + '/vendor/three/three.module.js');
-const { GLTFLoader } = await import(P + '/vendor/three/GLTFLoader.js');
-const { Hoodie3D } = await import(P + '/hoodie3d.js');
-const { specFromRow, BONE } = await import(P + '/garment3d.js');
-const { SIZE_CHART } = await import(P + '/tryon.js');
+const THREE = await import(pathToFileURL(P + '/vendor/three/three.module.js').href);
+const { GLTFLoader } = await import(pathToFileURL(P + '/vendor/three/GLTFLoader.js').href);
+const { Hoodie3D } = await import(pathToFileURL(P + '/hoodie3d.js').href);
+const { specFromRow, BONE } = await import(pathToFileURL(P + '/garment3d.js').href);
+const { SIZE_CHART } = await import(pathToFileURL(P + '/tryon.js').href);
 
 /* ---- a synthetic person, in normalised image coords ---------------------- */
 const VW = 720, VH = 1280;
