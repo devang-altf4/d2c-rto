@@ -121,7 +121,14 @@ dialog::backdrop{background:rgba(10,10,10,.7)}
 .sbody{padding:16px 18px; overflow-y:auto; display:flex; flex-direction:column; gap:14px}
 .stage{position:relative; width:100%; aspect-ratio:3/4; background:#0B0B0B; overflow:hidden}
 .stage video,.stage canvas{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
-.stage video{transform:scaleX(-1)}
+.stage video{transform:scaleX(-1)}   /* selfie mirror; the canvases mirror in JS so all three agree */
+.stage #gl{z-index:2}   /* WebGL garment, layered directly over the video */
+.stage #ov{z-index:3}
+.stage .swatchbar,.stage .pill{z-index:4}
+#guide{position:absolute; inset:12% 14%; z-index:4; border:2px dashed rgba(255,255,255,.75); border-radius:18px;
+  display:flex; align-items:flex-end; justify-content:center; pointer-events:none}
+#guide span{background:rgba(10,10,10,.72); color:#fff; font-size:12px; font-weight:600;
+  padding:8px 14px; border-radius:99px; margin-bottom:12px; white-space:nowrap}
 .stage #still{object-fit:contain; background:#0B0B0B}
 .photorow{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 .ghost{padding:11px 14px; border:1px solid var(--rule-2); background:var(--paper); color:var(--ink); font-size:13px; font-weight:600}
@@ -234,17 +241,18 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   <div class="sbody">
     <div class="stage" id="stage">
       <video id="vid" playsinline muted></video>
+      <canvas id="gl"></canvas>
       <canvas id="ov"></canvas>
-      <canvas id="gl" hidden></canvas>
       <canvas id="still" hidden></canvas>
+      <div id="guide" hidden><span>Stand back until shoulders &amp; torso are inside the guide</span></div>
       <div class="swatchbar" id="swBar"></div>
       <div class="pill" id="pill" data-s="load"><span class="dot"></span><span id="pillTxt">Loading the pose model…</span></div>
     </div>
     <div class="modes">
       <span class="lab">Garment</span>
-      <button type="button" id="modePhoto" aria-pressed="true">Photo</button>
+      <button type="button" id="modePhoto" aria-pressed="false">Photo</button>
       <button type="button" id="modeDraw" aria-pressed="false">Outline</button>
-      <button type="button" id="mode3d" aria-pressed="false">3D</button>
+      <button type="button" id="mode3d" aria-pressed="true">3D</button>
     </div>
     <div class="htrow">
       <label class="lab" for="htIn">Your height</label>
@@ -433,7 +441,7 @@ $("addBtn").addEventListener("click",()=>{ bag++; $("bagCount").textContent="Bag
 paintSizes(); paintNote(); paintOperator();
 
 /* ---------- try-on ---------- */
-const dlg=$("dlg"), vid=$("vid"), ov=$("ov");
+const dlg=$("dlg"), vid=$("vid"), ov=$("ov"), gl=$("gl");
 let engine=null, stream=null, raf=0, stab=new Stabiliser(24), locked=null, lastRef=null;
 const setPill=(s,t)=>{ $("pill").dataset.s=s; $("pillTxt").textContent=t; };
 
@@ -446,8 +454,9 @@ COLOURWAYS.forEach(c=>{
 });
 
 let photoMode=false;
-let garmentMode="photo";   // "photo" = keyed studio plate, "draw" = vector, "3d" = rigged mesh
+let garmentMode="3d";   // default: rigged mesh over the video ("photo" = keyed plate, "draw" = vector)
 const h3=new Hoodie3D();
+h3.smoothing=0.35;   // ease the live drape; the geometry tests keep the default 0 (exact)
 let h3Loading=null;
 
 function setMode(m){
@@ -481,11 +490,16 @@ function ensure3D(){
   return h3Loading;
 }
 
-/* Which SKU to render. A hand-picked size wins, because trying L on after
-   being told M is exactly the comparison this mode exists to make. */
+/* Which SKU to render. The live recommendation wins once measured (rec holds
+   the recommend() row or its size); a hand-picked size is honoured before any
+   measurement so trying L on after being told M is still the comparison this
+   mode exists to make. M is the fallback until either exists. */
 function size3D(){
-  const want = sel || rec || "M";
-  return SIZE_CHART.find(r=>r.size===want) || SIZE_CHART[2];
+  if(rec && rec.row) return rec.row;
+  if(typeof rec==="string"){ const f=SIZE_CHART.find(r=>r.size===rec); if(f) return f; }
+  if(measuredDraft && measuredDraft.r && measuredDraft.r.row) return measuredDraft.r.row;
+  if(sel){ const f=SIZE_CHART.find(r=>r.size===sel); if(f) return f; }
+  return SIZE_CHART.find(r=>r.size==="M") || SIZE_CHART[2];
 }
 function paintGarment(g, lm, W, H){
   if(garmentMode==="photo" && garmentReady()) return drawPhotoOnBody(g, lm, W, H, colour, {ease:1.16});
@@ -503,11 +517,13 @@ function resetPanel(){
   stab.reset(); locked=null; measuredDraft=null; photoMode=false;
   $("renderBtn").hidden=true; stillSource=compositeURL=renderedURL=null;
   $("mrow").hidden=true; $("mNote").hidden=true; $("useBtn").disabled=true;
-  $("still").hidden=true; $("vid").hidden=false; $("ov").hidden=false; $("backBtn").hidden=true;
+  $("still").hidden=true; $("vid").hidden=false; $("ov").hidden=false; $("gl").hidden=false; $("guide").hidden=true; $("backBtn").hidden=true;
+  if(h3.ready) h3.clear();   // no stale drape under the new scan (also resets smoothing)
 }
 $("tryBtn").addEventListener("click",async()=>{
   dlg.showModal(); resetPanel();
   if(!await ensureEngine()) return;
+  if(garmentMode==="3d") ensure3D();   // the GLB loads while she lines herself up
   const secure=window.isSecureContext||["localhost","127.0.0.1"].includes(location.hostname);
   if(!secure){ noCamera("Camera needs a secure origin — restart with npm run tryon:https"); return; }
   try{
@@ -545,6 +561,9 @@ const REASON={
   cropped:"Shoulders are cut off at the edge",
   implausible:"Whole upper body needs to be in frame"
 };
+/* Stand-back guide cases: she is missing or cut off, so a frame to stand in
+   helps. Face/turned/far stay pill-only — the guide would tell her wrong. */
+const GUIDE_WHEN=new Set(["nobody","shoulders","cropped","implausible"]);
 
 /* ---- still-photo path, for machines with no camera ---- */
 $("photoBtn").addEventListener("click",()=>$("photoIn").click());
@@ -565,7 +584,7 @@ async function runStill(src, iw, ih){
   cancelAnimationFrame(raf); raf=0;
   if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
   photoMode=true;
-  $("vid").hidden=true; $("ov").hidden=true; $("still").hidden=false; $("backBtn").hidden=false;
+  $("vid").hidden=true; $("ov").hidden=true; $("gl").hidden=true; $("guide").hidden=true; $("still").hidden=false; $("backBtn").hidden=false;
   setPill("measuring","Reading the photo…");
   const s=Math.min(1,1280/Math.max(iw,ih));
   const W=Math.round(iw*s), H=Math.round(ih*s);
@@ -670,10 +689,12 @@ function loop(){
   raf=requestAnimationFrame(loop);
   const vw=vid.videoWidth, vh=vid.videoHeight;
   if(!vw) return;
+  /* Backing store tracks the display box times DPR on both canvases, or the
+     drape goes soft on hidpi phones while the outline stays sharp. */
   const dpr=Math.min(2,devicePixelRatio||1), box=ov.getBoundingClientRect();
-  if(ov.width!==Math.round(box.width*dpr)){
-    ov.width=Math.round(box.width*dpr); ov.height=Math.round(box.height*dpr);
-  }
+  const bw=Math.max(2,Math.round(box.width*dpr)), bh=Math.max(2,Math.round(box.height*dpr));
+  if(ov.width!==bw || ov.height!==bh){ ov.width=bw; ov.height=bh; }
+  if(gl.width!==bw || gl.height!==bh){ gl.width=bw; gl.height=bh; }
   const g=ov.getContext("2d");
   g.clearRect(0,0,ov.width,ov.height);
 
@@ -682,8 +703,11 @@ function loop(){
   if(!body.ok){
     if(garmentMode==="3d" && h3.ready) h3.clear();
     if(!locked){ stab.reset(); setPill("search", REASON[body.reason]||"Line yourself up"); }
+    /* Stand-back guide: she is missing or cropped, so show the frame to stand in. */
+    $("guide").hidden = !!locked || !GUIDE_WHEN.has(body.reason);
     return;
   }
+  $("guide").hidden=true;
   const mir=res.lm.map(p=>({...p, x:1-p.x}));    // video is mirrored for a selfie view
   const s=Math.max(ov.width/vw, ov.height/vh);
   const ox=(ov.width-vw*s)/2, oy=(ov.height-vh*s)/2;
@@ -694,8 +718,9 @@ function loop(){
     const shCm = locked ? locked.shoulderMM/10 : body.shoulderMM/10;
     const mirWorld = res.world ? res.world.map(p=>({...p, x:-p.x})) : null;
     h3.setSize(size3D());
+    h3.setColour(colour);
     const drew = h3.draw(mir, mirWorld, vw, vh,
-                         {s, ox, oy, width:ov.width, height:ov.height}, shCm);
+                         {s, ox, oy, width:gl.width, height:gl.height}, shCm);
     if(!drew){
       h3.clear();                                 // do not leave the last frame stuck on screen
       g.save(); g.translate(ox,oy); g.scale(s,s); paintGarment(g, mir, vw, vh); g.restore();
@@ -714,7 +739,10 @@ function loop(){
   lastRef=body.scaleRef;
   stab.push(body.shoulderMM);
   if(!stab.settled){
-    setPill("measuring","Hold still — measuring ("+Math.round(stab.count/24*100)+"%)"
+    const med=stab.value();
+    let live="";
+    if(med!=null){ const cm=med/10, pv=recommend(cm); live=" · Measuring your fit: "+cm.toFixed(1)+" cm ("+pv.row.size+")"; }
+    setPill("measuring","Hold still ("+Math.round(stab.count/24*100)+"%)"+live
       + (body.scaleRef==="IPD" ? " · step back for your feet" : ""));
     return;
   }
@@ -745,8 +773,10 @@ function showMeasurement(){
       + "<b>5%</b> error — around a size step. Step back until your feet are in frame and it rescales from your height.");
   else
     note($("mNote"),"ok","Clean reading","<b>"+r.ease.toFixed(1)+" cm</b> of ease at the shoulder — what this cut is drafted for. Scaled from your height.");
+  rec=r.row.size; paintSizes();            // highlight the recommendation on lock, not after Use
+  if(h3.ready) h3.setSize(r.row);          // the drape switches to what was measured
   $("useBtn").disabled=OOS.has(r.row.size);
-  $("useBtn").textContent="Use "+r.row.size;
+  $("useBtn").textContent="Use Size "+r.row.size;
 }
 let measuredDraft=null;
 $("useBtn").addEventListener("click",()=>{

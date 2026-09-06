@@ -36,7 +36,17 @@ export class Hoodie3D {
     this.ready = false;
     this.failed = null;
     this.size = null;
-    this._scratch = { q: new THREE.Quaternion(), m: new THREE.Matrix4() };
+    /* Exponential smoothing for live video: 0 snaps (exact, and what the
+       geometry tests run with); the page sets ~0.35 so the cloth stops
+       shivering without lagging a real move. */
+    this.smoothing = 0;
+    this._sm = null;
+    this._scratch = { q: new THREE.Quaternion(), q2: new THREE.Quaternion(), m: new THREE.Matrix4() };
+  }
+
+  /** Forget the last frame so the next pose() snaps instead of slewing in. */
+  resetSmoothing() {
+    this._sm = null;
   }
 
   /** Build the renderer against a canvas that sits on top of the video. */
@@ -122,6 +132,7 @@ export class Hoodie3D {
       hanging on screen, which reads as the garment sticking to nothing. */
   clear() {
     if (this.ready) this.renderer.clear();
+    this.resetSmoothing();
   }
 
   /**
@@ -205,9 +216,22 @@ export class Hoodie3D {
     // which is the exact lie this whole feature exists to avoid.
     const pxPerCm = shoulderPx / Math.max(20, shoulderCm);
 
-    this.root.position.copy(shoulderMid);
-    this.root.quaternion.copy(q);
-    this.root.scale.setScalar(pxPerCm);
+    // Exponential ease toward this frame's measurement. The root already
+    // holds last frame's smoothed pose, so lerping from it IS the filter;
+    // the first frame after (re)acquire always snaps.
+    const A = Math.min(1, Math.max(0, +this.smoothing || 0));
+    const ease = A > 0 && !!this._sm;
+    if (ease) {
+      this.root.position.lerp(shoulderMid, A);
+      this.root.quaternion.slerp(q, A);
+      const s0 = this.root.scale.x;
+      this.root.scale.setScalar(s0 + (pxPerCm - s0) * A);
+    } else {
+      this.root.position.copy(shoulderMid);
+      this.root.quaternion.copy(q);
+      this.root.scale.setScalar(pxPerCm);
+      this._sm = { init: true };
+    }
 
     // ---- arms -------------------------------------------------------------
     // Directions are taken into the torso frame, because that is the space the
@@ -216,29 +240,36 @@ export class Hoodie3D {
     const toLocal = (a, b) => b.clone().sub(a).applyQuaternion(inv).normalize();
 
     this._poseArm(BONE['upperArm.L'], BONE['foreArm.L'],
-      toLocal(P(L.SH), P(L.EL)), toLocal(P(L.EL), P(L.WR)));
+      toLocal(P(L.SH), P(L.EL)), toLocal(P(L.EL), P(L.WR)), ease, A);
     this._poseArm(BONE['upperArm.R'], BONE['foreArm.R'],
-      toLocal(P(R.SH), P(R.EL)), toLocal(P(R.EL), P(R.WR)));
+      toLocal(P(R.SH), P(R.EL)), toLocal(P(R.EL), P(R.WR)), ease, A);
 
     // Hips bone follows the torso's own bend, so the hem swings with a lean
     // instead of staying square to the shoulders.
     const spineDir = hipMid.clone().sub(shoulderMid).applyQuaternion(inv).normalize();
-    this.bones[BONE.hips].quaternion.setFromUnitVectors(BIND_DIR, spineDir);
+    const hips = this.bones[BONE.hips];
+    this._scratch.q2.setFromUnitVectors(BIND_DIR, spineDir);
+    if (ease) hips.quaternion.slerp(this._scratch.q2, A);
+    else hips.quaternion.copy(this._scratch.q2);
 
     this.lastPose = { shoulderMid, hipMid, xAxis, yAxis, zAxis, pxPerCm, shoulderPx };
     return true;
   }
 
   /** Rotate one arm's two bones onto a measured elbow and wrist. */
-  _poseArm(upperIdx, foreIdx, upperDir, foreDir) {
+  _poseArm(upperIdx, foreIdx, upperDir, foreDir, ease = false, A = 0) {
     const upper = this.bones[upperIdx], fore = this.bones[foreIdx];
     if (upperDir.lengthSq() > 0.5) {
-      upper.quaternion.setFromUnitVectors(BIND_DIR, upperDir);
+      this._scratch.q.setFromUnitVectors(BIND_DIR, upperDir);
+      if (ease) upper.quaternion.slerp(this._scratch.q, A);
+      else upper.quaternion.copy(this._scratch.q);
       if (foreDir.lengthSq() > 0.5) {
         // The forearm is a child, so its target has to be expressed relative
         // to wherever the upper arm ended up.
         const rel = foreDir.clone().applyQuaternion(upper.quaternion.clone().invert());
-        fore.quaternion.setFromUnitVectors(BIND_DIR, rel.normalize());
+        this._scratch.q.setFromUnitVectors(BIND_DIR, rel.normalize());
+        if (ease) fore.quaternion.slerp(this._scratch.q, A);
+        else fore.quaternion.copy(this._scratch.q);
       }
     }
   }
