@@ -195,7 +195,7 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
         </div></details>
         <details class="acc"><summary>Size guide</summary><div>
           Garment measurements, flat, in centimetres.
-          <table class="chart"><thead><tr><th>Size</th><th>Shoulder</th><th>Chest</th><th>Length</th></tr></thead>
+          <table class="chart"><thead><tr><th>Size</th><th>Shoulder</th><th>Chest &frac12;</th><th>Length</th></tr></thead>
           <tbody id="chartBody"></tbody></table>
         </div></details>
         <details class="acc"><summary>Delivery &amp; returns</summary><div>
@@ -235,6 +235,7 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     <div class="stage" id="stage">
       <video id="vid" playsinline muted></video>
       <canvas id="ov"></canvas>
+      <canvas id="gl" hidden></canvas>
       <canvas id="still" hidden></canvas>
       <div class="swatchbar" id="swBar"></div>
       <div class="pill" id="pill" data-s="load"><span class="dot"></span><span id="pillTxt">Loading the pose model…</span></div>
@@ -243,6 +244,7 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
       <span class="lab">Garment</span>
       <button type="button" id="modePhoto" aria-pressed="true">Photo</button>
       <button type="button" id="modeDraw" aria-pressed="false">Outline</button>
+      <button type="button" id="mode3d" aria-pressed="false">3D</button>
     </div>
     <div class="htrow">
       <label class="lab" for="htIn">Your height</label>
@@ -271,6 +273,7 @@ label.file input{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 import {COLOURWAYS, colourway, drawFlat, drawOnBody,
         drawPhotoOnBody, loadGarment, garmentReady} from "./hoodie.js";
 import {PoseEngine, readBody, Stabiliser, recommend, SIZE_CHART, STEP_CM, IPD_MM} from "./tryon.js";
+import {Hoodie3D} from "./hoodie3d.js";
 
 const $=id=>document.getElementById(id);
 const OOS=new Set(["XS"]);
@@ -318,6 +321,7 @@ COLOURWAYS.forEach(c=>{
 });
 function setColour(id){
   colour=id;
+  if(h3.ready) h3.setColour(id);
   [...$("thumbs").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(COLOURWAYS[i].id===id)));
   [...$("swatches").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(COLOURWAYS[i].id===id)));
   [...$("swBar").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(COLOURWAYS[i].id===id)));
@@ -442,14 +446,47 @@ COLOURWAYS.forEach(c=>{
 });
 
 let photoMode=false;
-let garmentMode="photo";                 // "photo" = keyed studio plate, "draw" = vector
+let garmentMode="photo";   // "photo" = keyed studio plate, "draw" = vector, "3d" = rigged mesh
+const h3=new Hoodie3D();
+let h3Loading=null;
+
 function setMode(m){
   garmentMode=m;
   $("modePhoto").setAttribute("aria-pressed",String(m==="photo"));
   $("modeDraw").setAttribute("aria-pressed",String(m==="draw"));
+  $("mode3d").setAttribute("aria-pressed",String(m==="3d"));
+  $("gl").hidden = m!=="3d";
+  if(m==="3d") ensure3D();
 }
 $("modePhoto").addEventListener("click",()=>setMode("photo"));
 $("modeDraw").addEventListener("click",()=>setMode("draw"));
+$("mode3d").addEventListener("click",()=>setMode("3d"));
+
+/* three.js and the .glb are ~800KB together — loaded on the first tap of 3D,
+   never on page load, for the same reason the pose model is deferred. */
+function ensure3D(){
+  if(h3.ready || h3Loading) return h3Loading;
+  setPill("load","Loading the 3D garment…");
+  h3Loading = h3.init($("gl")).then(ok=>{
+    if(!ok){
+      setPill("error","3D unavailable: "+h3.failed);
+      $("mode3d").disabled=true;
+      setMode("photo");
+      return false;
+    }
+    h3.setColour(colour);
+    h3.setSize(size3D());
+    return true;
+  });
+  return h3Loading;
+}
+
+/* Which SKU to render. A hand-picked size wins, because trying L on after
+   being told M is exactly the comparison this mode exists to make. */
+function size3D(){
+  const want = sel || rec || "M";
+  return SIZE_CHART.find(r=>r.size===want) || SIZE_CHART[2];
+}
 function paintGarment(g, lm, W, H){
   if(garmentMode==="photo" && garmentReady()) return drawPhotoOnBody(g, lm, W, H, colour, {ease:1.16});
   return drawOnBody(g, lm, W, H, colour, {ease:1.16});
@@ -634,22 +671,40 @@ function loop(){
   const vw=vid.videoWidth, vh=vid.videoHeight;
   if(!vw) return;
   const dpr=Math.min(2,devicePixelRatio||1), box=ov.getBoundingClientRect();
-  if(ov.width!==Math.round(box.width*dpr)){ ov.width=Math.round(box.width*dpr); ov.height=Math.round(box.height*dpr); }
+  if(ov.width!==Math.round(box.width*dpr)){
+    ov.width=Math.round(box.width*dpr); ov.height=Math.round(box.height*dpr);
+  }
   const g=ov.getContext("2d");
   g.clearRect(0,0,ov.width,ov.height);
 
   const res=engine.detect(vid, performance.now());
   const body=readBody(res, vw, vh, heightCm);
   if(!body.ok){
+    if(garmentMode==="3d" && h3.ready) h3.clear();
     if(!locked){ stab.reset(); setPill("search", REASON[body.reason]||"Line yourself up"); }
     return;
   }
   const mir=res.lm.map(p=>({...p, x:1-p.x}));    // video is mirrored for a selfie view
   const s=Math.max(ov.width/vw, ov.height/vh);
   const ox=(ov.width-vw*s)/2, oy=(ov.height-vh*s)/2;
-  g.save(); g.translate(ox,oy); g.scale(s,s);
-  paintGarment(g, mir, vw, vh);
-  g.restore();
+  if(garmentMode==="3d" && h3.ready){
+    // The 3D garment is scaled from the MEASURED shoulder, so it has to wait
+    // for a reading. Until then the vector outline stands in, rather than
+    // showing a garment at an invented size.
+    const shCm = locked ? locked.shoulderMM/10 : body.shoulderMM/10;
+    const mirWorld = res.world ? res.world.map(p=>({...p, x:-p.x})) : null;
+    h3.setSize(size3D());
+    const drew = h3.draw(mir, mirWorld, vw, vh,
+                         {s, ox, oy, width:ov.width, height:ov.height}, shCm);
+    if(!drew){
+      h3.clear();                                 // do not leave the last frame stuck on screen
+      g.save(); g.translate(ox,oy); g.scale(s,s); paintGarment(g, mir, vw, vh); g.restore();
+    }
+  } else {
+    g.save(); g.translate(ox,oy); g.scale(s,s);
+    paintGarment(g, mir, vw, vh);
+    g.restore();
+  }
 
   if(locked) return;
   // A switch of scale reference mid-scan (she stepped back and her feet came

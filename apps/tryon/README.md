@@ -106,10 +106,15 @@ line, which would silently shrink every measurement taken from it.
 |---|---|
 | `hoodie.js` | The garment: the keyed studio plate for try-on, plus a drawn fallback geometry. |
 | `tryon.js` | Pose engine, height/IPD scaling, size chart, rolling-median stabiliser. |
+| `garment3d.js` | Parametric hoodie: SIZE_CHART row in, lofted mesh out. Pure, no three.js. |
+| `hoodie3d.js` | The 3D overlay: loads the .glb, poses the rig from landmarks, renders over the video. |
+| `tools/export-glb.mjs` | Writes `assets/hoodie.glb` from the generator. |
+| `test/` | Four headless checks; `pnpm tryon:test`. |
 | `index.html` | The storefront, the try-on panel and the Opentra telemetry panel. |
 | `assets/*.jpg` | Product photography, one shot per colourway, cropped to 3:4. |
 | `assets/garment.png` | The hoodie keyed out of the off-white studio shot — the try-on plate. |
 | `vendor/` | MediaPipe tasks-vision + `pose_landmarker_lite`, ~24 MB, committed so the demo runs with the venue wifi down. |
+| `vendor/three/` | three.js + GLTFLoader, MIT, vendored for the same reason. |
 
 ## Imagery
 
@@ -133,7 +138,7 @@ colourway while keeping the real folds and shading. The shoulder seam sits at
 row 20, centre x 156, width 222 px — that is the anchor the overlay scales and
 rotates around.
 
-## Photo vs Outline
+## Photo vs Outline vs 3D
 
 The try-on panel has a **Garment** toggle:
 
@@ -142,8 +147,64 @@ The try-on panel has a **Garment** toggle:
   sleeves cannot follow the arms, so raising them breaks the illusion.
 - **Outline** — the drawn garment. Cartoonish, but the sleeves track elbows and
   wrists, so it survives movement.
+- **3D** — a rigged mesh at the SKU's real dimensions. Turns with the torso,
+  follows the elbows and wrists, and is the only mode where changing size
+  changes the garment instead of the zoom.
 
-Photo sells it standing still; Outline survives someone waving.
+Photo sells it standing still; Outline survives someone waving; 3D is the one
+that can answer "is this M actually going to fit me".
+
+## The 3D garment
+
+`assets/hoodie.glb` is generated, not modelled:
+
+```bash
+pnpm tryon:glb          # rewrites assets/hoodie.glb, default size M
+pnpm tryon:glb XL
+```
+
+**Why generated.** A downloaded mesh scaled to a shopper does not fit her, it
+is just a bigger hoodie. Between S and XL this garment's chest moves 12cm, its
+shoulder 7.5cm and its length 8cm — three independent numbers off the spec
+sheet. Only a mesh lofted *from* that sheet can show the difference between two
+sizes on one body. `garment3d.js` does the lofting and is pure: the same code
+exports the `.glb` in Node and re-lofts geometry in the browser, so there is
+one definition of the garment rather than two that drift.
+
+**Nothing is fitted to the wearer.** The mesh is the GARMENT, at the true
+dimensions of one SKU. The body underneath is the variable. The renderer scales
+centimetres to pixels using the *measured* shoulder, so a garment 3cm wider
+than your shoulders is drawn 3cm wider — and an M on 52cm shoulders renders
+visibly tight rather than quietly resizing itself to fit. That is the whole
+point, and it is what `test/pose-maths.mjs` pins down.
+
+**What it is not.** A composite, not a simulation. There is no depth buffer for
+the wearer, so the garment does not drape, wrinkle, or get occluded by her own
+hands passing in front of it. It reads as a fit preview.
+
+The rig is seven bones — hips, chest, neck, and two bones per arm — posed from
+the MediaPipe shoulder, elbow and wrist landmarks. Depth comes from
+`worldLandmarks`, which is good enough to turn a torso and nowhere near good
+enough to measure with; it never feeds a measurement.
+
+three.js is vendored under `vendor/three/` (MIT, licence included) for the same
+reason as the pose model: the demo has to run with the venue wifi down.
+
+## Tests
+
+```bash
+pnpm tryon:test
+```
+
+Four checks, no framework — the app has no build step, and a runner that needs
+installing is a runner that stops being run.
+
+| Suite | What it catches |
+|---|---|
+| `page-loads` | The page module actually *evaluates*. `node --check` only parses, and a temporal-dead-zone reference at the top of a module script kills every line below it — including the product photography. That shipped once. |
+| `glb-valid` | `hoodie.glb` parses with the real `GLTFLoader`: skinned, seven bones, weights summing to 1, joint indices in range, no non-manifold edges. |
+| `pose-maths` | The garment lands on the body at its spec width in cm, grades S&rarr;XL exactly by the chart, tracks zoom, stays fixed in cm across different bodies, and the sleeves are not swapped. |
+| `scale-reference` | Height beats the eye line, and by how much. |
 
 ## Known limits
 
@@ -161,3 +222,10 @@ Photo sells it standing still; Outline survives someone waving.
   black ground, so this page commits to the white-store look.
 - The garment is drawn, not photographed, and it does not drape, wrinkle or
   occlude the hands. It reads as a fit preview, not a photoreal composite.
+- **Sleeve length is not on the size chart.** It is held at 1.30x the shoulder,
+  which is roughly how the grading runs but is a guess, not a spec. Chest,
+  shoulder and body length all come off the chart; sleeve does not.
+- **The chart's `chest` is read as half-chest, flat.** That is the usual spec
+  convention and the only reading that gives a wearable garment, but it is an
+  assumption — see `CHEST_IS_HALF` in `garment3d.js` if H&K's real sheet quotes
+  full circumference.
